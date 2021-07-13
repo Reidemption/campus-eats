@@ -1,2 +1,2 @@
 # campus-eats
-DSU Campus Delivery for On-Campus locations
+DSU Campus Delivery for On-Campus Locations
