@@ -2,8 +2,9 @@
   "name": "campus-eats",
   "version": "1.0.0",
   "description": "CodeSchool 2021 Final Project",
-  "main": "index.js",
+  "main": "/backend/server/init.js",
   "scripts": {
+    "start": "node ./backend/server/init.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/Reidemption/campus-eats#readme",
   "dependencies": {
+    "@mysql/xdevapi": "^8.0.25",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.13.2",
