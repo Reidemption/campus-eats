@@ -16,6 +16,10 @@
       <MyBanner></MyBanner>
 
       <MyRestaurants></MyRestaurants>
+
+      <MyBestSellers></MyBestSellers>
+
+      <MyFooter></MyFooter>
     </div>
 
     <div class="user_and_cart">
@@ -29,13 +33,17 @@ import MyNavBar from "../components/MyNavBar.vue"
 import MyButton from "../components/MyButton.vue"
 import MyBanner from "../components/MyBanner.vue"
 import MyRestaurants from "../components/MyRestaurants.vue"
+import MyBestSellers from "../components/MyBestSellers.vue"
+import MyFooter from "../components/MyFooter.vue"
 
 export default {
   components: {
     MyNavBar,
     MyButton,
     MyBanner,
-    MyRestaurants
+    MyRestaurants,
+    MyBestSellers,
+    MyFooter
   }
 }
 </script>

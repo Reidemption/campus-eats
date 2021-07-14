@@ -5,7 +5,7 @@
         <div class="restaurant_options">
             <div class="single_restaurant" v-for="restaurant in restaurant_list" :key="restaurant.name">
                 <div class="restaurant_logo">
-                    <img :src="require(`../assets_main/${restaurant.logo}`)">
+                    <img :src="require(`../assets_main/${restaurant.logo}`)" alt="On-Campus Restaurant">
                 </div>
                 
                 <div class="arrow_button">
@@ -107,5 +107,11 @@ export default {
     border: 1px solid var(--navy);
     background-color: var(--navy);
     color: white;
+}
+
+@media only screen and (max-width: 1650px) {
+    .single_restaurant {
+        grid-template-rows: 5fr 1fr;
+    }
 }
 </style>
