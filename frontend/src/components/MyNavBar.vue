@@ -18,7 +18,7 @@
         </div>
 
         <div class="log_out_wrapper">
-            <div class="single_option">
+            <div class="single_option logout_option">
                 <div class="icon">
                     <i class="las la-sign-out-alt"></i>
                 </div>
@@ -52,11 +52,6 @@ export default {
                     path: "/Orders"
                 },
                 {
-                    icon: "las la-envelope",
-                    name: "News",
-                    path: "/News"
-                },
-                {
                     icon: "las la-user",
                     name: "Account",
                     path: "/Account"
@@ -86,8 +81,8 @@ export default {
 }
 
 .current_menu_option {
-    border: 1px solid var(--blue);
-    background-color: var(--blue);
+    border: 1px solid white;
+    background-color: var(--red);
 }
 
 .icon {
@@ -95,9 +90,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--yellow-dark);
-    background-color: var(--yellow-dark);
-    color: var(--blue-dark);
+    border: 1px solid var(--navy);
+    background-color: var(--navy);
+    color: white;
     border-radius: 18px;
     height: 50px;
     width: 50px;
@@ -105,8 +100,8 @@ export default {
 }
 
 .current_menu_icon {
-    border: 1px solid var(--blue-dark);
-    background-color: var(--blue-dark);
+    border: 1px solid var(--red-dark);
+    background-color: var(--red-dark);
     color: white;
 }
 
@@ -125,5 +120,30 @@ export default {
     transform: rotateY(180deg);
     display: flex;
     justify-content: center;
+}
+
+.logout_option {
+    margin-bottom: 0;
+}
+
+@media only screen and (max-width: 1650px) {
+  .icon {
+      font-size: 25px;
+      padding: 25px;
+  }
+  .option_name {
+      font-size: 17px;
+  }
+}
+
+
+@media only screen and (max-width: 1425px) {
+  .icon {
+      font-size: 20px;
+      padding: 20px;
+  }
+  .option_name {
+      font-size: 15px;
+  }
 }
 </style>

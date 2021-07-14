@@ -11,12 +11,11 @@
 }
 
 :root {
-  --gray-light : hsl(240, 20%, 98%);
-  --gray-dark  : hsl(238, 12%, 60%);
-  --blue-darker: hsl(217, 100%, 21%);
-  --blue-dark  : hsl(212, 100%, 27%);
-  --blue       : hsl(209, 100%, 31%);
-  --yellow     : hsl(50, 100%, 50%);
-  --yellow-dark: hsl(47, 100%, 50%);
+  --yellow   : hsl(60, 83%, 62%);
+  --red      : hsl(358, 90%, 42%);
+  --red-dark : hsl(358, 73%, 31%);
+  --gray     : hsl(0, 0%, 94%);
+  --gray-dark: hsl(355, 4%, 45%);
+  --navy     : hsl(213, 68%, 15%);
 }
 </style>
