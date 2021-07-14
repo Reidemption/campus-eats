@@ -1,7 +1,7 @@
 <template>
   <div class="whole_page_wrapper">
     <div class="navigation_bar">
-      <NavigationBar current_page="Home"></NavigationBar>
+      <MyNavBar current_page="Home"></MyNavBar>
     </div>
 
     <div class="home_page_wrapper">
@@ -13,20 +13,9 @@
         </div>
       </div>
 
-      <div class="eye_catcher_section">
-        <div class="image">
-          <img src="../assets/HomePage/delivery_man.png" alt="We deliver food">
-        </div>
+      <MyBanner></MyBanner>
 
-        <div class="greeting_and_news">
-          <div class="greeting">Hello Kanye South,</div>
-          <div class="news">
-            <div class="main_message">Free Delivery This Week!</div>
-            <div class="additional_message">Enter code <span class="promo_code">#CAMPUS_EATS</span> at the checkout page.</div>
-          </div>
-          <MyButton>Learn More</MyButton>
-        </div>
-      </div>
+      <MyRestaurants></MyRestaurants>
     </div>
 
     <div class="user_and_cart">
@@ -36,13 +25,17 @@
 </template>
 
 <script>
-import NavigationBar from "../components/NavigationBar.vue"
+import MyNavBar from "../components/MyNavBar.vue"
 import MyButton from "../components/MyButton.vue"
+import MyBanner from "../components/MyBanner.vue"
+import MyRestaurants from "../components/MyRestaurants.vue"
 
 export default {
   components: {
-    NavigationBar,
-    MyButton
+    MyNavBar,
+    MyButton,
+    MyBanner,
+    MyRestaurants
   }
 }
 </script>
@@ -60,12 +53,12 @@ export default {
 </style>
 
 <style scoped>
-.home_page_wrapper {
-    background-color: var(--gray-light);
+.user_and_cart {
+    background-color: var(--red);
 }
 
-.user_and_cart {
-    background-color: white;
+.home_page_wrapper {
+  background-color: var(--gray);
 }
 
 .app_name_and_location_input {
@@ -78,7 +71,7 @@ export default {
 .app_name {
     font-family: 'Roboto Slab', serif;
     font-size: 40px;
-    color: var(--blue-darker);
+    color: var(--navy);
 }
 
 .location_input{
@@ -92,51 +85,39 @@ export default {
 
 .location_input > i {
     font-size: 20px;
-    color: var(--gray-dark);
+    color: var(--navy);
 }
 
 .location_text_input {
     border: 1px solid white;
     outline-color: white;
+    color: var(--navy);
     font-size: 18px;
     padding: 5px 10px;
 }
 
-.eye_catcher_section {
-    background-color: var(--blue);
-    margin: 0 40px;
-    padding: 20px;
-    border-radius: 25px;
-    color: white;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+@media only screen and (max-width: 1650px) {
+  .app_name {
+    font-size: 35px;
+  }
+  .location_input {
+    padding: 10px 35px;
+  }
+  .location_text_input {
+    padding: 2px 6px;
+  }
 }
 
-img {
-    width: 333px;
-}
-
-.greeting_and_news {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-}
-
-.greeting {
-    font-size: 40px;
-}
-
-.news {
-    margin: 20px 0 10px;
-}
-
-.main_message, .additional_message {
-    font-size: 20px;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-}
-
-.promo_code {
-    color: var(--yellow-dark);
+@media only screen and (max-width: 1425px) {
+  .app_name {
+    font-size: 30px;
+  }
+  .location_input {
+    padding: 7px 30px;
+  }
+  .location_text_input {
+    padding: 0;
+    font-size: 15px;
+  }
 }
 </style>

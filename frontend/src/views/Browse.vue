@@ -1,7 +1,7 @@
 <template>
   <div class="whole_page_wrapper">
     <div class="navigation_bar">
-      <NavigationBar current_page="Browse"></NavigationBar>
+      <MyNavBar current_page="Browse"></MyNavBar>
     </div>
 
     <div class="browse_page_wrapper">
@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import NavigationBar from "../components/NavigationBar.vue"
+import MyNavBar from "../components/MyNavBar.vue"
 
 export default {
     components: {
-        NavigationBar
+        MyNavBar
     }
 }   
 </script>
 
-<style>
+<style scoped>
 
 </style>
