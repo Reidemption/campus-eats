@@ -17,7 +17,10 @@ https://medium.com/@alef.duarte/cant-connect-to-local-mysql-server-through-socke
 - please make sure to download the mysql-apt-config_0.8.17-1_all pakage
 
 STEP2 ========== START Mysql inside your wsl LOCAL HOST =============
-sudo /etc/init.d/mysql start
+- run this in a separate terminal: sudo /etc/init.d/mysql start
 
 STEP3,4,5,6 =========================================================
-run file backend/dataAccessLayer/mySQLQueries/initcampusteatsdb.sql
+- run file backend/dataAccessLayer/mySQLQueries/initcampusteatsdb.sql
+=====================================================================
+ANY HELP WITH SQL:
+Please go to: https://devhints.io/mysql
