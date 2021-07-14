@@ -1,5 +1,5 @@
 <template>
-    <div class="footer_wrapper">
+    <div class="my_footer_wrapper">
         <div class="main_footer">
             <div class="app_name_and_social_medias">
                 <div class="app_name">Campus Eats</div>
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style scoped>
-.footer_wrapper {
+.my_footer_wrapper {
     margin-top: 90px;
     background-color: var(--navy);
     padding: 40px;

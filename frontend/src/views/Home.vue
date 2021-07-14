@@ -22,8 +22,18 @@
       <MyFooter></MyFooter>
     </div>
 
-    <div class="user_and_cart">
+    <div class="user_and_cart_wrapper">
+      <div class="user_and_cart">
+        <div class="user">
+          <div class="avatar">
+            <img src="../assets_others/HomePage/user_avatar.png" alt="User's avatar">
+          </div>
+        </div>
 
+        <div class="cart">
+          <MyCart></MyCart>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +45,7 @@ import MyBanner from "../components/MyBanner.vue"
 import MyRestaurants from "../components/MyRestaurants.vue"
 import MyBestSellers from "../components/MyBestSellers.vue"
 import MyFooter from "../components/MyFooter.vue"
+import MyCart from "../components/MyCart.vue"
 
 export default {
   components: {
@@ -43,7 +54,8 @@ export default {
     MyBanner,
     MyRestaurants,
     MyBestSellers,
-    MyFooter
+    MyFooter,
+    MyCart
   }
 }
 </script>
@@ -61,10 +73,6 @@ export default {
 </style>
 
 <style scoped>
-.user_and_cart {
-    background-color: var(--red);
-}
-
 .home_page_wrapper {
   background-color: var(--gray);
 }
@@ -102,6 +110,23 @@ export default {
     color: var(--navy);
     font-size: 18px;
     padding: 5px 10px;
+}
+
+.user_and_cart {
+    padding: 30px 20px;
+    position: fixed;
+    max-height: 100vh;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+}
+
+.avatar > img {
+    width: 70%;
+    border-radius: 20px;
+    border: 2px solid var(--navy);
 }
 
 @media only screen and (max-width: 1650px) {
