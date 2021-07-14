@@ -140,9 +140,10 @@ img {
 .add_to_cart_button {
     background-color: var(--navy);
     border-radius: 50%;
-    padding: 9px 11px;
+    padding: 11px;
     font-size: 20px;
     color: white;
+    display: flex;
 }
 
 .add_to_cart_button:hover {
