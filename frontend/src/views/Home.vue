@@ -5,11 +5,23 @@
     </div>
 
     <div class="home_page_wrapper">
-      <div class="app_name_and_location_input">
+      <div class="app_name_and_location_input_and_cart_button">
         <div class="app_name">Campus Eats</div>
-        <div class="location_input">
-          <i class="las la-map-marker"></i>
-          <input class="location_text_input" type="text" placeholder="Enter your location">
+
+        <div class="location_input_and_cart_button">
+          <div class="location_input">
+            <i class="las la-map-marker"></i>
+            <input class="location_text_input" type="text" placeholder="Enter your location">
+          </div>
+
+          <div class="cart_button">
+            <div class="cart_icon">
+              <router-link to="/UserCart">
+                <i class="cart_icon_link las la-shopping-cart"></i>
+              </router-link>
+            </div>
+            <div class="cart_items_tracker">0</div>
+          </div>
         </div>
       </div>
 
@@ -20,20 +32,6 @@
       <MyBestSellers></MyBestSellers>
 
       <MyFooter></MyFooter>
-    </div>
-
-    <div class="user_and_cart_wrapper">
-      <div class="user_and_cart">
-        <div class="user">
-          <div class="avatar">
-            <img src="../assets_others/HomePage/user_avatar.png" alt="User's avatar">
-          </div>
-        </div>
-
-        <div class="cart">
-          <MyCart></MyCart>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -63,7 +61,7 @@ export default {
 <style>
 .whole_page_wrapper {
     display: grid;
-    grid-template-columns: 15% 75% 10%;
+    grid-template-columns: 15% 85%;
     height: 100vh;
 }
 
@@ -77,7 +75,7 @@ export default {
   background-color: var(--gray);
 }
 
-.app_name_and_location_input {
+.app_name_and_location_input_and_cart_button {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -88,6 +86,10 @@ export default {
     font-family: 'Roboto Slab', serif;
     font-size: 40px;
     color: var(--navy);
+}
+
+.location_input_and_cart_button {
+    display: flex;
 }
 
 .location_input{
@@ -112,21 +114,38 @@ export default {
     padding: 5px 10px;
 }
 
+.cart_button {
+    display: flex;
+}
+
+.cart_icon > a > i {
+    font-size: 50px;
+    margin-left: 30px;
+    color: var(--gray-dark);
+}
+
+.cart_icon > a > i:hover {
+    cursor: pointer;
+    color: var(--navy);
+}
+
+.cart_items_tracker {
+    border-radius: 5px;
+    height: fit-content;
+    background-color: var(--gray-dark);
+    color: white;
+    padding: 4px 0;
+    margin-top: -2px;
+    margin-left: -8px;
+    width: 25px;
+    text-align: center;
+    font-size: 12px;
+}
+
 .user_and_cart {
     padding: 30px 20px;
     position: fixed;
     max-height: 100vh;
-}
-
-.avatar {
-  display: flex;
-  justify-content: center;
-}
-
-.avatar > img {
-    width: 70%;
-    border-radius: 20px;
-    border: 2px solid var(--navy);
 }
 
 @media only screen and (max-width: 1650px) {
