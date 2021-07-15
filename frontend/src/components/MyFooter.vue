@@ -36,7 +36,11 @@
                 © 2021 Campus Eats Inc.
             </div>
             <div class="protection">
-                This site is protected by the Google Privacy Policy and Terms of Service apply.
+                The Google
+                <span><a class="privacy_policy" href="https://policies.google.com/privacy">Privacy Policy</a></span>
+                and
+                <span><a class="terms_of_service" href="https://policies.google.com/terms">Terms of Service</a></span>
+                apply to this website.
             </div>
         </div>
     </div>
@@ -71,7 +75,7 @@ export default {
                     name: "Terms"
                 },
                 {
-                    name: "Pricing"
+                    name: "Contact Us"
                 }
             ]
         }
@@ -134,8 +138,17 @@ export default {
 }
 
 .additional_footer {
-    display: flex;
-    justify-content: space-between;
     margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
-</style>>
+
+.privacy_policy, .terms_of_service{
+    text-decoration: none;
+    color: white;
+}
+
+.privacy_policy:hover, .terms_of_service:hover {
+    border-bottom: 1px solid white;
+}
+</style>

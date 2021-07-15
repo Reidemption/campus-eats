@@ -22,8 +22,8 @@
             </div>
 
             <div class="food_icons">
-            <div class="single_food_icon fries">
-                <img src="../assets_others/HomePage/fries_icon.png" alt="Fries icon">
+            <div class="single_food_icon salad">
+                <img src="../assets_others/HomePage/salad_icon.png" alt="Salad icon">
             </div>
 
             <div></div>
@@ -127,11 +127,15 @@ img {
     transform: rotate(15deg);
 }
 
-.fries {
+.salad {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     transform: rotate(340deg);
+}
+
+.salad > img {
+    width: 100%;
 }
 
 .drink {
@@ -141,27 +145,30 @@ img {
     transform: rotate(13deg);
 }
 
-.burger > img, .fries > img, .drink > img, .pizza > img {
+.burger > img, .salad > img, .drink > img, .pizza > img {
     animation: spin 10s linear infinite;
 }
 
 @media only screen and (max-width: 1650px) {
-  .greeting {
-    font-size: 33px;
-  }
-  .main_message, .additional_message {
-    font-size: 18px;
-  }
-  .buttons_and_icon > .burger > img,
-  .fries > img, .drink > img , .pizza > img {
-    width: 40px;
-  }
+    .greeting {
+        font-size: 33px;
+    }
+    .main_message, .additional_message {
+        font-size: 18px;
+    }
+    .buttons_and_icon > .burger > img,
+    .drink > img , .pizza > img {
+        width: 40px;
+    }
 }
 
 @media only screen and (max-width: 1485px) {
     .buttons_and_icon > .burger > img,
-    .fries > img, .drink > img , .pizza > img {
-        width: 30px;
+     .drink > img , .pizza > img {
+        width: 40px;
+    }
+    .salad > img {
+        width: 60px;
     }
 }
 
@@ -173,7 +180,6 @@ img {
     font-size: 18px;
   }
 }
-
 
 @keyframes spin { 
     100% { 

@@ -78,13 +78,13 @@ export default {
 .best_sellers_option {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    margin: 0 10px;
 }
 
 .single_best_seller {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 85%;
     margin: 0 auto;
 }
 

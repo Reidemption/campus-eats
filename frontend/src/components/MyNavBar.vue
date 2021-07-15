@@ -133,7 +133,6 @@ export default {
   }
 }
 
-
 @media only screen and (max-width: 1425px) {
   .icon {
       font-size: 20px;
