@@ -1,17 +1,58 @@
 <template>
     <div class="my_restaurants_wrapper">
-        <div class="title">Our Restaurants</div>
+        <div class="title_and_arrow_buttons">
+            <div class="title"><slot></slot></div>
 
-        <div class="restaurant_options">
-            <div class="single_restaurant"
-                v-for="restaurant in restaurants_list" :key="restaurant.class" 
-                :class="restaurant.class">
-                <img :src="require(`../assets_main/${restaurant.image}`)" :alt="restaurant.class">
-                <div class="arrow_button">
-                    <router-link :to="restaurant.page">
-                        <i class="las la-angle-right"></i>
-                    </router-link>
+            <div class="arrow_buttons">
+                <div class="button button_left" @click="previous_restaurants_list"
+                    :class="{ button_guide: show_restaurant_list_2}">
+                    <i class="las la-arrow-left"></i>
                 </div>
+                <div class="button button_right" @click="next_restaurants_list"
+                    :class="{ button_guide: show_restaurant_list_1}">
+                    <i class="las la-arrow-right"></i>
+                </div>
+            </div>
+
+            <v-sheet class="mx-auto" elevation="8" max-width="800">
+                <v-slide-group v-model="model" class="pa-4" active-class="success" show-arrows>
+                
+                    <v-slide-item v-for="n in 15" :key="n" v-slot="{ active, toggle }">
+                        
+                        <v-card :color="active ? undefined : 'grey lighten-1'"
+                            class="ma-4" height="200" width="100" @click="toggle">
+
+                            <v-row class="fill-height" align="center" justify="center">
+                                
+                                <v-scale-transition>
+                                    <v-icon v-if="active" color="white" size="48" v-text="'mdi-close-circle-outline'"
+
+                                    ></v-icon>
+
+                                </v-scale-transition>
+
+                            </v-row>
+
+                        </v-card>
+
+                    </v-slide-item>
+
+                </v-slide-group>
+
+            </v-sheet>
+        </div>
+
+        <div class="restaurant_options" v-if="show_restaurant_list_1">
+            <div class="single_restaurant" v-for="restaurant in restaurants_list_1" :key="restaurant.name"
+                @click="restaurant_selected(restaurant.name)">
+                <img :src="require(`../assets_main/${restaurant.image}`)" :alt="restaurant.name">
+            </div>
+        </div>
+
+        <div class="restaurant_options" v-if="show_restaurant_list_2">
+            <div class="single_restaurant" v-for="restaurant in restaurants_list_2" :key="restaurant.name"
+                @click="restaurant_selected(restaurant.name)">
+                <img :src="require(`../assets_main/${restaurant.image}`)" :alt="restaurant.name">
             </div>
         </div>
     </div>
@@ -23,202 +64,148 @@ export default {
         return {
             restaurants_list:[
                 {
-                    class: "subway",
-                    image: "DixieMarket/Subway/logo.png",
-                    page: "Subway"
+                    name: "ChickFilA",
+                    image: "TrailblazersCafe/ChickFilA/logo.png"
                 },
                 {
-                    class: "chick_fil_a",
-                    image: "TrailblazersCafe/ChickFilA/logo.png",
-                    page: "ChickFilA"
+                    name: "Subway",
+                    image: "DixieMarket/Subway/logo.png"
                 },
                 {
-                    class: "infusion",
-                    image: "Infusion/logo.png",
-                    page: "Infusion"
+                    name: "PizzaHut",
+                    image: "TrailblazersCafe/PizzaHut/logo.jpg"
                 },
-                {
-                    class: "pizza_hut",
-                    image: "TrailblazersCafe/PizzaHut/logo.jpg",
-                    page: "PizzaHut"
-                },
-                {
-                    class: "stacks",
-                    image: "Stacks/logo.png",
-                    page: "Stacks"
-                },
-                {
-                    class: "ace_sushi",
-                    image: "TrailblazersCafe/AceSushi/logo.png",
-                    page: "AceSushi"
-                },
-                {
-                    class: "grazers",
-                    image: "Grazers/logo.jpg",
-                    page: "Grazers"
-                },
-                {
-                    class: "brooks_stop",
-                    image: "BrooksStop/logo.png",
-                    page: "BrooksStop"
+                {   
+                    name: "AceSushi",
+                    image: "TrailblazersCafe/AceSushi/logo.jpg"
                 }
-            ]
+                ,{
+                    name: "Infusion",
+                    image: "Infusion/logo.png"
+                },
+                {
+                    name: "Stacks",
+                    image: "Stacks/logo.png"
+                },
+                {
+                    name: "Grazers",
+                    image: "Grazers/logo.jpg"
+                },
+                {
+                    name: "BrooksStop",
+                    image: "BrooksStop/logo.png"
+                }
+            ],
+            
+            restaurants_list_1: [],
+            show_restaurant_list_1: true,
+
+            restaurants_list_2: [],
+            show_restaurant_list_2: false,
+        }
+    },
+    created() {
+        let list = this.restaurants_list;
+        let chunks = [];
+        let i = 0;
+
+        while (i < list.length) {
+            chunks.push(list.slice(i, i += 4));
+        }
+        this.restaurants_list_1 = chunks[0];
+        this.restaurants_list_2 = chunks[1];
+    },
+    methods: {
+        previous_restaurants_list() {
+            if(this.show_restaurant_list_1) {
+                return
+            } else {
+                this.show_restaurant_list_1 = true;
+                this.show_restaurant_list_2 = false;
+            }
+        },
+        next_restaurants_list() {
+            if(this.show_restaurant_list_2) {
+                return
+            } else {
+                this.show_restaurant_list_2 = true;
+                this.show_restaurant_list_1 = false;
+            }
+        },
+        restaurant_selected(restaurant_name) {
+            this.$router.push({
+                name: "Restaurant",
+                query: {
+                    menu: restaurant_name
+                }
+            })
         }
     }
 }
 </script>
 
 <style scoped>
+.title_and_arrow_buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 40px 30px;
+}
+
 .title {
     font-family: 'Roboto Slab', serif;
     font-size: 30px;
     color: var(--navy);
-    margin: 50px 40px 30px;
+}
+
+.arrow_buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100px;
+}
+
+.button {
+    width: fit-content;
+    height: fit-content;
+    border-radius: 50%;
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    justify-self: flex-end;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: var(--red);
+    color: white;
+}
+
+.button_guide {
+    background-color: var(--gray-dark);
+    color: white;
 }
 
 .restaurant_options {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(4, 155px);
-    gap: 30px;
-    margin: 30px 90px;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0 10px;
 }
 
 .single_restaurant {
-    background-color: white;
-    border-radius: 25px;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    color: var(--navy);
-    box-shadow: 5px 5px;
-}
-
-.single_restaurant > img {
-    width: 60%;
     display: flex;
-    align-self: center;
-    justify-self: center;
-}
-
-.single_restaurant > .arrow_button {
-    display: flex;
-    align-self: center;
-    justify-self: center;
-}
-
-.subway {
-    grid-column: 1/3;
-    grid-row: 1/4;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.subway > img {
-    width: 40%;
-    height: 80%;
-}
-
-.chick_fil_a {
-    grid-column: 3/7;
-    grid-row: 1;
-}
-
-.infusion {
-    grid-column: 7/11;
-    grid-row: 1;
-}
-
-.infusion > img {
-    width: 60%;
-}
-
-.pizza_hut {
-    grid-column: 3/8;
-    grid-row: 2;
-}
-
-.pizza_hut > img {
-    width: 75%;     
-}
-
-.stacks {
-    grid-column: 3/8;
-    grid-row: 3;
-}
-
-.ace_sushi {
-    grid-column: 8/11;
-    grid-row: 2/4;
-    padding-right: 20px;
-}
-
-.ace_sushi > img {
-    width: 65%;
-}
-
-.grazers {
-    grid-column: 1/6;
-    grid-row: 4;
-}
-
-.grazers > img {
-    width: 40%;
-}
-
-.brooks_stop {
-    grid-column: 6/11;
-    grid-row: 4;
-}
-.arrow_button {
-    margin: 0 auto;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--navy);
-    background-color: var(--navy);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
     justify-content: center;
-}
-
-.arrow_button:hover {
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 25px;
+    background-color: white;
+    color: var(--red-dark);
+    box-shadow: 5px 5px;
+    width: 85%;
+    height: 130px;
+    padding: 20px 30px;
     cursor: pointer;
-    border: 1px solid var(--red);
-    background-color: var(--red);
 }
 
-.arrow_button > a {
-    color: white;
-}
-
-@media only screen and (max-width: 1650px) {
-    .restaurant_options {
-        grid-template-rows: repeat(4, 130px);
-    }
-    .single_restaurant > img {
-        width: 55%;
-    }
-    .subway > img {
-        width: 35%;
-        height: 75%;
-    }
-    .pizza_hut > img {
-        width: 68%;
-    }
-    .ace_sushi > img {
-        width: 65%;
-    }
-    .grazers > img{
-        width: 40%;
-    }
-}
-
-@media only screen and (max-width: 1425px) {
-    .restaurant_options {
-        grid-template-rows: repeat(4, 110px);
-    }
+img {
+    width: 70%;
 }
 </style>
