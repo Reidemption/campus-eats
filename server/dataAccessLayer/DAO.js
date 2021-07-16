@@ -35,52 +35,36 @@ function connectDB(callbackFunction){
             }else{
                 console.log(`-> Successfully connect to database`)  
             }
-            callbackFunction();
         }
     });
+    connection.once("open",callbackFunction);
 }
 // ================== HELPERS =====================
 function isExistDB(databaseName,conn){
     console.log(`-> Checking if database exists.`)
-    let databaseCheckQuery = `SELECT SCHEMA_NAME
+    let queryString = `SELECT SCHEMA_NAME
     FROM INFORMATION_SCHEMA.SCHEMATA    
     WHERE SCHEMA_NAME = '${databaseName}'
     `
-    conn.query(databaseCheckQuery,(err,results)=>{
-        if(err){
-            console.log(`-------------------- ERROR ---------------------`)
-            console.log(`- ${Date.now()} - Cannot look up database name ${databaseName}`)
-            console.log(`--- Error: ${err}`)            
-            console.log(`------------------------------------------------`)
-        }
-        if(results.length!=0){
-            console.log(`-> Database exists.`)
-            return true
-        }
-        console.log(`-> Database does not exist.`)
-        return false
-    })
+    if(executeQuery(queryString,conn)!=null){
+        return true
+    }
+    return false
 }
 
+// =Duy
 //TODO:  do this inside a transaction
 function createDBfromFile(fileDirectory, conn){
     console.log(`-> Creating database.`)
 
     let queries = readAndSpiltQueries(fileDirectory)
     queries.forEach(queryString=>{
-        conn.query(queryString, (err) => {
-            if (err){
-                console.log(`-------------------- ERROR ---------------------`)
-                console.log(`- ${Date.now()} - Cannot execute ${queryString}`)
-                console.log(`--- Error: ${err}`)            
-                console.log(`------------------------------------------------`)
-                return false
-            }
-        });
+        executeQuery(queryString,conn);
     })
     return true
 }
 
+// =Duy
 //credit :https://www.thiscodeworks.com/javascript-import-sql-file-in-node-js-and-execute-against-postgresql-stack-overflow-sql-nodejs/5fc1488a5fb6ba00144ecb60
 function readAndSpiltQueries(fileDirectory){    
     // Extract SQL queries from files. Assumes no ';' in the fileNames
@@ -93,4 +77,18 @@ function readAndSpiltQueries(fileDirectory){
     return queries;
 }
 
-module.exports={connectDB,connection};
+// =Duy
+function executeQuery(queryString,conn){
+    conn.query(queryString, (err,results) => {
+        if (err && err.code!='ER_TABLE_EXISTS_ERROR' && err.code!='ER_DB_CREATE_EXISTS'){
+            console.log(`-------------------- ERROR ---------------------`)
+            console.log(`- ${Date.now()} - Cannot execute: ${queryString}`)
+            console.log(`--- ${err.code}`)            
+            console.log(`------------------------------------------------`)
+            return null
+        }
+        return results
+    });
+}
+
+module.exports={connectDB,connection, executeQuery,readAndSpiltQueries,};

@@ -28,14 +28,15 @@ STEP2 ========== START Mysql inside your wsl LOCAL HOST =============
 - then:
     sudo mysql
 
-STEP3,4,5,6 =========================================================
+STEP3,4,5,6 ==================WE DONT HAVE TO DO THIS STEP ANY MORE=========================
 - run file backend/dataAccessLayer/mySQLQueries/initcampusteatsdb.sql
 
 =====================================================================
 ANY HELP WITH SQL:
 Please go to: https://devhints.io/mysql
 
--For error: 
+-For errors: 
+---
 Error: 
     ER_NOT_SUPPORTED_AUTH_MODE: 
     Client does not support authentication protocol requested by server; consider upgrading MySQL client -- SECOND ANSWER
@@ -44,3 +45,11 @@ https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-a
 ==> run this on MysqlServer
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 flush privileges;
+---
+Error: connect ECONNREFUSED 127.0.0.1:3306
+solved: you have to run mysqlserver first: sudo /etc/init.d/mysql start
+
+=============================================================================================================
+install old version of mysql - then you dont have to install mysql2 on npm
+https://askubuntu.com/questions/428772/how-to-install-specific-version-of-some-package
+https://downloads.mysql.com/archives/community/
