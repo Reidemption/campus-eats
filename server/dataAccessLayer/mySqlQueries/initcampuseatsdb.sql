@@ -1,4 +1,4 @@
-CREATE DATABASE campus_eats_db;
+-- CREATE DATABASE campus_eats_db;
 -- USE campus_eats_db;
 CREATE TABLE restaurants (
 id int PRIMARY KEY auto_increment NOT NULL,
