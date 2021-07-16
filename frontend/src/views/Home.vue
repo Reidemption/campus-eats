@@ -19,13 +19,34 @@
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld.vue';
+import MyNavBar from "../components/MyNavBar.vue"
+import MyHeader from "../components/MyHeader.vue"
+import MyBanner from "../components/MyBanner.vue"
+import MyRestaurants from "../components/MyRestaurants.vue"
+import MyBestSellers from "../components/MyBestSellers.vue"
+import MyFooter from "../components/MyFooter.vue"
 
 export default {
-  name: 'Home',
-  
   components: {
-    HelloWorld,
-  },
-};
+    MyNavBar,
+    MyHeader,
+    MyBanner,
+    MyRestaurants,
+    MyBestSellers,
+    MyFooter
+  }
+}
 </script>
+
+<style>
+.whole_page_wrapper {
+    display: grid;
+    grid-template-columns: 15% 85%;
+}
+</style>
+
+.<style scoped>
+.home_page_wrapper {
+  background-color: var(--gray);
+}
+</style>
