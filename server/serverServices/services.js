@@ -50,6 +50,17 @@ services.get("/in/restaurants", (req, res) => {
   });
 });
 
+services.get("/in/menus", (req, res) => {
+  let sql = `INSERT INTO "menus" VALUES (1,1,'Original Meals','Long time favorites that anyone would enjoy!','url'),(2,1,'Grilled Meals','Choices under 350 calories!','url'),(3,2,'9\" Hand Tossed Pizza','4 Slices per pizza | Calories Listed by Slice','url'),(4,2,'Pasta',' ','url'),(5,2,'Snacks',' ','url'),(6,5,'Food and Drinks',' ','url'),(7,4,'Subway Heroes',' ','url'),(8,4,'Fan Faves',' ','url'),(9,4,'Sides',' ','url'),(10,6,'Breakfast',' ','url'),(11,6,'Entrées',' ','url'),(12,6,"Brooks' Stop Sides",' ','url'),(13,6,'Hot Drinks',' ','url'),(14,6,'Cold Beverages',' ','url'),(15,6,'Frappuccino',' ','url'),(16,7,'Dessert',' ','url'),(17,7,'Beverages',' ','url'),(18,7,'Classic Sandwiches','Honey Wheat, White, Sourdough, or French Baguette','url'),(19,7,'Panini',' ','url'),(20,7,'Salad',' ','url'),(21,7,'Wraps','All wraps are served on a Sundried Tomato Wrap.','url'),(22,8,'Hot Drinks',' ','url'),(23,8,'Cold Beverages',' ','url'),(24,8,'Frappuccino Blended Beverages',' ','url'),(25,9,'Acai Bowls',' ','url'),(26,9,'Fruit Bowls',' ','url'),(27,9,'Protein Shakes',' ','url'),(28,9,'Smoothies',' ','url'),(29,9,'Parfait',' ','url'),(30,9,'Juices',' ','url');`;
+  let query = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
 // //  Get Menu information
 // services.get("/Restaurant/?menu=:name", (req, res) => {
 //   let sql = `SELECT * FROM restaurants WHERE name='${req.params.name}'`;
