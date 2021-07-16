@@ -1,10 +1,15 @@
 <template>
-  
+    <div class="my_cart_wrapper">
+    </div>
 </template>
 
 <script>
-export default {
+import MyButton from "./MyButton.vue"
 
+export default {
+    components: {
+        MyButton
+    }
 }
 </script>
 

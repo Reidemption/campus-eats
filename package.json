@@ -2,9 +2,9 @@
   "name": "campus-eats",
   "version": "1.0.0",
   "description": "CodeSchool 2021 Final Project",
-  "main": "/backend/server/init.js",
+  "main": "./server/serverServices/init.js",
   "scripts": {
-    "start": "node ./backend/server/init.js",
+    "start": "node ./server/serverServices/init.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +22,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.13.2",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.2.5"
   }
 }

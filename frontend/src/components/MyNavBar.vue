@@ -1,5 +1,5 @@
 <template>
-    <div class="navigation_bar_wrapper">
+    <div class="my_nav_bar_wrapper">
         <div class="main_menu_options">
             <router-link class="single_option" :to="option.path"
                 v-for="option in main_menu_options_list" :key="option.name"
@@ -42,11 +42,6 @@ export default {
                     path: "/"
                 },
                 {
-                    icon: "las la-search",
-                    name: "Browse",
-                    path: "/Browse"
-                },
-                {
                     icon: "las la-concierge-bell",
                     name: "Orders",
                     path: "/Orders"
@@ -63,12 +58,14 @@ export default {
 </script>
 
 <style scoped>
-.navigation_bar_wrapper {
+.my_nav_bar_wrapper {
     padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
+    position: fixed;
+    width: 15%;
 }
 
 .single_option {
@@ -135,7 +132,6 @@ export default {
       font-size: 17px;
   }
 }
-
 
 @media only screen and (max-width: 1425px) {
   .icon {
