@@ -37,9 +37,13 @@
             </div>
             <div class="protection">
                 The Google
-                <span><a class="privacy_policy" href="https://policies.google.com/privacy">Privacy Policy</a></span>
+                <span><a class="privacy_policy" href="https://policies.google.com/privacy" target="_blank">
+                    Privacy Policy
+                </a></span>
                 and
-                <span><a class="terms_of_service" href="https://policies.google.com/terms">Terms of Service</a></span>
+                <span><a class="terms_of_service" href="https://policies.google.com/terms" target="_blank">
+                    Terms of Service
+                </a></span>
                 apply to this website.
             </div>
         </div>
