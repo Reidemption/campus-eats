@@ -1,72 +1,96 @@
 // ============= Data Access Object ==============
-const mysql = require("mysql")
-const mysqlx = require("@mysql/xdevapi")
+const mysql = require("mysql2")
+const path = require('path');
+const fs = require('fs');
+const databaseName = "campus_eats_db"
+const connection = mysql.createConnection({
+                        host:"localhost",
+                        user:"root", 
+                        password:"password",// your root's password
+                        database:"campus_eats_db"
+                    });
 
 function connectDB(callbackFunction){
     console.log(`-> Trying to connect to Mysql server.`)
-    // let connectionString = ``;
-    mysql.createConnection(/*connectionString,*/{
-        host:"localhost",
-        user:"root", // you can leave this or change it into any username that you set up
-        password:"password",// your database password
-        database:"campus_eats_db"
-    }).connect((err)=>{
+    connection.connect((err)=>{
         if(err){
             console.log(`-------------------- ERROR ---------------------`)
-            console.log(`- ${Date.now()} - Cannot connect to the Database`)
+            console.log(`- ${Date.now()} - Cannot connect to Mysql`)
             console.log(`--- Error: ${err}`)            
             console.log(`------------------------------------------------`)
         }else{
-
+            console.log(`-> Successfully connect to Mysql`)  
+            console.log(`-> Trying to connect to database.`)
+            //TODO: check if database have been created or not
+            //if database havent been created
+            let databaseExist=isExistDB(databaseName,connection)
+            if(!databaseExist){
+                let directory = path.join(__dirname, 'mySqlQueries/initcampuseatsdb.sql')
+                //create database
+                let successfulCreatedDB= false
+                while (successfulCreatedDB===false){
+                    successfulCreatedDB = createDBfromFile(directory,connection)
+                }                
+                console.log(`-> Done creating database.`)
+            }else{
+                console.log(`-> Successfully connect to database`)  
+            }
             callbackFunction();
-        }});
-}
-// module.exports=connectDB;
-
-// --- other ways to connect to database using xdevapi
-// using a configuration object
-
-const config ={ 
-    host: 'localhost',
-    user:"root", // you can leave this or change it into any username taht you set up
-    password:"password",// your database password
-    database:"campus_eats_db",
-    port: 33060
-}
-function connectDBX(callbackFunction){
-    mysqlx.getSession(
-        config
-    ).catch(err => {
-        console.log(`-------------------- ERROR ---------------------`)
-        console.log(`- ${Date.now()} - Cannot connect to the Database`)
-        console.log(`--- Error: ${err}`)            
-        console.log(`------------------------------------------------`)
-    }).then(session => { //By default, the connector creates a new session using SSL/TLS for TCP connections.
-        console.log(`-> ${session.inspect().host}`); // { host: 'localhost', ssl: true }    
-        if(session){
-            console.log(session.port);
-            callbackFunction();
-        }else{                
-            console.log(`-------------------- ERROR ---------------------`)
-            console.log(`- ${Date.now()} - Cannot connect to the Database`)
-            console.log(`--- Error: ${session.path}`)            
-            console.log(`------------------------------------------------`)
         }
     });
-        
-    // mysqlx.getSession('mysqlx://localhost?tls-versions=[TLSv1,TLSv1.1]')
-    // .catch(err => {
-    //     console.log(err); // TCP socket hang
-    // });
 }
-module.exports=connectDBX;
+// ================== HELPERS =====================
+function isExistDB(databaseName,conn){
+    console.log(`-> Checking if database exists.`)
+    let databaseCheckQuery = `SELECT SCHEMA_NAME
+    FROM INFORMATION_SCHEMA.SCHEMATA    
+    WHERE SCHEMA_NAME = '${databaseName}'
+    `
+    conn.query(databaseCheckQuery,(err,results)=>{
+        if(err){
+            console.log(`-------------------- ERROR ---------------------`)
+            console.log(`- ${Date.now()} - Cannot look up database name ${databaseName}`)
+            console.log(`--- Error: ${err}`)            
+            console.log(`------------------------------------------------`)
+        }
+        if(results.length!=0){
+            console.log(`-> Database exists.`)
+            return true
+        }
+        console.log(`-> Database does not exist.`)
+        return false
+    })
+}
 
-// connection.connect()
+//TODO:  do this inside a transaction
+function createDBfromFile(fileDirectory, conn){
+    console.log(`-> Creating database.`)
 
-// connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
-//   if (err) throw err
+    let queries = readAndSpiltQueries(fileDirectory)
+    queries.forEach(queryString=>{
+        conn.query(queryString, (err) => {
+            if (err){
+                console.log(`-------------------- ERROR ---------------------`)
+                console.log(`- ${Date.now()} - Cannot execute ${queryString}`)
+                console.log(`--- Error: ${err}`)            
+                console.log(`------------------------------------------------`)
+                return false
+            }
+        });
+    })
+    return true
+}
 
-//   console.log('The solution is: ', rows[0].solution)
-// })
+//credit :https://www.thiscodeworks.com/javascript-import-sql-file-in-node-js-and-execute-against-postgresql-stack-overflow-sql-nodejs/5fc1488a5fb6ba00144ecb60
+function readAndSpiltQueries(fileDirectory){    
+    // Extract SQL queries from files. Assumes no ';' in the fileNames
+    let queries=fs.readFileSync(fileDirectory).toString()
+                                                    .replace(/(\r\n|\n|\r)/gm," ") // remove newlines
+                                                    .replace(/\s+/g, ' ') // excess white space
+                                                    .split(";") // split into all statements
+                                                    .map(Function.prototype.call, String.prototype.trim)
+                                                    .filter(function(el) {return el.length != 0}); // remove any empty ones
+    return queries;
+}
 
-// connection.end()
+module.exports={connectDB,connection};

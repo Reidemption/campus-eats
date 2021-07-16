@@ -1,5 +1,5 @@
-CREATE DATABASE campus_eats_db CHARACTER SET utf8;
-USE campus_eats_db;
+CREATE DATABASE campus_eats_db;
+-- USE campus_eats_db;
 CREATE TABLE restaurants (
 id int PRIMARY KEY auto_increment NOT NULL,
 name varchar(50) NOT NULL,
