@@ -1,4 +1,5 @@
 const express = require("express")
+const {connectDB,database} = require("../dataAccessLayer/DAO");
 const cors = require("cors")
 const services = express();
 // ========== Middlewares ===========
@@ -14,11 +15,10 @@ services.use((req,res,next)=>{
         "- Time:",Date.now(),
         "- Method:", req.method,
         "- Url:", req.url,
+        "- Path:",path(req.url.toLowerCase),
         "- Body:", req.body
     ),
     next()
 })
-
-
 // ========= EXPORT MODULE ==========
 module.exports=services
