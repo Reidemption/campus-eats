@@ -7,14 +7,20 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@mdi/font": "5.9.55",
     "core-js": "^3.6.5",
+    "roboto-fontface": "*",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vuetify": "^3.0.0-alpha.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0"
+    "@vue/compiler-sfc": "^3.0.0",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.4.1"
   }
 }
