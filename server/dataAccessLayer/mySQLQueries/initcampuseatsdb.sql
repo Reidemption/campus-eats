@@ -1,4 +1,4 @@
-CREATE DATABASE DatabaseName CHARACTER SET utf8;
+CREATE DATABASE campus_eats_db CHARACTER SET utf8;
 USE campus_eats_db;
 CREATE TABLE restaurants (
 id int PRIMARY KEY auto_increment NOT NULL,
