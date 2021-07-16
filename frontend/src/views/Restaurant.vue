@@ -6,8 +6,18 @@
 
         <div class="restaurant_page_wrapper">
             <MyHeader></MyHeader>
-            {{ current_restaurant }}
             
+            <MyBackground></MyBackground>
+
+            <MyRestaurantInfos></MyRestaurantInfos>
+
+            <MyCategoriesNav></MyCategoriesNav>
+
+            <MyMenuByCategory></MyMenuByCategory>
+
+            <MyRestaurants>Other Restaurants</MyRestaurants>
+
+            <MyFooter></MyFooter>
         </div>
     </div>
 </template>
@@ -15,11 +25,23 @@
 <script>
 import MyNavBar from "../components/MyNavBar.vue"
 import MyHeader from "../components/MyHeader.vue"
+import MyBackground from "../components/for_restaurant_page/MyBackground.vue"
+import MyRestaurantInfos from "../components/for_restaurant_page/MyRestaurantInfos.vue"
+import MyCategoriesNav from "../components/for_restaurant_page/MyCategoriesNav.vue"
+import MyMenuByCategory from "../components/for_restaurant_page/MyMenuByCategory.vue"
+import MyRestaurants from "../components/MyRestaurants.vue"
+import MyFooter from "../components/MyFooter.vue"
 
 export default {
     components: {
         MyNavBar,
-        MyHeader
+        MyHeader,
+        MyBackground,
+        MyRestaurantInfos,
+        MyCategoriesNav,
+        MyMenuByCategory,
+        MyRestaurants,
+        MyFooter
     },
     data() {
         return {

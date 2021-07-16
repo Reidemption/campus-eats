@@ -14,7 +14,7 @@
                         <i class="cart_icon_link las la-shopping-cart"></i>
                     </router-link>
                 </div>
-                <div class="cart_items_tracker">0</div>
+                <div class="cart_items_tracker">22</div>
             </div>
         </div>
     </div>
@@ -62,10 +62,11 @@
 
 .cart_button {
     display: flex;
+    align-items: center;
 }
 
 .cart_icon > a > i {
-    font-size: 50px;
+    font-size: 45px;
     margin-left: 30px;
     color: var(--gray-dark);
 }
@@ -81,7 +82,7 @@
     background-color: var(--gray-dark);
     color: white;
     padding: 4px 0;
-    margin-top: -2px;
+    margin-top: -36px;
     margin-left: -8px;
     width: 25px;
     text-align: center;

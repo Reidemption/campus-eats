@@ -9,7 +9,7 @@
 
       <MyBanner></MyBanner>
 
-      <MyRestaurants></MyRestaurants>
+      <MyRestaurants>Our Restaurants</MyRestaurants>
 
       <MyBestSellers></MyBestSellers>
 
