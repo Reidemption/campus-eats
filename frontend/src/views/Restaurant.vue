@@ -246,41 +246,6 @@ export default {
                             ]
                         }
                     ]
-                },
-                {
-                    path: "Subway",
-                    name: "Subway",
-                    logo: "DixieMarket/Subway/logo.png"
-                },
-                {
-                    path: "PizzaHut",
-                    name: "Pizza Hut",
-                    logo: "TrailblazersCafe/PizzaHut/logo.jpg"
-                },
-                {   
-                    path: "AceSushi",
-                    name: "Ace Sushi",
-                    logo: "TrailblazersCafe/AceSushi/logo.jpg"
-                },
-                {
-                    path: "Infusion",
-                    name: "Infusion",
-                    logo: "Infusion/logo.png"
-                },
-                {
-                    path: "Stacks",
-                    name: "Stacks",
-                    logo: "Stacks/logo.png"
-                },
-                {
-                    path: "Grazers",
-                    name: "Grazers",
-                    logo: "Grazers/logo.jpg"
-                },
-                {
-                    path: "BrooksStop",
-                    name: "Brook's Stop",
-                    logo: "BrooksStop/logo.png"
                 }
             ]
         }
