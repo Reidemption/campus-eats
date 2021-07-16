@@ -1,92 +1,17 @@
 <template>
-  <div class="whole_page_wrapper">
-    <div class="navigation_bar">
-      <MyNavBar current_page="Home"></MyNavBar>
-    </div>
-
-    <div class="home_page_wrapper">
-      <MyHeader></MyHeader>
-
-      <MyBanner></MyBanner>
-
-      <MyRestaurants></MyRestaurants>
-
-      <MyBestSellers></MyBestSellers>
-
-      <MyFooter></MyFooter>
-    </div>
+  <div>
+    <HelloWorld/>
   </div>
 </template>
 
 <script>
-import MyNavBar from "../components/MyNavBar.vue"
-import MyHeader from "../components/MyHeader.vue"
-import MyButton from "../components/MyButton.vue"
-import MyBanner from "../components/MyBanner.vue"
-import MyRestaurants from "../components/MyRestaurants.vue"
-import MyBestSellers from "../components/MyBestSellers.vue"
-import MyFooter from "../components/MyFooter.vue"
-import MyCart from "../components/MyCart.vue"
+import HelloWorld from '../components/HelloWorld.vue';
 
 export default {
+  name: 'Home',
+  
   components: {
-    MyNavBar,
-    MyHeader,
-    MyButton,
-    MyBanner,
-    MyRestaurants,
-    MyBestSellers,
-    MyFooter,
-    MyCart
-  }
-}
+    HelloWorld,
+  },
+};
 </script>
-
-<style>
-.whole_page_wrapper {
-    display: grid;
-    grid-template-columns: 15% 85%;
-    height: 100vh;
-}
-
-.navigation_bar {
-    background-color: white;
-}
-</style>
-
-<style scoped>
-.home_page_wrapper {
-  background-color: var(--gray);
-}
-
-.user_and_cart {
-    padding: 30px 20px;
-    position: fixed;
-    max-height: 100vh;
-}
-
-@media only screen and (max-width: 1650px) {
-  .app_name {
-    font-size: 35px;
-  }
-  .location_input {
-    padding: 10px 35px;
-  }
-  .location_text_input {
-    padding: 2px 6px;
-  }
-}
-
-@media only screen and (max-width: 1425px) {
-  .app_name {
-    font-size: 30px;
-  }
-  .location_input {
-    padding: 7px 30px;
-  }
-  .location_text_input {
-    padding: 0;
-    font-size: 15px;
-  }
-}
-</style>
