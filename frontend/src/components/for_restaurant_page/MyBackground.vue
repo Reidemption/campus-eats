@@ -1,12 +1,21 @@
 <template>
   <div class="my_back_ground_wrapper">
-      Background Section
+      <b>Background Section</b>
+      <br>
+      {{ name }}
+      <br>
+      {{ background_image }}
+      <br>
+      <br>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    name: String,
+    background_image: String
+  }
 }
 </script>
 

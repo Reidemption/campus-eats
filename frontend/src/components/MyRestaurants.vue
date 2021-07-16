@@ -6,11 +6,11 @@
             <div class="arrow_buttons">
                 <div class="button button_left" @click="previous_restaurants_list"
                     :class="{ button_guide: show_restaurant_list_2}">
-                    <i class="las la-arrow-left"></i>
+                    <span class="material-icons">arrow_back</span>
                 </div>
                 <div class="button button_right" @click="next_restaurants_list"
                     :class="{ button_guide: show_restaurant_list_1}">
-                    <i class="las la-arrow-right"></i>
+                    <span class="material-icons">arrow_forward</span>
                 </div>
             </div>
         </div>
@@ -18,14 +18,14 @@
         <div class="restaurant_options" v-if="show_restaurant_list_1">
             <div class="single_restaurant" v-for="restaurant in restaurants_list_1" :key="restaurant.name"
                 @click="restaurant_selected(restaurant.name)">
-                <img :src="require(`../assets_main/${restaurant.image}`)" :alt="restaurant.name">
+                <img :src="require(`../assets_main/${restaurant.logo}`)" :alt="restaurant.name">
             </div>
         </div>
 
         <div class="restaurant_options" v-if="show_restaurant_list_2">
             <div class="single_restaurant" v-for="restaurant in restaurants_list_2" :key="restaurant.name"
                 @click="restaurant_selected(restaurant.name)">
-                <img :src="require(`../assets_main/${restaurant.image}`)" :alt="restaurant.name">
+                <img :src="require(`../assets_main/${restaurant.logo}`)" :alt="restaurant.name">
             </div>
         </div>
     </div>
@@ -38,35 +38,35 @@ export default {
             restaurants_list:[
                 {
                     name: "ChickFilA",
-                    image: "TrailblazersCafe/ChickFilA/logo.png"
+                    logo: "TrailblazersCafe/ChickFilA/logo.png"
                 },
                 {
                     name: "Subway",
-                    image: "DixieMarket/Subway/logo.png"
+                    logo: "DixieMarket/Subway/logo.png"
                 },
                 {
                     name: "PizzaHut",
-                    image: "TrailblazersCafe/PizzaHut/logo.jpg"
+                    logo: "TrailblazersCafe/PizzaHut/logo.jpg"
                 },
                 {   
                     name: "AceSushi",
-                    image: "TrailblazersCafe/AceSushi/logo.jpg"
+                    logo: "TrailblazersCafe/AceSushi/logo.jpg"
                 }
                 ,{
                     name: "Infusion",
-                    image: "Infusion/logo.png"
+                    logo: "Infusion/logo.png"
                 },
                 {
                     name: "Stacks",
-                    image: "Stacks/logo.png"
+                    logo: "Stacks/logo.png"
                 },
                 {
                     name: "Grazers",
-                    image: "Grazers/logo.jpg"
+                    logo: "Grazers/logo.jpg"
                 },
                 {
                     name: "BrooksStop",
-                    image: "BrooksStop/logo.png"
+                    logo: "BrooksStop/logo.png"
                 }
             ],
             
@@ -111,7 +111,7 @@ export default {
                 query: {
                     menu: restaurant_name
                 }
-            })
+            });
         }
     }
 }
@@ -141,19 +141,20 @@ export default {
     height: fit-content;
     border-radius: 50%;
     background-color: white;
+    color: var(--gray-fade);
     padding: 10px;
     display: flex;
     justify-self: flex-end;
-}
-
-.button:hover {
-    cursor: pointer;
-    background-color: var(--red);
-    color: white;
+    cursor: not-allowed;
 }
 
 .button_guide {
-    background-color: var(--gray-dark);
+    cursor: pointer;
+    color: var(--navy);
+}
+
+.button_guide:hover {
+    background-color: var(--red);
     color: white;
 }
 
