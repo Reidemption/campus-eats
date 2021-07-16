@@ -12,6 +12,8 @@
                 :background_image="current_restaurant.background_image">
             </MyBackground>
 
+            <!--
+
             <MyRestaurantInfos
                 :description="current_restaurant.description"
                 :location="current_restaurant.location">
@@ -21,9 +23,14 @@
                 :categories="current_restaurant.categories">
             </MyCategoriesNav>
 
-            <MyMenuByCategory v-for="category in categories" :key="category.name"
-                :menu="category.menu">
-            </MyMenuByCategory>
+            <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
+                <MyMenuByCategory 
+                    :category="category.name"
+                    :menu="category.menu">
+                </MyMenuByCategory>
+            </div>
+
+            -->
 
             <MyRestaurants>Other Restaurants</MyRestaurants>
 
@@ -62,7 +69,7 @@ export default {
                     path: "ChickFilA",
                     name: "Chick-fil-A",
                     logo: "TrailblazersCafe/ChickFilA/logo.png",
-                    background_image: "TrailblazersCafe/ChickFilA/background.png",
+                    background_image: "TrailblazersCafe/ChickFilA/background.jpg",
                     description: "Chick-fil-A is realy good. Make sure you check it out!",
                     location: "At Trailblazer's Cafe located inside the Gardner Building.",
                     categories: [
