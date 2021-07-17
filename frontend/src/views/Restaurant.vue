@@ -14,7 +14,8 @@
 
             <MyRestaurantInfos
                 :description="current_restaurant.description"
-                :location="current_restaurant.location">
+                :location="current_restaurant.location"
+                :map="current_restaurant.map">
             </MyRestaurantInfos>
             
             <MyCategoriesNav
@@ -71,6 +72,7 @@ export default {
                     background_image: "TrailblazersCafe/ChickFilA/background.jpg",
                     description: "Eat Mor Chikin at Dixie State University! Located in the Trailblazer Cafe, offering both original and grilled Chick-fil-A classics.",
                     location: "At Trailblazer's Cafe located inside the Gardner Building.",
+                    map: "https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d668.9472770847736!2d-113.56593647037629!3d37.10351197565555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1schick-fil-a%20near%20Dixie%20State%20University%2C%20St.%20George%2C%20UT!5e0!3m2!1sen!2sus!4v1626486170010!5m2!1sen!2sus",
                     categories: [
                         {
                             name: "Original Meals", 

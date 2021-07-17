@@ -14,7 +14,43 @@
         </div>
         <div class="location_info">{{ location }}</div>
       </div>
-      <div class="more_button">More</div>
+      <div class="more_button" @click="view_map_and_hours">More</div>
+    </div>
+    
+    <div class="overlay_section" v-if="show_map_and_hours" 
+      @click="close_map_and_hours">
+      <div class="pop_up_modal">
+        <div class="map_and_close_button">
+          <div class="close_button" @click="close_map_and_hours">
+            <span class="material-icons">close</span>
+          </div>
+          <div class="restaurant_map">
+            <iframe :src="map" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <div class="location_and_hours">
+          <div class="title">Location and hours</div>
+
+          <div class="restaurant_location">
+            <div class="location_icon">
+              <i class="las la-map-marker-alt"></i>
+            </div>
+            <div class="location_info">{{ location }}</div>
+          </div>
+
+          <div class="restaurant_hours">
+            <div class="hours_icon">
+              <i class="las la-clock"></i>
+            </div>
+            <div class="hours_info">
+              <div class="date">Monday - Friday</div>
+              <div class="hours">8:00 AM - 5:00 PM</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +59,21 @@
 export default {
   props: {
     description: String,
-    location: String
+    location: String,
+    map: String
+  },
+  data() {
+    return {
+      show_map_and_hours: false
+    }
+  },
+  methods: {
+    view_map_and_hours() {
+      this.show_map_and_hours = true;
+    },
+    close_map_and_hours() {
+      this.show_map_and_hours = false;
+    }
   }
 }
 </script>
@@ -43,7 +93,7 @@ export default {
     margin-bottom: 10px;
 }
 
-.information_icon, .location_icon {
+.information_icon, .location_icon, .hours_icon {
     font-size: 25px;
     color: var(--red);
 }
@@ -70,5 +120,86 @@ export default {
     border: 1px solid var(--red);
     background-color: var(--red);
     color: white;
+}
+
+.overlay_section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.pop_up_modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+}
+
+.map_and_close_button {
+    position: relative;
+}
+
+.close_button {
+    position: absolute;
+    top: 12%;
+    left: 5%;
+    border: 1px solid var(--navy);
+    border-radius: 50%;
+    background-color: white;
+    color: var(--navy);
+    padding: 7px;
+    display: flex;
+}
+
+.close_button > span {
+    font-size: 30px;
+}
+
+.close_button:hover {
+    cursor: pointer;
+    background-color: var(--red);
+    color: white;
+    border: 1px solid var(--red);
+}
+
+iframe {
+    width: 700px;
+    height: 400px; 
+    border:0;
+    border-bottom: 2px solid var(--navy);
+}
+
+.location_and_hours {
+    padding: 20px 40px 30px;
+}
+
+.title {
+    font-size: 30px;
+    font-family: 'Roboto Slab';
+    margin-bottom: 20px;
+}
+
+.restaurant_hours {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.hours_info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date {
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 5px;
+    margin-top: 3px;
 }
 </style>
