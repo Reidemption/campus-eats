@@ -12,13 +12,12 @@
                 :background_image="current_restaurant.background_image">
             </MyBackground>
 
-            <!--
-
             <MyRestaurantInfos
                 :description="current_restaurant.description"
                 :location="current_restaurant.location">
             </MyRestaurantInfos>
-
+            
+            <!--
             <MyCategoriesNav
                 :categories="current_restaurant.categories">
             </MyCategoriesNav>
@@ -70,7 +69,7 @@ export default {
                     name: "Chick-fil-A",
                     logo: "TrailblazersCafe/ChickFilA/logo.png",
                     background_image: "TrailblazersCafe/ChickFilA/background.jpg",
-                    description: "Chick-fil-A is realy good. Make sure you check it out!",
+                    description: "Eat Mor Chikin at Dixie State University! Located in the Trailblazer Cafe, offering both original and grilled Chick-fil-A classics.",
                     location: "At Trailblazer's Cafe located inside the Gardner Building.",
                     categories: [
                         {

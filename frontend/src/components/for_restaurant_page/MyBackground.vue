@@ -76,7 +76,7 @@ img {
     padding: 10px 17px;
     border-radius: 25px;
     box-shadow: 0px 2px 7px var(--gray-dark);
-    margin: 30px 0 0 30px;
+    margin: 30px 0 0 40px;
 }
 
 .back_button:hover {
@@ -103,7 +103,8 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 40px 0 30px 30px;
+    padding: 40px 0 26px 40px;
+    margin-bottom: 4px;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 100%);
 }
 

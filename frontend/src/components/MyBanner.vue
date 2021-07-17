@@ -13,7 +13,7 @@
             </div>
             
             <div class="buttons_and_icon">
-                <MyButton>Learn More</MyButton>
+                <div class="my_button_wrapper">Learn More</div>
 
                 <div class="burger">
                 <img src="../assets_others/HomePage/hamburger_icon.png" alt="Burger icon">
@@ -47,15 +47,6 @@
         </div>
   </div>
 </template>
-
-<script>
-import MyButton from "./MyButton.vue"
-export default {
-    components: {
-        MyButton
-    }
-}
-</script>
 
 <style scoped>
 .banner_section {
@@ -117,6 +108,23 @@ img {
     justify-content: space-between;
 }
 
+
+.my_button_wrapper {
+    padding: 15px 35px;
+    border: 1px solid var(--red);
+    background-color: var(--red);
+    border-radius: 25px;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.my_button_wrapper:hover {
+    cursor: pointer;
+    border: 1px solid var(--yellow);
+    background-color: var(--yellow);
+    color: var(--navy);
+}
+
 .burger > img {
     width: 50px;
 }
@@ -160,6 +168,9 @@ img {
     .drink > img , .pizza > img {
         width: 40px;
     }
+    .my_button_wrapper {
+    padding: 11px 35px;
+  }
 }
 
 @media only screen and (max-width: 1485px) {
