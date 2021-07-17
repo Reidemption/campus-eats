@@ -18,7 +18,10 @@
                     <div class="restaurant_name">{{ name }}</div>
 
                     <div class="delivery_infos">
-                        <div class="fees">$0.1 Delivery Fee</div>
+                        <div class="fees">
+                            <span class="dollar_sign">$</span>
+                            0.1 Delivery Fee
+                        </div>
                         <div class="time">5-10 Min</div>
                     </div>
                 </div>
@@ -121,5 +124,11 @@ img {
     justify-content: space-between;
     width: 250px;
     font-size: 18px;
+}
+
+.dollar_sign {
+    font-family: 'Cabin', sans-serif;
+    font-size: 15px;
+    margin-right: -1px;
 }
 </style>

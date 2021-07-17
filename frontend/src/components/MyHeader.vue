@@ -14,7 +14,7 @@
                         <i class="cart_icon_link las la-shopping-cart"></i>
                     </router-link>
                 </div>
-                <div class="cart_items_tracker">22</div>
+                <div class="cart_items_tracker">0</div>
             </div>
         </div>
     </div>

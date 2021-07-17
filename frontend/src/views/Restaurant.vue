@@ -22,15 +22,12 @@
                 :categories="current_restaurant.categories">
             </MyCategoriesNav>
 
-            <!--
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
                     :category="category.name"
                     :menu="category.menu">
                 </MyMenuByCategory>
             </div>
-
-            -->
 
             <MyRestaurants>Other Restaurants</MyRestaurants>
 
@@ -255,7 +252,6 @@ export default {
         this.restaurants_list.forEach(restaurant => {
             if (restaurant.path === this.$route.query.menu) {
                 this.current_restaurant = restaurant;
-                console.log(this.current_restaurant)
             }
         });
     }
