@@ -17,11 +17,11 @@
                 :location="current_restaurant.location">
             </MyRestaurantInfos>
             
-            <!--
             <MyCategoriesNav
                 :categories="current_restaurant.categories">
             </MyCategoriesNav>
 
+            <!--
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
                     :category="category.name"
