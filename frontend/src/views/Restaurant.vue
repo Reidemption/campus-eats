@@ -86,24 +86,29 @@ export default {
                                             price: "3.89",
                                             detail: "",
                                             calories: "440",
+                                            selected: false
                                         },
-                                        {
+                                        {   
                                             name: "Add lettuce, tomato, & cheese",
                                             price: "0.60",
                                             detail: "",
                                             calories: "50-87",
+                                            selected: false,
+                                            type: "additional",
                                         },
                                         {
                                             name: "Chick-fil-A Deluxe Entrée",
                                             price: "4.49",
                                             detail: "with lettuce, tomato & American Cheese",
                                             calories: "500",
+                                            selected: false
                                         },
                                         {
                                             name: "Chick-fil-A Deluxe Meal",
                                             price: "7.59",
                                             detail: "",
                                             calories: "720-1100",
+                                            selected: false
                                         }
                                     ]
                                 },
@@ -119,18 +124,21 @@ export default {
                                             price: "4.25",
                                             detail: "",
                                             calories: "540",
+                                            selected: false
                                         },
                                         {
                                             name: "Spicy Deluxe Entree",
                                             price: "4.85",
                                             detail: "with lettuce, tomato & Pepper Jack cheese",
                                             calories: "550",
+                                            selected: false
                                         },
                                         {
                                             name: "Spicy Deluxe Meal",
                                             price: "7.99",
                                             detail: "",
                                             calories: "760-1150",
+                                            selected: false
                                         }
                                     ]
                                 },
@@ -146,24 +154,28 @@ export default {
                                             price: "7.09",
                                             detail: "",
                                             calories: "470-860",
+                                            selected: false
                                         },
                                         {
                                             name: "8-ct Entrée",
                                             price: "3.99",
                                             detail: "",
                                             calories: "250",
+                                            selected: false
                                         },
                                         {
                                             name: "12-ct Entrée",
                                             price: "5.75",
                                             detail: "",
                                             calories: "380",
+                                            selected: false
                                         },
                                         {
                                             name: "30-ct Entrée",
                                             price: "14.35",
                                             detail: "",
                                             calories: "30/nugget",
+                                            selected: false
                                         }
                                     ]
                                 }
@@ -184,6 +196,7 @@ export default {
                                             price: "5.55",
                                             detail: "",
                                             calories: "320",
+                                            selected: false
                                         }
                                     ]
                                 },
@@ -199,30 +212,35 @@ export default {
                                             price: "7.95",
                                             detail: "",
                                             calories: "350-740",
+                                            selected: false
                                         },
                                         {
                                             name: "8-ct Entrée",
                                             price: "4.79",
                                             detail: "",
                                             calories: "130",
+                                            selected: false
                                         },
                                         {
                                             name: "12-ct Meal",
                                             price: "10.09",
                                             detail: "",
                                             calories: "420-800",
+                                            selected: false
                                         },
                                         {
                                             name: "12-ct Entrée",
                                             price: "6.99",
                                             detail: "",
                                             calories: "200",
+                                            selected: false
                                         },
                                         {
                                             name: "30-ct Entrée",
                                             price: "17.45",
                                             detail: "",
                                             calories: "15/nugget",
+                                            selected: false
                                         }
                                     ]
                                 },
@@ -238,6 +256,7 @@ export default {
                                             price: "6.89",
                                             detail: "",
                                             calories: "460",
+                                            selected: false
                                         }
                                     ]
                                 }
