@@ -9,16 +9,48 @@
             </div>
 
             <div class="cart_button">
-                <div class="cart_icon">
-                    <router-link to="/UserCart">
-                        <i class="cart_icon_link las la-shopping-cart"></i>
-                    </router-link>
+                <div class="cart_icon" @click="view_mini_cart">
+                    <i class="cart_icon_link las la-shopping-cart"></i>
                 </div>
                 <div class="cart_items_tracker">0</div>
             </div>
         </div>
+
+        <div class="overlay_section" v-if="show_mini_cart"
+            @click.self="close_mini_cart">
+            <MyMiniCart @close_button_clicked="close_mini_cart"></MyMiniCart>
+        </div>
     </div>
 </template>
+
+<script>
+import MyMiniCart from "../components/MyMiniCart.vue"
+
+export default {
+    components: {
+        MyMiniCart
+    },
+    data() {
+        return {
+            show_mini_cart: false
+        }
+    },
+    created () {
+        window.addEventListener('scroll', this.handle_scroll);
+    },
+    methods: {
+        view_mini_cart() {
+            this.show_mini_cart = true;
+        },
+        close_mini_cart() {
+            this.show_mini_cart = false;
+        },
+        handle_scroll(event) {
+            this.show_mini_cart = false;
+        }
+    }
+}
+</script>
 
 <style scoped>
 .my_header_wrapper {
@@ -65,13 +97,13 @@
     align-items: center;
 }
 
-.cart_icon > a > i {
+.cart_icon > i {
     font-size: 45px;
     margin-left: 30px;
     color: var(--gray-dark);
 }
 
-.cart_icon > a > i:hover {
+.cart_icon > i:hover {
     cursor: pointer;
     color: var(--navy);
 }
@@ -87,5 +119,14 @@
     width: 25px;
     text-align: center;
     font-size: 12px;
+}
+
+.overlay_section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
 }
 </style>

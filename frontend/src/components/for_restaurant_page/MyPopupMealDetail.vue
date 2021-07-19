@@ -86,20 +86,27 @@
 
                 <div class="popup_meal_quantity_and_add_button_and_total_price">
                     <div class="quantify_control">
-                        <div class="quantity_button subtract_quantity_button">
+                        <div class="quantity_button subtract_quantity_button"
+                            :class="{cannot_decrease_quantity_to_add: quantity_to_add <= 1}"
+                            @click="decrease_quantity_to_add">
                             <span class="material-icons">remove</span>
                         </div>
                                 
                         <div class="quantity_amount" v-if="popup_meal_price">{{ quantity_to_add }}</div>
                         <div class="quantity_amount" v-else>0</div>
                         
-                        <div class="quantity_button add_quantity_button">
+                        <div class="quantity_button add_quantity_button"
+                            @click="increase_quantity_to_add">
                             <span class="material-icons">add</span>
                         </div>
                     </div>
 
                     <div class="add_button_and_total_price" v-if="popup_meal_price">
-                        <div class="add_to_cart_button">Add 1 item to cart</div>
+                        <div class="add_to_cart_button">
+                            Add {{ quantity_to_add }} 
+                            <span class="item_items" v-if="quantity_to_add === 1">item</span>
+                            <span class="item_items" v-else>items</span>
+                            to cart</div>
                         
                         <div class="total_price">
                             <span class="dollar_sign">$</span>
@@ -150,6 +157,14 @@ export default {
         },
         toggle_select_custom_option_additional(option) {
             option.selected = !option.selected;
+        }, 
+        decrease_quantity_to_add() {
+            if(this.quantity_to_add > 1) {
+                this.quantity_to_add--;
+            }
+        },
+        increase_quantity_to_add() {
+            this.quantity_to_add++;
         }
     },
     created() {
@@ -285,6 +300,9 @@ export default {
 .quantity_amount {
     font-size: 20px;
     margin: 0 10px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
 }
 
 .add_button_and_total_price {
@@ -322,7 +340,7 @@ export default {
 }
 
 .popup_meal_custom_options {
-    margin: 30px -30px;
+    margin: 30px 0;
     max-height: 365px;
     overflow: hidden;
     overflow-y: scroll;
@@ -353,25 +371,6 @@ export default {
 
 .option_calories {
     display: flex;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px var(--gray-dark); 
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--gray-fade); 
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--gray-dark); 
 }
 
 .single_custom_option {
@@ -429,5 +428,36 @@ export default {
     display: flex;
     justify-content: flex-end;
     font-size: 17px;
+}
+
+.cannot_decrease_quantity_to_add:hover {
+    cursor: not-allowed;
+    background-color: var(--gray);
+    color: var(--navy);
+}
+
+.item_items {
+    margin: 0 5px;
+}
+</style>
+
+<style>
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px var(--gray-dark); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-fade); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-dark); 
 }
 </style>

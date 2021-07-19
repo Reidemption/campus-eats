@@ -18,7 +18,7 @@
     </div>
     
     <div class="overlay_section" v-if="show_map_and_hours" 
-      @click="close_map_and_hours">
+      @click.self="close_map_and_hours">
       <div class="pop_up_modal">
         <div class="map_and_close_button">
           <div class="close_button" @click="close_map_and_hours">
@@ -27,6 +27,8 @@
           <div class="restaurant_map">
             <iframe :src="map" allowfullscreen="" loading="lazy"></iframe>
           </div>
+
+          <img src="../../assets_others/loading.gif" alt="Loading gif">
         </div>
 
         <div class="location_and_hours">
@@ -166,11 +168,32 @@ export default {
     border: 1px solid var(--red);
 }
 
-iframe {
+iframe, .map_and_close_button > img{
     width: 700px;
     height: 400px; 
     border:0;
     border-bottom: 2px solid var(--navy);
+}
+
+.map_and_close_button > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation-name: disappears_after_2s;
+    animation-duration: 5s;
+    animation-delay: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes disappears_after_2s {
+    0% {
+      opacity: 1;
+      z-index: 1;
+    }
+    100% {
+      opacity: 0;
+      z-index: -1;
+    }
 }
 
 .location_and_hours {
