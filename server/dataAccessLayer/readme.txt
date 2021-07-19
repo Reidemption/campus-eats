@@ -26,7 +26,7 @@ STEP2 ========== START Mysql inside your wsl LOCAL HOST =============
 - run this in a separate terminal: 
     sudo /etc/init.d/mysql start
 - then:
-    sudo mysql
+    sudo mysql -u root -p
 
 STEP3,4,5,6 ==================WE DONT HAVE TO DO THIS STEP ANY MORE=========================
 - run file backend/dataAccessLayer/mySQLQueries/initcampusteatsdb.sql

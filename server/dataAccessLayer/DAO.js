@@ -30,11 +30,14 @@ function connectDB(callbackFunction) {
           "mySqlQueries/initcampuseatsdb.sql"
         );
         //create database
-        let successfulCreatedDB = false;
-        while (successfulCreatedDB === false) {
-          successfulCreatedDB = createDBfromFile(directory, connection);
+        if(createDatabase(directory,connection)){
+          //insert dummy data
+          let dummyFile = path.join(
+            __dirname,
+            "mySqlQueries/initCampusEatsData.sql"
+          );
+          insertDummyData(dummyFile,connection)
         }
-        console.log(`-> Done creating database.`);
       } else {
         console.log(`-> Successfully connect to database`);
       }
@@ -44,6 +47,8 @@ function connectDB(callbackFunction) {
   // connection.once("open", callbackFunction);
 }
 // ================== HELPERS =====================
+
+//=Duy
 function isExistDB(databaseName, conn) {
   console.log(`-> Checking if database exists.`);
   let queryString = `SELECT SCHEMA_NAME
@@ -56,16 +61,32 @@ function isExistDB(databaseName, conn) {
   return false;
 }
 
-// =Duy
-//TODO:  do this inside a transaction
-function createDBfromFile(fileDirectory, conn) {
-  console.log(`-> Creating database.`);
+//=Duy
+function createDatabase(fileDirectory, connection){
+  let successfulCreatedDB = false;
+  while (successfulCreatedDB === false) {
+    successfulCreatedDB = executeQueriesFromFile(fileDirectory, connection);
+  }
+  if(successfulCreatedDB==true){
+    console.log(`-> Done Creating Database.`);
+  }else{
+    console.log(`-> FAILED Creating Database.`);
+  }
+  return successfulCreatedDB
+}
 
-  let queries = readAndSpiltQueries(fileDirectory);
-  queries.forEach((queryString) => {
-    executeQuery(queryString, conn);
-  });
-  return true;
+//=Duy
+function insertDummyData(fileDirectory, connection){
+  let successInsert = false;
+  while (successInsert === false) {
+    successInsert = executeQueriesFromFile(fileDirectory, connection);
+  }
+  if(successInsert==true){
+    console.log(`-> Done Inserting Dummy Data.`);
+  }else{
+    console.log(`-> FAILED Inserting Dummy Data.`);
+  }
+  return successInsert
 }
 
 // =Duy
@@ -97,10 +118,25 @@ function executeQuery(queryString, conn) {
       console.log(`- ${Date.now()} - Cannot execute: ${queryString}`);
       console.log(`--- ${err.code}`);
       console.log(`------------------------------------------------`);
-      return null;
+      return undefined;
     }
     return results;
   });
+}
+
+// =Duy
+function executeQueries(queries, conn) {
+  queries.forEach((query) => {
+    if(executeQuery(query, conn)===undefined){
+      return false
+    }
+  });
+  return true;
+}
+
+function executeQueriesFromFile(filePath,conn){
+  let queries = readAndSpiltQueries(filePath);
+  return executeQueries(queries,conn);
 }
 
 module.exports = { connectDB, connection, executeQuery, readAndSpiltQueries };
