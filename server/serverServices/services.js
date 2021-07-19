@@ -24,15 +24,75 @@ services.use((req, res, next) => {
   ),
     next();
 });
-//  Get Restaurant name
-services.get("/restaurant/", (req, res) => {
+//  Get Restaurants
+services.get("/restaurants/", (req, res) => {
   let sql = `SELECT * FROM restaurants`;
   let data = connection.query(sql, (err, result) => {
     if (err) {
       res.status(500).send(err);
     }
     console.log(result);
-    res.send(result);
+    res.status(200).send(result);
+  });
+});
+
+//  Get Menus
+services.get("/menus/", (req, res) => {
+  let sql = `SELECT * FROM menus`;
+  let data = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
+//  Get Meals
+services.get("/meals/", (req, res) => {
+  let sql = `SELECT * FROM meals`;
+  let data = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
+//  Get specific Restaurants
+services.get("/restaurants/", (req, res) => {
+  let sql = `SELECT * FROM restaurants`;
+  let data = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
+//  Get specific Menus
+services.get("/menus/", (req, res) => {
+  let sql = `SELECT * FROM menus`;
+  let data = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
+//  Get specific Meals
+services.get("/meals/", (req, res) => {
+  let sql = `SELECT * FROM meals`;
+  let data = connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
   });
 });
 
