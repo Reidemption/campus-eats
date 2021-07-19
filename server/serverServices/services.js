@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const services = express();
-const { connection } = require("../dataAccessLayer/DAO");
+const dataAccess = require("../dataAccessLayer/DAO");
 
 // ========== Middlewares ===========
 services.use(cors());
