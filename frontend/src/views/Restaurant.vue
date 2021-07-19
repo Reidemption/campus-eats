@@ -63,8 +63,8 @@ export default {
         }
     },
     created() {
-        let restaurants_list = store.state.restaurants_list
-        
+        let restaurants_list = this.$store.state.restaurants_list;
+    
         restaurants_list.forEach(restaurant => {
             if (restaurant.path === this.$route.query.menu) {
                 this.current_restaurant = restaurant;
