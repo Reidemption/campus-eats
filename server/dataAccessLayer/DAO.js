@@ -38,9 +38,10 @@ function connectDB(callbackFunction) {
       } else {
         console.log(`-> Successfully connect to database`);
       }
+      callbackFunction();
     }
   });
-  connection.once("open", callbackFunction);
+  // connection.once("open", callbackFunction);
 }
 // ================== HELPERS =====================
 function isExistDB(databaseName, conn) {
