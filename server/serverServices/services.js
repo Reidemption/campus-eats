@@ -25,10 +25,6 @@ services.use((req, res, next) => {
     next();
 });
 
-services.get("/hello", (req, res) => {
-  res.status(200).json({});
-});
-
 //  Get Restaurant name
 services.get("/restaurant/", (req, res) => {
   let sql = `SELECT * FROM restaurants`;
