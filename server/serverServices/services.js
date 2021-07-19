@@ -25,10 +25,6 @@ services.use((req, res, next) => {
     next();
 });
 
-services.get("/hello", (req, res) => {
-  res.status(200).json({});
-});
-
 //  Get Restaurant name
 services.get("/restaurant/", (req, res) => {
   let sql = `SELECT * FROM restaurants`;
@@ -40,9 +36,19 @@ services.get("/restaurant/", (req, res) => {
     res.status(200).send(result);
   });
 });
-
-//  Get Menus
-services.get("/menus/", (req, res) => {
+//  Get all meals
+services.get("/meal/", (req, res) => {
+  let sql = `SELECT * FROM meals`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+//  Get all menus categories
+services.get("/menu/", (req, res) => {
   let sql = `SELECT * FROM menus`;
   let data = dataAccess.connection.query(sql, (err, result) => {
     if (err) {
@@ -53,9 +59,66 @@ services.get("/menus/", (req, res) => {
   });
 });
 
-//  Get Meals
-services.get("/meals/", (req, res) => {
-  let sql = `SELECT * FROM meals`;
+//  Get specific Restaurant
+services.get("/restaurant/:id", (req, res) => {
+  let sql = `SELECT * FROM restaurants WHERE id=${req.params.id}`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+//  Get specific meals
+services.get("/meal/:id", (req, res) => {
+  let sql = `SELECT * FROM meals WHERE id=${req.params.id}`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+//  Get specific menus categories
+services.get("/menu/:id", (req, res) => {
+  let sql = `SELECT * FROM menus WHERE id=${req.params.id}`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+
+// UPDATE NEEDS TO BE FINISHED
+//  Update specific Restaurant
+services.get("/up/restaurant/:id", (req, res) => {
+  let sql = `UPDATE restaurants SET  WHERE id=${req.params.id}`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+//  Update specific meals
+services.get("/up/meal/:id", (req, res) => {
+  let sql = `UPDATE meals SET  WHERE id=${req.params.id}`;
+  let data = dataAccess.connection.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    console.log(result);
+    res.status(200).send(result);
+  });
+});
+//  Update specific menus categories
+services.get("/up/menu/:id", (req, res) => {
+  let sql = `UPDATE menus SET  WHERE id=${req.params.id}`;
   let data = dataAccess.connection.query(sql, (err, result) => {
     if (err) {
       res.status(500).send(err);

@@ -35,35 +35,50 @@ function connectDB(callbackFunction) {
           successfulCreatedDB = createDBfromFile(directory, connection);
         }
         console.log(`-> Done creating database.`);
+        
+        let dummyDataDir = path.join(
+          __dirname,
+          "mySqlQueries/initCampusEatsData.sql"
+        );
+        let successfulInsertDummyData = false;
+        while (successfulInsertDummyData === false) {
+          successfulInsertDummyData = insertDummyData(dummyDataDir, connection);
+        }
+        console.log(`-> Done Inserting DummyData.`);
       } else {
         console.log(`-> Successfully connect to database`);
       }
       callbackFunction();
     }
   });
-  // connection.once("open", callbackFunction);
 }
+
+
 // ================== HELPERS =====================
-function isExistDB(databaseName, conn) {
-  console.log(`-> Checking if database exists.`);
-  let queryString = `SELECT SCHEMA_NAME
-    FROM INFORMATION_SCHEMA.SCHEMATA    
-    WHERE SCHEMA_NAME = '${databaseName}'
-    `;
-  if (executeQuery(queryString, conn) != null) {
-    return true;
-  }
-  return false;
+
+//=Duy
+function insertDummyData(fileDirectory, conn) {
+  console.log(`-> Trying to insert DummyData.`);
+  let queries = readAndSpiltQueries(fileDirectory);
+  queries.forEach((queryString) => {
+    if(executeQuery(queryString, conn)===undefined){
+      console.log("-> FAILED to insertDummyData")
+      return false;
+    }
+  });
+  return true;
 }
 
 // =Duy
 //TODO:  do this inside a transaction
 function createDBfromFile(fileDirectory, conn) {
   console.log(`-> Creating database.`);
-
   let queries = readAndSpiltQueries(fileDirectory);
   queries.forEach((queryString) => {
-    executeQuery(queryString, conn);
+    if(executeQuery(queryString, conn)===undefined){
+      console.log("-> FAILED to createDBfromFile")
+      return false;
+    }
   });
   return true;
 }
@@ -97,7 +112,7 @@ function executeQuery(queryString, conn) {
       console.log(`- ${Date.now()} - Cannot execute: ${queryString}`);
       console.log(`--- ${err.code}`);
       console.log(`------------------------------------------------`);
-      return null;
+      return undefined;
     }
     return results;
   });
