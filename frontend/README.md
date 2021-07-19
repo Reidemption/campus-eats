@@ -1,4 +1,4 @@
-# public
+# frontend
 
 ## Project setup
 ```
@@ -17,6 +17,3 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-# campus-eats
-
-DSU Campus Delivery for On-Campus Locations
