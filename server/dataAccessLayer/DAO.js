@@ -7,8 +7,25 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password", // your root's password
-  database: "campus_eats_db",
+  // database: "campus_eats_db",
 });
+
+function startupDatabase(callbackFunction){
+  connection.connect((err) => {
+    if (err) {
+      console.log(`-------------------- ERROR ---------------------`);
+      console.log(`- ${Date.now()} - Cannot connect to Mysql`);
+      console.log(`--- Error: ${err}`);
+      console.log(`------------------------------------------------`);
+    } else {
+      connection.prependListener
+      console.log(`-> Successfully connect to Mysql`);
+      console.log(`-> Trying to connect to database.`);
+      connection["database"]="campus_eats_db"
+      callbackFunction();
+    }
+  });
+}
 
 function connectDB(callbackFunction) {
   console.log(`-> Trying to connect to Mysql server.`);
@@ -140,4 +157,4 @@ function executeQueriesFromFile(filePath,conn){
   return executeQueries(queries,conn);
 }
 
-module.exports = { connectDB, connection, executeQuery, readAndSpiltQueries };
+module.exports = { startupDatabase,connectDB, connection, executeQuery, readAndSpiltQueries };
