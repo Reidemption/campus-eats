@@ -1,21 +1,23 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const db = mongoose.connection;
 
-function connectToDb(callback){
-    let connectionString="mongodb+srv://duy:P@ssw0rd@duydb.6mffl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    mongoose.connect(connectionString,{
-        useNewUrlParser:true,
-        useUnifiedTopology:true
-    }).catch(err=>{
-        if(err){
-            console.log(`-------------------- ERROR ---------------------`)
-            console.log(`- ${Date.now()} - Cannot connect to the Database`)
-            console.log(`--- Error: ${err}`)            
-            console.log(`------------------------------------------------`)
-        }
+function connectToDb(callback) {
+  let connectionString =
+    "mongodb+srv://reid_gubler:AHg0i8fGhb8Gh8va@cluster0.tmhn8.mongodb.net/campus_eats?retryWrites=true&w=majority";
+  mongoose
+    .connect(connectionString, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .catch((err) => {
+      console.log(`-------------------- ERROR ---------------------`);
+      console.log(`- ${Date.now()} - Cannot connect to the Database`);
+      console.log(`--- Error: ${err}`);
+      console.log(`------------------------------------------------`);
     });
-    mongoose.connection.once("open",callback);
+  db.once("open", callback);
 }
 
 module.exports = {
-    connectToDb
-}
+  connectToDb,
+};
