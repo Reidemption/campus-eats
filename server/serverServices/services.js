@@ -7,7 +7,7 @@ const {
   Customizations,
 } = require("./FrontEnd_Object_Models/restaurant.js");
 const services = express();
-const dataAccess = require("./DAO");
+const dataAccess = require("../dataAccess/DAO");
 
 // ========== Middlewares ===========
 services.use(cors());
