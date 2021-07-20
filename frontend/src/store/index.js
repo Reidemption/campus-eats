@@ -204,6 +204,21 @@ const state = {
                 }
             ]
         }
+    ],
+
+    items_in_cart: [
+        {
+            quantity: 1,
+            name: "Chick-fil-A Chicken",
+            price: 6.99,
+            message_included: true
+        },
+        {
+            quantity: 2,
+            name: "Grilled Chicken Club",
+            price: 10.99,
+            message_included: false
+        }
     ]
 }
 
