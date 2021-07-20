@@ -1,5 +1,5 @@
 const services = require("./services");
-const dataAccess = require("../dataAccessLayer/DAO");
+const dataAccess = require("../dataAccess/DAO");
 
 // define a port
 const port = process.argv[2] || process.env.port || 7777;
