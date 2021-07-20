@@ -76,6 +76,6 @@ export default {
 
 <style scoped>
 .restaurant_page_wrapper {
-  background-color: var(--gray);
+    background-color: var(--gray);
 }
 </style>
