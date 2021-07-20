@@ -99,7 +99,7 @@ export default {
     background-color: var(--gray);
     border-radius: 25px;
     width: 60%;
-    padding: 5px 10px;
+    padding: 7px 10px;
     margin: auto 0;
 }
 

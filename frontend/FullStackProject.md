@@ -16,5 +16,7 @@ npm start
 
 ## 3rd Terminal: Node (vue)
 ```
+cd frontend 
+
 npm run serve
 ```

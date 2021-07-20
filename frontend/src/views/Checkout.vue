@@ -2,7 +2,9 @@
     <div class="checkout_page_wrapper">
         <div class="checkout_page_body">
             <div class="order_confirmation_section">
-                <div class="app_name">Campus Eats</div>
+                <router-link to="/">
+                    <div class="app_name">Campus Eats</div>
+                </router-link>
 
                 <div class="restaurant_name">Chick-fil-A</div>
 
@@ -67,11 +69,16 @@ export default {
     grid-template-columns: 60% 40%;
 }
 
+.order_confirmation_section > a {
+    text-decoration: none;
+}
+
 .app_name {
     font-family: 'Roboto Slab', serif;
     font-size: 40px;
     color: var(--navy);
     padding: 30px 40px 0;
+    cursor: pointer;
 }
 
 .order_confirmation_section {
