@@ -1,39 +1,64 @@
 -- CREATE DATABASE campus_eats_db;
 -- USE campus_eats_db;
-CREATE TABLE restaurants (
+CREATE TABLE IF NOT EXISTS restaurants (
 id int PRIMARY KEY auto_increment NOT NULL,
+path VARCHAR(50) NOT NULL,
 name varchar(50) NOT NULL,
+logo VARCHAR(255),
+background_image varchar(255) NOT NULL,
 description mediumtext,
 location varchar(255) NOT NULL,
-image varchar(255) NOT NULL
+map VARCHAR(255) 
 );
 
-CREATE TABLE menus (
+CREATE TABLE IF NOT EXISTS menu_categories (
 id int PRIMARY KEY auto_increment NOT NULL,
 restaurant_id int,
 name varchar(50) NOT NULL,
 description mediumtext,
-image varchar(255),
-FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
-CREATE TABLE meals (
+CREATE TABLE IF NOT EXISTS meals (
 id int PRIMARY KEY auto_increment NOT NULL,
 menu_id int,
 name varchar(50) NOT NULL,
 description mediumtext,
 image varchar(255),
 price FLOAT,
-FOREIGN KEY (menu_id) REFERENCES menus(id)
+calories VARCHAR(20)
+FOREIGN KEY (menu_id) REFERENCES menu_categories(id)
 );
 
-CREATE TABLE ingredients (
+CREATE TABLE IF NOT EXISTS hour (
+  id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  restaurant_id INT,
+  day_of_week VARCHAR(25),
+  open_hour VARCHAR(15),
+  close_hour VARCHAR(15),
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS restaurant_hour (
+  restaurant_id INT NOT NULL,
+  hour_id INT NOT NULL,
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE,
+  FOREIGN KEY (hour_id) REFERENCES hour(id),
+ PRIMARY KEY (restaurant_id, hour_id)
+);
+
+CREATE TABLE IF NOT EXISTS customizations (
 id int PRIMARY KEY auto_increment NOT NULL,
-name varchar(50) NOT NULL,
-description mediumtext
+meal_id INT,
+name varchar(255) NOT NULL,
+changed_price FLOAT,
+description mediumtext,
+calories VARCHAR(255),
+selected BOOLEAN NOT NULL DEFAULT FALSE,
+FOREIGN KEY (meal_id) REFERENCES meals(id) ON DELETE CASCADE
 );
 
-CREATE TABLE meals_ingredients (
+CREATE TABLE IF NOT EXISTS meals_ingredients (
 meal_id int NOT NULL,
 ingredient_id int NOT NULL,
 FOREIGN KEY (meal_id) REFERENCES meals(id),
@@ -41,12 +66,12 @@ FOREIGN KEY (ingredient_id) REFERENCES ingredients(id),
 PRIMARY KEY (meal_id, ingredient_id)
 );
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
 id int PRIMARY KEY auto_increment NOT NULL,
 name varchar(50) NOT NULL
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
 id int PRIMARY KEY auto_increment NOT NULL,
 name varchar(50),
 role_id int NOT NULL,
@@ -57,17 +82,23 @@ image varchar(255),
 FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
-CREATE TABLE permissions (
+CREATE TABLE IF NOT EXISTS permissions (
 id int PRIMARY KEY auto_increment NOT NULL,
 name varchar(50)
 );
 
-CREATE TABLE roles_permissions (
+CREATE TABLE IF NOT EXISTS roles_permissions (
 role_id int NOT NULL,
 FOREIGN KEY (role_id) REFERENCES roles(id),
 permission_id int NOT NULL,
 FOREIGN KEY (permission_id) REFERENCES permissions(id),
 PRIMARY KEY (role_id, permission_id)
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  order_date DATE,
+
 );
 
 INSERT INTO `restaurants` VALUES (1,'Chick-fil-A','Eat Mor Chikin at Dixie State University!  Located in the Trailblazer Cafe, offering both original and grilled Chick-fil-A classics.','Gardner Building','url'),(2,'Pizza Hut','No one outpizzas the Hut.  Also serving pasta, wings, and bread/pretzel bites!','Gardner Building','url'),(3,'Ace Sushi','Offering a variety of sushi options available at various locations on campus.','Gardner Building','url'),(4,'Subway','Offering a variety of sandwich options that you can experience at any other Subway.','Gardner Building','url'),(5,'The Market','The Market at Dixie, located on the first floor of the Gardner Student Center, is more than just a convenience store. It’s a place where friends can meet, do homework, be tutored or just eat a snack or two while studying.','Gardner Building','url'),(6,'Brooks Stop','Located near the bulk of student housing, Brooks’ Stop provides a wide selection of breakfast, lunch, and dinner for students on the go.','Next to Campus View','url'),(7,'Stacks','Our campus sandwich shop also offers wraps, salads, paninis, and soup!  Not to mention our famous s’mores cookie with ice cream.','2nd Floor Holland Building','url'),(8,'Infusion','Not only do we serve beverages, but we also serve Starbucks coffees, teas, freshly squeezed orange juice, hot toasted bagels, muffins, donuts, and other snacks.','1st Floor Holland Building','url'),(9,'Grazers','Located in the Human Performance Center we offer a variety of toasts! NEW this fall we are introducing B-Fruity who will offer acai bowls, smoothies, protein shakes, fresh pressed juices, parfaits, and more!','HPC','url');
