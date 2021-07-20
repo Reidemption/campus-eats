@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+
 const services = express();
-const dataAccess = require("../dataAccessLayer/DAO");
+const dataAccess = require("../dataAccess/DAO");
 
 // ========== Middlewares ===========
 services.use(cors());
@@ -24,109 +25,16 @@ services.use((req, res, next) => {
   ),
     next();
 });
-
-//  Get Restaurant name
-services.get("/restaurant/", (req, res) => {
-  let sql = `SELECT * FROM restaurants`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
+// ========== MIDDLEWARES ===========
+// ========= ERROR HANDLER ==========
+services.use((req, res, next) => {
+  if(req.headers.error !=undefined){
+    console.log(`-------------------- ERROR ---------------------`);
+    console.log(`- ${Date.now()} - Cannot connect to Mysql`);
+    console.log(`--- Error: ${err}`);
+    console.log(`------------------------------------------------`);
+  }
+  next();
 });
-//  Get all meals
-services.get("/meal/", (req, res) => {
-  let sql = `SELECT * FROM meals`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-//  Get all menus categories
-services.get("/menu/", (req, res) => {
-  let sql = `SELECT * FROM menus`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-
-//  Get specific Restaurant
-services.get("/restaurant/:id", (req, res) => {
-  let sql = `SELECT * FROM restaurants WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-//  Get specific meals
-services.get("/meal/:id", (req, res) => {
-  let sql = `SELECT * FROM meals WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-//  Get specific menus categories
-services.get("/menu/:id", (req, res) => {
-  let sql = `SELECT * FROM menus WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-
-// UPDATE NEEDS TO BE FINISHED
-//  Update specific Restaurant
-services.get("/up/restaurant/:id", (req, res) => {
-  let sql = `UPDATE restaurants SET  WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-//  Update specific meals
-services.get("/up/meal/:id", (req, res) => {
-  let sql = `UPDATE meals SET  WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-//  Update specific menus categories
-services.get("/up/menu/:id", (req, res) => {
-  let sql = `UPDATE menus SET  WHERE id=${req.params.id}`;
-  let data = dataAccess.connection.query(sql, (err, result) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    console.log(result);
-    res.status(200).send(result);
-  });
-});
-
 // ========= EXPORT MODULE ==========
 module.exports = services;
