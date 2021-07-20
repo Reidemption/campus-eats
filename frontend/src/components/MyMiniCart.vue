@@ -8,122 +8,20 @@
             <div class="restaurant_name">Chick-fil-A</div>
 
             <div class="cart_items_infos">
-                <div class="single_cart_item">
+                <div class="single_cart_item" v-for="item in items_in_cart" :key="item.name">
                     <div class="quantity_section">
-                        <input type="number" placeholder="1">
+                        <input type="number" :value="item.quantity">
                     </div>
 
                     <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
+                        <div class="cart_item_name">{{ item.name }}</div>
+                        <div class="cart_item_message_included" v-if="item.message_included">Message included: Yes</div>
+                        <div class="cart_item_message_included" v-else>Message included: No</div>
                     </div>
 
                     <div class="price_section">
                         <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
-                    </div>
-                </div>
-
-                <div class="single_cart_item">
-                    <div class="quantity_section">
-                        <input type="number" placeholder="1">
-                    </div>
-
-                    <div class="infos_section">
-                        <div class="cart_item_name">Chick-fil-A Chicken</div>
-                        <div class="cart_item_custom_selection">No cheese</div>
-                        <div class="cart_item_message_included">Message included: Yes</div>
-                    </div>
-
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">6.99</div>
+                    <div class="total_price">{{ item.price }}</div>
                     </div>
                 </div>
             </div>
@@ -152,8 +50,11 @@
 export default {
     data() {
         return {
-            empty_cart: true,
+            items_in_cart: [],
         }
+    },
+    created() {
+        this.items_in_cart = this.$store.state.items_in_cart;
     },
     methods: {
         close_button_clicked() {
@@ -316,9 +217,6 @@ export default {
 .cart_item_name {
     font-size: 19px;
     color: var(--red-dark);
-}
-
-.cart_item_custom_selection {
-    margin: 5px 0;
+    margin-bottom: 5px;
 }
 </style>
