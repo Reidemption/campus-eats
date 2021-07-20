@@ -40,8 +40,8 @@ function connectDB(callbackFunction) {
       console.log(`-> Trying to connect to database.`);
       //TODO: check if database have been created or not
       //if database havent been created
-      let databaseExist = isExistDB(databaseName, connection);
-      if (!databaseExist) {
+      if (!isExistDB(databaseName, connection)) {
+        console.log("database doesn't exist.")
         let directory = path.join(
           __dirname,
           "mySqlQueries/initcampuseatsdb.sql"
@@ -60,20 +60,16 @@ function connectDB(callbackFunction) {
       }
       callbackFunction();
     }
-  });
+  })
 }
-
 
 // ================== HELPERS =====================
 
 //=Duy
 function isExistDB(databaseName, conn) {
-  console.log(`-> Checking if database exists.`);
-  let queryString = `SELECT SCHEMA_NAME
-    FROM INFORMATION_SCHEMA.SCHEMATA    
-    WHERE SCHEMA_NAME = '${databaseName}'
-    `;
-  if (executeQuery(queryString, conn) != null) {
+  let queryString = `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '${databaseName}';`;
+  let isExisted = executeQuery(queryString, conn);
+  if ( isExisted!= Error) {
     return true;
   }
   return false;
@@ -85,7 +81,7 @@ function createDatabase(fileDirectory, connection){
   while (successfulCreatedDB === false) {
     successfulCreatedDB = executeQueriesFromFile(fileDirectory, connection);
   }
-  if(successfulCreatedDB==true){
+  if(successfulCreatedDB===true){
     console.log(`-> Done Creating Database.`);
   }else{
     console.log(`-> FAILED Creating Database.`);
@@ -99,7 +95,7 @@ function insertDummyData(fileDirectory, connection){
   while (successInsert === false) {
     successInsert = executeQueriesFromFile(fileDirectory, connection);
   }
-  if(successInsert==true){
+  if(successInsert===true){
     console.log(`-> Done Inserting Dummy Data.`);
   }else{
     console.log(`-> FAILED Inserting Dummy Data.`);
@@ -136,7 +132,7 @@ function executeQuery(queryString, conn) {
       console.log(`- ${Date.now()} - Cannot execute: ${queryString}`);
       console.log(`--- ${err.code}`);
       console.log(`------------------------------------------------`);
-      return undefined;
+      return err;
     }
     return results;
   });
