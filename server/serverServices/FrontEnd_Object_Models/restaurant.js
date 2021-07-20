@@ -6,6 +6,7 @@ const optionSchema = new mongoose.Schema({
   name: String,
   calories: String,
   price: Double,
+  selected: Boolean,
   customization_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customizations",
@@ -15,7 +16,6 @@ const optionSchema = new mongoose.Schema({
 const customizationSchema = new mongoose.Schema({
   name: String,
   options: [optionSchema],
-  selected: Boolean,
   menu_id: { type: mongoose.Schema.Types.ObjectId, ref: "Menus" },
 });
 
