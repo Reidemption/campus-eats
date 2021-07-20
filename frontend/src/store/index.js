@@ -1,6 +1,73 @@
 import { createStore } from 'vuex'
 
 const state = {
+    restaurants_new_model:[
+        {
+            path: "ChickFilA",
+            name: "Chick-fil-A",
+            logo: "TrailblazersCafe/ChickFilA/logo.png",
+            background_image: "TrailblazersCafe/ChickFilA/background.jpg",
+            description: "Eat Mor Chikin at Dixie State University! Located in the Trailblazer Cafe, offering both original and grilled Chick-fil-A classics.",
+            location: "At Trailblazer's Cafe located inside the Gardner Building.",
+            hours: [
+                {
+                    date: "Monday-Friday",
+                    open: "8:00 AM",
+                    close: "5:00 PM"
+                }
+            ],
+            categories: [
+                {
+                    name: "Original Meals",
+                    menu: [
+                        {
+                            name: "Chick-fil-A Chicken",
+                            description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
+                            calories: "440",
+                            price: "3.89",
+                            customization: [
+                                {
+                                    name: "Make it a deluxe",
+                                    options: [
+                                        {
+                                            name: "Add cheese",
+                                            calories: "20"
+                                        },
+                                        {
+                                            name: "Add lettuce",
+                                            calories: "20"
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: "Add Sides",
+                                    options: [
+                                        {
+                                            name: "Fries",
+                                            calories: "20"
+                                        }
+                                    ]
+                                },
+                                {
+                                    name: "Add Drink",
+                                    options: [
+                                        {
+                                            name: "Coke",
+                                            calories: "40"
+                                        },
+                                        {
+                                            name: "Sprite",
+                                            calories: "30"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     restaurants_list:[
         {
             path: "ChickFilA",
