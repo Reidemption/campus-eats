@@ -20,7 +20,8 @@
                     </div>
                 </div>
 
-                <div class="my_delivery_section_edit_button">Edit</div>
+                <div class="my_delivery_section_edit_button"
+                    @click="show_edit_destination_modal">Edit</div>
             </div>
         </div>
 
@@ -40,7 +41,8 @@
                     </div>
                 </div>
 
-                <div class="my_delivery_section_edit_button">Edit</div>
+                <div class="my_delivery_section_edit_button"
+                    @click="show_edit_instructions_modal">Edit</div>
             </div>
         </div>
     </div>
@@ -48,7 +50,14 @@
 
 <script>
 export default {
-
+    methods: {
+        show_edit_destination_modal() {
+            this.$emit("show_edit_destination_modal");
+        },
+        show_edit_instructions_modal() {
+            this.$emit("show_edit_instructions_modal");
+        }
+    }
 }
 </script>
 

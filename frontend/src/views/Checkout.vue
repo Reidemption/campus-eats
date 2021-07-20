@@ -10,7 +10,10 @@
 
                 <MyDeliveryMap></MyDeliveryMap>
 
-                <MyDeliveryInstructions></MyDeliveryInstructions>
+                <MyDeliveryInstructions
+                    @show_edit_destination_modal="show_edit_destination_modal"
+                    @show_edit_instructions_modal="show_edit_instructions_modal">
+                </MyDeliveryInstructions>
 
                 <MyDeliveryOptions></MyDeliveryOptions>
 
@@ -36,6 +39,21 @@
                 </a></span>
             </div>
         </div>
+
+        <div class="popup_edit_modals_overlay_section" v-if="view_edit_modals"
+            @click.self="close_popup_edit_modals">
+            <div class="popup_edit_modals_container">
+                <div class="popup_edit_modals_close_button">
+                    <span class="material-icons" @click="close_popup_edit_modals">close</span>
+                </div>
+
+                <MyEditDestination v-if="view_edit_destination_modal"
+                    @done_edit_destination="close_popup_edit_modals">
+                </MyEditDestination>
+                  
+                <MyEditInstructions v-if="view_edit_instructions_modal"></MyEditInstructions>  
+            </div>
+        </div>
     </div>
 </template>
 
@@ -47,6 +65,11 @@ import MyPayment from "../components/for_checkout_page/MyPayment.vue"
 import MyFinalCart from "../components/for_checkout_page/MyFinalCart.vue"
 import MyTotalFees from "../components/for_checkout_page/MyTotalFees.vue"
 
+import MyEditDestination from "../components/for_checkout_page/popup_edit_modals/MyEditDestination.vue"
+import MyEditInstructions from "../components/for_checkout_page/popup_edit_modals/MyEditInstructions.vue"
+import MyEditPayment from "../components/for_checkout_page/popup_edit_modals/MyEditPayment.vue"
+import MyEditPromoCode from "../components/for_checkout_page/popup_edit_modals/MyEditPromoCode.vue"
+
 export default {
     components: {
         MyDeliveryMap,
@@ -54,7 +77,36 @@ export default {
         MyDeliveryOptions,
         MyPayment,
         MyFinalCart,
-        MyTotalFees
+        MyTotalFees,
+
+        MyEditDestination,
+        MyEditInstructions,
+        MyEditPayment,
+        MyEditPromoCode,
+    },
+    data() {
+        return {
+            view_edit_modals: false,
+            view_edit_destination_modal: false,
+            view_edit_instructions_modal: false,
+        }
+    },
+    methods: {
+        close_popup_edit_modals() {
+            this.view_edit_modals = false;
+        },
+        show_edit_destination_modal() {
+            this.view_edit_modals = true;
+            this.view_edit_destination_modal = true;
+
+            this.view_edit_instructions_modal = false;
+        },
+        show_edit_instructions_modal() {
+            this.view_edit_modals = true;
+            this.view_edit_instructions_modal = true;
+
+            this.view_edit_destination_modal = false;
+        }
     }
 }
 </script>
@@ -62,6 +114,7 @@ export default {
 <style scoped>
 .checkout_page_wrapper {
     background-color: var(--gray);
+    position: relative;
 }
 
 .checkout_page_body {
@@ -110,5 +163,35 @@ export default {
 
 .policy_and_terms > span > a:hover {
     color: var(--yellow);
+}
+
+.popup_edit_modals_overlay_section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.popup_edit_modals_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    max-width: 30%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px 30px;
+}
+
+.popup_edit_modals_close_button > span {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.popup_edit_modals_close_button > span:hover {
+    cursor: pointer;
+    color: var(--red);
 }
 </style>
