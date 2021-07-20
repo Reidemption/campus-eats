@@ -1,6 +1,8 @@
 <template>
     <div class="my_header_wrapper">
-        <div class="app_name">Campus Eats</div>
+        <router-link to="/">
+            <div class="app_name">Campus Eats</div>
+        </router-link>
 
         <div class="location_input_and_cart_button">
             <div class="location_input">
@@ -60,10 +62,15 @@ export default {
     padding: 30px 40px;
 }
 
+.my_header_wrapper > a {
+    text-decoration: none;
+}
+
 .app_name {
     font-family: 'Roboto Slab', serif;
     font-size: 40px;
     color: var(--navy);
+    cursor: pointer;
 }
 
 .location_input_and_cart_button {
