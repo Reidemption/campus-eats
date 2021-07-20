@@ -26,9 +26,10 @@ services.use((req, res, next) => {
     next();
 });
 // ========== MIDDLEWARES ===========
+
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
-  if(req.headers.error !=undefined){
+  if (req.headers.error != undefined) {
     console.log(`-------------------- ERROR ---------------------`);
     console.log(`- ${Date.now()} - Cannot connect to Mysql`);
     console.log(`--- Error: ${err}`);
