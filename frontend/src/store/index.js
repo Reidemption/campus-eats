@@ -26,7 +26,7 @@ const state = {
                             description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
                             calories: "440",
                             price: "3.89",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Make it Deluxe",
                                     options: [
@@ -86,7 +86,7 @@ const state = {
                             description: "A boneless breast of chicken seasoned with a spicy blend of peppers, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
                             calories: "540",
                             price: "4.25",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Make it Deluxe",
                                     options: [
@@ -141,12 +141,12 @@ const state = {
                             ]
                         },
                         {
-                            name: "Chick-fil-A Nuggets 8-ct Entree",
+                            name: "Chick-fil-A Nuggets 8-ct Entrée",
                             image_url: "TrailblazersCafe/ChickFilA/og_meal_nuggets.png",
                             description: "Bite-sized pieces of tender all breast meat chicken, seasoned to perfection, hand-breaded and pressure cooked in 100% refined peanut oil.",
                             calories: "250",
                             price: "3.99",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Me want more",
                                     options: [
@@ -206,7 +206,7 @@ const state = {
                             description: "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce and tomato. Served with Honey Roasted BBQ Sauce.",
                             calories: "320",
                             price: "5.55",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Make it Deluxe",
                                     options: [
@@ -266,7 +266,7 @@ const state = {
                             description: "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce, tomato, bacon & Colby-Jack cheese. Served with Honey Roasted BBQ Sauce.",
                             calories: "460",
                             price: "6.89",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Make it Deluxe",
                                     options: [
@@ -321,12 +321,12 @@ const state = {
                             ]
                         },
                         {
-                            name: "Grilled Nuggets 8-ct Entree",
+                            name: "Grilled Nuggets 8-ct Entrée",
                             image_url: "TrailblazersCafe/ChickFilA/grilled_meal_nuggets.png",
                             description: "Bite-sized pieces of boneless breast of chicken, marinated with a special blend of seasonings and grilled for a tender and juicy backyard-grilled taste.",
                             calories: "130",
                             price: "4.79",
-                            custom_options: [
+                            customizations: [
                                 {
                                     name: "Me want more",
                                     options: [

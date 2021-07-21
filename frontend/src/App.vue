@@ -18,4 +18,23 @@
     --gray-dark: hsl(355, 4%, 45%);
     --navy     : hsl(213, 68%, 15%);
   }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+      width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px var(--gray-dark); 
+      border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: var(--gray-fade); 
+      border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+      background: var(--gray-dark); 
+  }
 </style>

@@ -22,8 +22,41 @@
                     </div>
                 </div>
 
-                <div class="popup_meal_custom_options_title">
+                <div class="popup_meal_customizations_title">
                     Custom your order:
+                </div>
+
+                <div class="popup_meal_customizations_wrapper">
+                    <div class="single_customization_wrapper" v-for="customization in popup_meal_customizations" 
+                        :key="customization.name">
+                        
+                        <div class="title_and_arrow_buttons">
+                            <div class="title">{{ customization.name }}</div>
+
+                            <div class="arrow_buttons">
+                                <div class="single_arrow_button">
+                                    <span class="material-icons">expand_more</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="single_custom_option" v-for="option in customization.options" :key="option.name">
+                            <div class="checkbox" @click="toggle_option_selection(option)"
+                                :class="{ option_selected: option.selected }">
+                                <div class="check_box_center"></div>
+                            </div>
+                            
+                            <div class="option_infos_and_price">
+                                <div class="option_infos">
+                                    <div class="option_name">{{ option.name }}</div>
+                                </div>
+
+                                <div class="option_price">
+                                    + {{ option.price }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="popup_meal_quantity_and_add_button_and_total_price">
@@ -68,7 +101,7 @@ export default {
         popup_meal_description: String,
         popup_meal_calories: String,
         popup_meal_price: String,
-        popup_meal_custom_options: Array,
+        popup_meal_customizations: Array,
     },
     data() {
         return {
@@ -80,6 +113,9 @@ export default {
     methods: {
         close_button_clicked() {
             this.$emit("close_button_clicked");
+        },
+        toggle_option_selection(option) {
+            option.selected = ! option.selected;
         },
         decrease_quantity_to_add() {
             if(this.quantity_to_add > 1) {
@@ -114,6 +150,10 @@ export default {
     display: grid;
     grid-template-columns: 1fr 2fr;
     width: 60%;
+    max-height: 80%;
+    max-height: 80%;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .backrground_image_and_close_button {
@@ -244,34 +284,85 @@ export default {
     margin: 0 5px;
 }
 
-.popup_meal_custom_options_title {
+.popup_meal_customizations_title {
     font-size: 20px;
-    margin: 20px 0
+    margin-top: 20px;
 }
 
 .calories_amount {
     margin-left: 5px;
     color: var(--red-dark);
 }
-</style>
 
-<style>
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 12px;
+.single_customization_wrapper > .title_and_arrow_buttons {
+    background-color: var(--gray);
+    padding: 15px 20px;
+    font-size: 17px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px var(--gray-dark); 
-    border-radius: 10px;
+.title_and_arrow_buttons > .title {
+    display: flex;
+    align-items: center;
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--gray-fade); 
-    border-radius: 10px;
+.single_arrow_button {
+    border: 1px solid var(--gray-fade);
+    color: var(--gray-dark);
+    border-radius: 50%;
+    display: flex;
+    background-color: white;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--gray-dark); 
+.single_arrow_button:hover {
+    cursor: pointer;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+}
+
+.single_custom_option {
+    display: grid;
+    grid-template-columns: 10% 90%;
+    margin: 20px 20px 0;
+}
+
+.option_infos_and_price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.option_calories {
+    display: flex;
+    margin-top: 6px;
+}
+
+.checkbox {
+    border: 2px solid var(--gray-fade);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.checkbox:hover {
+    cursor: pointer;
+    border: 2px solid var(--navy);
+}
+
+.check_box_center {
+    width: 45%;
+    height: 45%;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.option_selected {
+    border: 2px solid var(--navy);
+    background-color: var(--navy);
 }
 </style>
