@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const order_detail = require("./order_detail");
 const orderSchema = mongoose.Schema({
     id: {
         type:String,
@@ -14,7 +13,7 @@ const orderSchema = mongoose.Schema({
         require: true
     },
     items: {
-        type: order_detail,
+        type:Array,
         require: true
     },
 });
