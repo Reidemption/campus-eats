@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const UserInfo = require("./user_information");
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -8,6 +9,9 @@ const userSchema = new mongoose.Schema({
     name: {
         type:String,
         require:true
+    },
+    user_info:{
+        type:UserInfo
     },
     position:{
         type:String,
