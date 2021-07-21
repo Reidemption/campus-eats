@@ -49,8 +49,8 @@ const restaurantSchema = new mongoose.Schema({
   background_image: String,
   description: String,
   location: String,
-  hours: [hourSchema],
-  categories: [categorySchema],
+  hour: [hourSchema],
+  category: [categorySchema],
 });
 
 const Restaurants = mongoose.model("Restaurants", restaurantSchema);

@@ -111,6 +111,51 @@ services.post("/restaurant", function (req, res) {
   );
 });
 
+// POST/create categories for a specific restaurant
+services.post("/category", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`creating a category with a body ${req.body}`);
+
+  if (!req.body.name || !req.body.restaurant_id) {
+    console.log(`unable to create category because fields are missing`);
+    res.status(400).json({
+      message: "unable to create category",
+      error: "field is missing",
+    });
+    return;
+  }
+  let newCategory = {
+    name: req.body.name,
+    restaurant_id: req.body.restaurant_id,
+  };
+
+  Restaurants.findByIdAndUpdate(
+    req.body.restaurant_id,
+    { $push: { category: newCategory } },
+    (err, restaurant) => {
+      if (err) {
+        console.log(`unable to create category`);
+        res.status(500).json({
+          message: "unable to create category",
+          error: err,
+        });
+        return;
+      } else if (restaurant === null) {
+        console.log(
+          "Unable to find restaurant with id:",
+          req.body.restaurant_id
+        );
+
+        res.status(404).json({
+          message: "Unable to find thread",
+          error: err,
+        });
+      }
+      res.status(201).json(restaurant.category[restaurant.category.length - 1]);
+    }
+  );
+});
+
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {
