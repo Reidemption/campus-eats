@@ -8,15 +8,15 @@ const {
 } = require("./FrontEnd_Object_Models/restaurant.js");
 const services = express();
 const dataAccess = require("../dataAccess/DAO");
+const model = require("./FrontEnd_Object_Models/frontendModel");
 
 // ========== Middlewares ===========
-services.use(cors());
-services.use(express.json({}));
-services.use(express.static(".../fontend"));
+app.use(cors());
+app.use(express.json({}));
 
 // ======== Request handlers =========
 // --- LOG ---
-services.use((req, res, next) => {
+app.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   console.log("======================== REQUEST ==========================");
   console.log(
