@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const Menu = require("./menu");
+const Meal = require("./meal");
+const Category = require("./category");
 
-const mealSchema = new mongoose.Schema({
+const menuSchema = new mongoose.Schema({
     name: String,
     description: String,
     calories: String,
@@ -15,5 +16,5 @@ const mealSchema = new mongoose.Schema({
     items:[Meal]
 });
 
-const Meal = mongoose.model("Meal", mealSchema);
-module.exports = {Meal}
+const Menu = mongoose.model("Menu", menuSchema);
+module.exports = {Menu}

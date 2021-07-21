@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Meal = require("./meal");
 const OrderItem = require("./order_item");
 
-const sideSchema = mongoose.Schema({
-    side_id: {
+const itemSideSchema = mongoose.Schema({
+    item_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: Order
+        ref: OrderItem
     },
     orderDate: {
         type:Date,
@@ -25,6 +25,6 @@ const sideSchema = mongoose.Schema({
     }
 });
 
-const OrderItem = mongoose.model("OrderItem", orderItemSchema);
-module.exports = OrderItem
+const OrderItemSide = mongoose.model("OrderItemSide", itemSideSchema);
+module.exports = OrderItemSide
 

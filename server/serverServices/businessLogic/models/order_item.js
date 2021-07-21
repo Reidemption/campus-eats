@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Meal = require("./meal");
 const Order = require("./order");
 const Restaurant = require("./restaurant")
-const SideDishes = require("./item_sides")
+const OrderItemSide = require("./order_item_side")
 
 const orderItemSchema = mongoose.Schema({
     order_id: {
@@ -43,7 +43,7 @@ const orderItemSchema = mongoose.Schema({
     sides: [
         {
             quantity:Number,
-            item: SideDishes
+            item: OrderItemSide
         }
     ],
     note:{
