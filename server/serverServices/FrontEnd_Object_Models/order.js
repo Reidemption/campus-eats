@@ -1,22 +1,43 @@
 const mongoose = require("mongoose");
-const order_detail = require("./order_detail");
-const orderSchema = mongoose.Schema({
-    id: {
-        type:String,
-        require: true
-    },
-    user_id: {
-        type:String,
-        require: true
-    },
-    orderDate: {
-        type:Date,
-        require: true
-    },
-    items: {
-        type: order_detail,
-        require: true
-    },
-});
+const User = require("./user")
+const Restaurant = require("./restaurant")
 
+const orderSchema = new mongoose.Schema({
+    order_id:{
+        type:String,
+        require:true
+    },
+    customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
+    },
+    staff: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
+    },
+    deliverer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
+    },
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Restaurant
+    },
+    destination:{
+        type:String,
+        require:true
+    },
+    orderTime: {
+        type:Date,
+        require:true
+    },
+    items:[
+    ],
+    total_cost:{
+        type:Double,
+        require:true
+    }
+});
 const Order = mongoose.model("Order", orderSchema);
+
+module.exports = Order
