@@ -8,16 +8,16 @@ const {
 } = require("./FrontEnd_Object_Models/restaurant.js");
 const services = express();
 const dataAccess = require("../dataAccess/DAO");
-const model = require("./FrontEnd_Object_Models/frontendModel");
+// const model = require("./FrontEnd_Object_Models/frontendModel");
 
 // ========== Middlewares ===========
-app.use(cors());
-app.use(express.json({}));
+services.use(cors());
+services.use(express.json({}));
 
 // ======== Request handlers =========
 // --- LOG ---
-app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
+services.use((req, res, next) => {
+  res.setHeader("Content-Type", "serviceslication/json");
   console.log("======================== REQUEST ==========================");
   console.log(
     "- Time:",
@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 // ========== MIDDLEWARES ===========
 // Get every restaurant
 services.get("/feed", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Content-Type", "serviceslication/json");
   console.log(`return all Restaurants`);
   Restaurants.find({}, (err, restaurants) => {
     if (err != null) {
@@ -49,13 +49,13 @@ services.get("/feed", (req, res) => {
 });
 
 // Get info for a restaurant with specific ID
-app.get("/feed/:id", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
+services.get("/feed/:id", (req, res) => {
+  res.setHeader("Content-Type", "serviceslication/json");
   console.log(`Getting specific restaurant with id:${req.params.id}`);
-  Thread.findById(req.params.id, (err, restaurants) => {
+  Restaurants.findById(req.params.id, (err, restaurants) => {
     if (err != null) {
       res.status(500).json({
-        err: error,
+        err: err,
         message: "Unable to find restaurant with that id",
       });
       return;
@@ -67,6 +67,48 @@ app.get("/feed/:id", (req, res) => {
     }
     res.status(200).json(restaurants);
   });
+});
+
+// POST/create restaurant
+services.post("/restaurant", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`creating a restaurant with a body ${req.body}`);
+  if (
+    !req.body.path ||
+    !req.body.name ||
+    !req.body.logo ||
+    !req.body.background_image ||
+    !req.body.description ||
+    !req.body.location
+  ) {
+    console.log(`unable to create restaurant because fields are missing`);
+    res.status(400).json({
+      message: "unable to create restaurant",
+      error: "field is missing",
+    });
+    return;
+  }
+  Restaurants.create(
+    {
+      path: req.body.path,
+      name: req.body.name,
+      logo: req.body.logo,
+      background_image: req.body.background_image,
+      description: req.body.description,
+      location: req.body.location,
+    },
+    (err, restaurant) => {
+      if (err) {
+        console.log(`unable to create restaurant`);
+        res.status(400).json({
+          message: "unable to create restaurant",
+          error: err,
+        });
+        return;
+      }
+      res.status(201).json(restaurant);
+    }
+  );
 });
 
 // ========= ERROR HANDLER ==========
