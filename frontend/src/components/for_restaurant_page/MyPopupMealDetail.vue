@@ -27,32 +27,40 @@
                 </div>
 
                 <div class="popup_meal_customizations_wrapper">
-                    <div class="single_customization_wrapper" v-for="customization in popup_meal_customizations" 
+                    <div class="single_customization_wrapper" v-for="customization in new_popup_meal_customizations" 
                         :key="customization.name">
                         
                         <div class="title_and_arrow_buttons">
                             <div class="title">{{ customization.name }}</div>
 
-                            <div class="arrow_buttons">
-                                <div class="single_arrow_button">
+                            <div class="arrow_buttons" v-if="customization.show_options">
+                                <div class="single_arrow_button" @click="hide_customization_options(customization)">
                                     <span class="material-icons">expand_more</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="single_custom_option" v-for="option in customization.options" :key="option.name">
-                            <div class="checkbox" @click="toggle_option_selection(option)"
-                                :class="{ option_selected: option.selected }">
-                                <div class="check_box_center"></div>
-                            </div>
-                            
-                            <div class="option_infos_and_price">
-                                <div class="option_infos">
-                                    <div class="option_name">{{ option.name }}</div>
+                            <div class="arrow_buttons" v-else>
+                                <div class="single_arrow_button" @click="show_customization_options(customization)">
+                                    <span class="material-icons">expand_less</span>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <div v-if="customization.show_options">
+                            <div class="single_custom_option" v-for="option in customization.options" :key="option.name">
+                                <div class="checkbox" @click="toggle_option_selection(option)"
+                                    :class="{ option_selected: option.selected }">
+                                    <div class="check_box_center"></div>
+                                </div>
+                                
+                                <div class="option_infos_and_price">
+                                    <div class="option_infos">
+                                        <div class="option_name">{{ option.name }}</div>
+                                    </div>
 
-                                <div class="option_price">
-                                    + {{ option.price }}
+                                    <div class="option_price">
+                                        + {{ option.price }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -106,9 +114,18 @@ export default {
     data() {
         return {
             total_price: this.popup_meal_price,
+            new_popup_meal_customizations: [],
 
             quantity_to_add: 1
         }
+    },
+    created() {
+        this.popup_meal_customizations.forEach(customization => {
+            this.new_popup_meal_customizations.push({
+                ...customization,
+                show_options: true
+            })
+        });
     },
     methods: {
         close_button_clicked() {
@@ -116,6 +133,12 @@ export default {
         },
         toggle_option_selection(option) {
             option.selected = ! option.selected;
+        },
+        hide_customization_options(customization) {
+            customization.show_options = false;
+        },
+        show_customization_options(customization) {
+            customization.show_options = true;
         },
         decrease_quantity_to_add() {
             if(this.quantity_to_add > 1) {
@@ -125,8 +148,6 @@ export default {
         increase_quantity_to_add() {
             this.quantity_to_add++;
         }
-    },
-    created() {
     }
 }
 </script>

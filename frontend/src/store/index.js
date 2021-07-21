@@ -31,20 +31,8 @@ const state = {
                                     name: "Make it Deluxe",
                                     options: [
                                         {
-                                            name: "Add American cheese",
+                                            name: "Add American cheese, lettuce, and tomato",
                                             calories: "20", 
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add lettuce",
-                                            calories: "20",
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add tomato",
-                                            calories: "20",
                                             price: "0.6",
                                             selected: false
                                         }
@@ -91,21 +79,9 @@ const state = {
                                     name: "Make it Deluxe",
                                     options: [
                                         {
-                                            name: "Add Pepper Jack cheese",
+                                            name: "Add Pepper Jack cheese, lettuce, and tomato",
                                             calories: "50", 
                                             price: "1.2",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add lettuce",
-                                            calories: "20",
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add tomato",
-                                            calories: "20",
-                                            price: "0.6",
                                             selected: false
                                         }
                                     ]
@@ -211,20 +187,8 @@ const state = {
                                     name: "Make it Deluxe",
                                     options: [
                                         {
-                                            name: "Add American cheese",
+                                            name: "Add American cheese, lettuce, and tomato",
                                             calories: "20", 
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add lettuce",
-                                            calories: "20",
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add tomato",
-                                            calories: "20",
                                             price: "0.6",
                                             selected: false
                                         }
@@ -271,21 +235,9 @@ const state = {
                                     name: "Make it Deluxe",
                                     options: [
                                         {
-                                            name: "Add Pepper Jack cheese",
+                                            name: "Add Pepper Jack cheese, lettuce, and tomato",
                                             calories: "50", 
                                             price: "1.2",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add lettuce",
-                                            calories: "20",
-                                            price: "0.6",
-                                            selected: false
-                                        },
-                                        {
-                                            name: "Add tomato",
-                                            calories: "20",
-                                            price: "0.6",
                                             selected: false
                                         }
                                     ]

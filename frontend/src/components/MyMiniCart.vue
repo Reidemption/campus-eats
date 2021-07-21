@@ -50,6 +50,7 @@
 export default {
     data() {
         return {
+            empty_cart: false,
             items_in_cart: [],
         }
     },
