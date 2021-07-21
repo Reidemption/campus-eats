@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("./user")
+const Restaurant = require("./restaurant")
 
 const orderSchema = new mongoose.Schema({
     order_id:{
@@ -18,6 +19,10 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: User
     },
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Restaurant
+    },
     destination:{
         type:String,
         require:true
@@ -26,7 +31,9 @@ const orderSchema = new mongoose.Schema({
         type:Date,
         require:true
     },
-    total:{
+    items:[
+    ],
+    total_cost:{
         type:Double,
         require:true
     }
