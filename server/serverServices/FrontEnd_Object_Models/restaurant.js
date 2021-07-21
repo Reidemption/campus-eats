@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const optionSchema = new mongoose.Schema({
   name: String,
   calories: String,
-  price: Double,
+  price: Number,
   selected: Boolean,
   customization_id: {
     type: mongoose.Schema.Types.ObjectId,
