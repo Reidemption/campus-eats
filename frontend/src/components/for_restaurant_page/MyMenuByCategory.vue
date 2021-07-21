@@ -1,7 +1,7 @@
 <template>
     <div class="my_menu_by_category">
         <div class="caterory_title">
-            {{ category }}
+            {{ category_name }}
         </div>
         
         <div class="menu_items_wrapper">
@@ -10,12 +10,9 @@
                 <div class="name_and_description_and_price">
                     <div class="meal_name">{{ meal.name }}</div>
                     <div class="meal_description">{{ meal.description }}</div>
-                    <div class="meal_price" v-if="meal.price">
+                    <div class="meal_price">
                         <span class="dollar_sign">$</span>
                         {{ meal.price }}
-                    </div>
-                    <div class="meal_price_instruction" v-else>
-                        See options
                     </div>
                 </div>
 
@@ -23,8 +20,8 @@
             </div>
 
             <MyPopupMealDetail v-if="show_meal_item_detail"
-                :popup_meal_background_image="popup_meal_background_image"
                 :popup_meal_name="popup_meal_name"
+                :popup_meal_background_image="popup_meal_background_image"
                 :popup_meal_description="popup_meal_description"
                 :popup_meal_calories="popup_meal_calories"
                 :popup_meal_price="popup_meal_price"
@@ -42,29 +39,29 @@ export default {
         MyPopupMealDetail
     },
     props: {
-        category: String,
+        category_name: String,
         menu: Array,
     },
     data() {
         return {
-            popup_meal_background_image: "",
             popup_meal_name: "",
+            popup_meal_background_image: "",
             popup_meal_description: "",
             popup_meal_calories: "",
             popup_meal_price: "",
-            popup_meal_custom_options: "",
+            popup_meal_custom_options: [],
             show_meal_item_detail: false
         }
     },
     methods: {
         view_meal_item_detail(meal) {
             this.show_meal_item_detail = true;
-            this.popup_meal_background_image = meal.image_url;
             this.popup_meal_name = meal.name;
+            this.popup_meal_background_image = meal.image_url;
             this.popup_meal_description = meal.description;
             this.popup_meal_calories = meal.calories;
             this.popup_meal_price = meal.price;
-            this.popup_meal_custom_options = meal.custom_options
+            this.popup_meal_custom_options = meal.custom_options;
         },
         close_meal_item_detail() {
             this.show_meal_item_detail = false;

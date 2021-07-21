@@ -15,7 +15,8 @@
             <MyRestaurantInfos
                 :description="current_restaurant.description"
                 :location="current_restaurant.location"
-                :map="current_restaurant.map">
+                :hours="current_restaurant.hours"
+                :map="current_restaurant_maps.location">
             </MyRestaurantInfos>
             
             <MyCategoriesNav
@@ -24,7 +25,7 @@
 
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
-                    :category="category.name"
+                    :category_name="category.name"
                     :menu="category.menu">
                 </MyMenuByCategory>
             </div>
@@ -60,16 +61,24 @@ export default {
     data() {
         return {
             current_restaurant: "",
+            current_restaurant_maps: ""
         }
     },
     created() {
         let restaurants_list = this.$store.state.restaurants_list;
-    
         restaurants_list.forEach(restaurant => {
             if (restaurant.path === this.$route.query.menu) {
                 this.current_restaurant = restaurant;
             }
         });
+
+        let restaurants_maps_list = this.$store.state.restaurants_maps_list;
+        restaurants_maps_list.forEach(restaurant_maps => {
+            if (this.current_restaurant.name === restaurant_maps.restaurant_name) {
+                this.current_restaurant_maps = restaurant_maps;
+            }
+        })
+
     }
 }
 </script>

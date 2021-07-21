@@ -17,72 +17,14 @@
                     
                 <div class="popup_meal_calories">
                     <div class="title">Calories:</div>
-                    <div class="calories_amount" v-if="popup_meal_calories">
+                    <div class="calories_amount">
                         {{ popup_meal_calories }}
                     </div>
-
-                    <div class="calories_not_applicable" v-else>See options below</div>
                 </div>
 
-                <div class="popup_meal_custom_options_title" v-if="popup_meal_calories">
-                    Other options:
+                <div class="popup_meal_custom_options_title">
+                    Custom your order:
                 </div>
-                <div class="popup_meal_custom_options_title" v-else>
-                    All options:
-                </div>
-
-                <div class="popup_meal_custom_options">
-                    <div class="single_custom_option" v-for="option in popup_meal_custom_options_main" :key="option.name">
-                        <div class="checkbox_section">
-                            <div class="checkbox_main" @click="toggle_select_custom_option_main(option)"
-                                :class="{checkbox_main_selected : option.selected}">
-                                <span class="material-icons">done</span>
-                            </div>
-                        </div>
-
-                        <div class="custom_option_infos">
-                            <div class="option option_name">{{ option.name }}</div>
-                            <div class="option option_detail">{{ option.detail }}</div>
-                            <div class="option option_calories">
-                                <div class="title">Calories:</div>
-                                <div class="calories_amount">{{ option.calories }}</div>
-                            </div>
-                        </div>
-
-                        <div class="custom_option_price">
-                            <div class="option_price">
-                                <span class="dollar_sign">$</span>
-                                {{ option.price }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="single_custom_option" v-for="option in popup_meal_custom_options_additional" :key="option.name">
-                        <div class="checkbox_section">
-                            <div class="checkbox_additional" @click="toggle_select_custom_option_additional(option)"
-                                :class="{checkbox_additional_selected : option.selected}">
-                                <div class="circle_checkbox"></div>
-                            </div>
-                        </div>
-
-                        <div class="custom_option_infos">
-                            <div class="option option_name">{{ option.name }}</div>
-                            <div class="option option_detail">{{ option.detail }}</div>
-                            <div class="option option_calories">
-                                <div class="title">Calories:</div>
-                                <div class="calories_amount">{{ option.calories }}</div>
-                            </div>
-                        </div>
-
-                        <div class="custom_option_price">
-                            <div class="option_price">
-                                <span class="dollar_sign">$</span>
-                                {{ option.price }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="popup_meal_quantity_and_add_button_and_total_price">
                     <div class="quantify_control">
@@ -92,8 +34,7 @@
                             <span class="material-icons">remove</span>
                         </div>
                                 
-                        <div class="quantity_amount" v-if="popup_meal_price">{{ quantity_to_add }}</div>
-                        <div class="quantity_amount" v-else>0</div>
+                        <div class="quantity_amount">{{ quantity_to_add }}</div>
                         
                         <div class="quantity_button add_quantity_button"
                             @click="increase_quantity_to_add">
@@ -101,7 +42,7 @@
                         </div>
                     </div>
 
-                    <div class="add_button_and_total_price" v-if="popup_meal_price">
+                    <div class="add_button_and_total_price">
                         <div class="add_to_cart_button">
                             Add {{ quantity_to_add }} 
                             <span class="item_items" v-if="quantity_to_add === 1">item</span>
@@ -111,15 +52,6 @@
                         <div class="total_price">
                             <span class="dollar_sign">$</span>
                             {{ total_price }}
-                        </div>
-                    </div>
-
-                    <div class="add_button_and_total_price" v-else>
-                        <div class="add_to_cart_button">Select an option</div>
-                            
-                        <div class="total_price">
-                            <span class="dollar_sign">$</span>
-                            0.00
                         </div>
                     </div>
                 </div>  
@@ -140,9 +72,6 @@ export default {
     },
     data() {
         return {
-            popup_meal_custom_options_main: [],
-            popup_meal_custom_options_additional: [],
-
             total_price: this.popup_meal_price,
 
             quantity_to_add: 1
@@ -152,12 +81,6 @@ export default {
         close_button_clicked() {
             this.$emit("close_button_clicked");
         },
-        toggle_select_custom_option_main(option) {
-            option.selected = !option.selected;
-        },
-        toggle_select_custom_option_additional(option) {
-            option.selected = !option.selected;
-        }, 
         decrease_quantity_to_add() {
             if(this.quantity_to_add > 1) {
                 this.quantity_to_add--;
@@ -168,14 +91,6 @@ export default {
         }
     },
     created() {
-        this.popup_meal_custom_options.forEach(option => {
-            if(!option.type || option.type !== "additional") {
-                this.popup_meal_custom_options_main.push(option);
-            } 
-            else if(option.type && option.type === "additional") {
-                this.popup_meal_custom_options_additional.push(option);
-            }
-        });
     }
 }
 </script>
@@ -254,17 +169,6 @@ export default {
     align-items: center;
 }
 
-.calories_amount {
-    font-size: 15px;
-    color: var(--red-dark);
-    margin-left: 8px;
-    margin-top: 1px;
-}
-
-.calories_not_applicable {
-    margin-left: 8px;
-}
-
 .popup_meal_quantity_and_add_button_and_total_price {
     display: flex;
     margin-top: 40px;
@@ -291,10 +195,6 @@ export default {
 
 .quantity_button > span {
     font-size: 20px;
-}
-
-.add_button_and_total_price {
-    display: flex;
 }
 
 .quantity_amount {
@@ -334,102 +234,6 @@ export default {
     margin-top: 1px;
 }
 
-.popup_meal_custom_options_title {
-    margin: 20px 0 -10px;
-    font-size: 19px;
-}
-
-.popup_meal_custom_options {
-    margin: 30px 0;
-    max-height: 365px;
-    overflow: hidden;
-    overflow-y: scroll;
-    overflow-x: auto;
-}
-
-.option_price > .dollar_sign {
-    margin-right: 2px;
-}
-
-.option {
-    margin-top: 10px;
-}
-
-.option:first-child {
-    margin-top: 0;
-}
-
-.option_name {
-    font-weight: 700;
-}
-
-.option_detail {
-    color: var(--gray-dark);
-    font-style: italic;
-    font-size: 15px;
-}
-
-.option_calories {
-    display: flex;
-}
-
-.single_custom_option {
-    display: grid;
-    grid-template-columns: 1fr 6fr 1fr;
-    border: 1px solid var(--gray-dark);
-    padding: 20px 30px;
-    margin: 30px 30px 0;
-}
-
-.single_custom_option:first-child {
-    margin-top: 0;
-}
-
-.checkbox_section {
-    display: flex;
-    align-items: center;
-}
-
-.checkbox_main, .checkbox_additional {
-    border: 1px solid var(--navy);
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.checkbox_main:hover, .checkbox_additional:hover{
-    cursor: pointer;
-    background-color: var(--navy);
-}
-.checkbox_main  > span {
-    font-size: 17px;
-    color: white;
-}
-
-.checkbox_main_selected, .checkbox_additional_selected {
-    background-color: var(--navy);
-}
-
-.checkbox_additional {
-    border-radius: 50%;
-}
-
-.circle_checkbox {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: flex;
-    background-color: white;
-}
-
-.option_price {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 17px;
-}
-
 .cannot_decrease_quantity_to_add:hover {
     cursor: not-allowed;
     background-color: var(--gray);
@@ -438,6 +242,16 @@ export default {
 
 .item_items {
     margin: 0 5px;
+}
+
+.popup_meal_custom_options_title {
+    font-size: 20px;
+    margin: 20px 0
+}
+
+.calories_amount {
+    margin-left: 5px;
+    color: var(--red-dark);
 }
 </style>
 

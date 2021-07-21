@@ -45,9 +45,12 @@
             <div class="hours_icon">
               <i class="las la-clock"></i>
             </div>
-            <div class="hours_info">
-              <div class="date">Monday - Friday</div>
-              <div class="hours">8:00 AM - 5:00 PM</div>
+
+            <div class="all_hours_wrapper">
+              <div class="hours_info" v-for="hour in hours" :key="hour.date">
+                <div class="date">{{ hour.date }}</div>
+                <div class="hours">{{ hour.open }} - {{ hour.close }}</div>
+              </div>
             </div>
           </div>
 
@@ -62,6 +65,7 @@ export default {
   props: {
     description: String,
     location: String,
+    hours: Array,
     map: String
   },
   data() {
@@ -197,7 +201,7 @@ iframe, .map_and_close_button > img{
 }
 
 .location_and_hours {
-    padding: 20px 40px 30px;
+    padding: 20px 40px 10px;
 }
 
 .title {
@@ -217,6 +221,7 @@ iframe, .map_and_close_button > img{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .date {
