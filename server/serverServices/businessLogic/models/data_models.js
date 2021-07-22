@@ -8,9 +8,10 @@ const Meal = require("./meal");
 const MealSide = require("./meal_side");
 const Category = require("./category");
 const Restaurant = require("./restaurant");
+const RestaurantSideType = require("./restaurant_side_type.js");
 
 module.exports={
     User, UserInfo,
     Order,OrderItem,OrderItemSide,
-    Restaurant, Category,Menu, Meal, MealSide
+    Restaurant, Category,Menu, Meal, MealSide, RestaurantSideType
 }

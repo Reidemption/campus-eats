@@ -7,7 +7,6 @@ const menuSchema = new mongoose.Schema({
     description: String,
     calories: String,
     price: Number,
-    customization: [customizationSchema],
     background_image: String,
     category_id: {
       type: mongoose.Schema.Types.ObjectId,
