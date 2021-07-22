@@ -10,10 +10,10 @@ const menuSchema = new mongoose.Schema({
     background_image: String,
     category_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Category
+      ref: "Category"
     },
-    items:[Meal]
+    items:["Meal"]
 });
 
 const Menu = mongoose.model("Menu", menuSchema);
-module.exports = {Menu}
+module.exports = Menu

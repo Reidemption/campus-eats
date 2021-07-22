@@ -10,8 +10,9 @@ const userSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    user_info:{
-        type:UserInfo
+    user_info_id:{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "UserInfo"
     },
     position:{
         type:String,
