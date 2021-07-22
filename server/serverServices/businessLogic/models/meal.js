@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Menu = require("./menu");
+const MealSides = require("./meal_side");
 
 const mealSchema = new mongoose.Schema({
     name: String,
@@ -8,11 +9,11 @@ const mealSchema = new mongoose.Schema({
     price: Number,
     customization: [customizationSchema],
     background_image: String,
-    category_id: {
+    menu_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Category
+      ref: Menu
     },
-    items:[Meal]
+    items:[MealSide]
 });
 
 const Meal = mongoose.model("Meal", mealSchema);

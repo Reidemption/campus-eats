@@ -1,14 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const {
-  Restaurants,
-  Categories,
-  Menus,
-  Customizations,
-} = require("./FrontEnd_Object_Models/restaurant.js");
+const {  Restaurants,  Categories,  Menus,  Customizations,} = require("./FrontEnd_Object_Models/restaurant.js");
+const BLO = require("../serverServices/businessLogic/BLL/bllModules")
 const services = express();
-const dataAccess = require("../dataAccess/DAO");
-const model = require("./FrontEnd_Object_Models/frontendModel");
 
 // ========== Middlewares ===========
 app.use(cors());
@@ -31,7 +25,7 @@ app.use((req, res, next) => {
   ),
     next();
 });
-// ========== MIDDLEWARES ===========
+
 // Get every restaurant
 services.get("/feed", (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -68,6 +62,9 @@ app.get("/feed/:id", (req, res) => {
     res.status(200).json(restaurants);
   });
 });
+
+// -------------- Duy's Section ------------------
+
 
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
