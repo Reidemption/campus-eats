@@ -12,7 +12,7 @@
                     <div class="meal_description">{{ meal.description }}</div>
                     <div class="meal_price">
                         <span class="dollar_sign">$</span>
-                        {{ meal.price }}
+                        {{ meal.price.toFixed(2) }}
                     </div>
                 </div>
 
@@ -25,7 +25,7 @@
                 :popup_meal_description="popup_meal_description"
                 :popup_meal_calories="popup_meal_calories"
                 :popup_meal_price="popup_meal_price"
-                :popup_meal_customizations="popup_meal_customizations"
+                :popup_meal_custom_options="popup_meal_custom_options"
                 @close_button_clicked="close_meal_item_detail">
             </MyPopupMealDetail>
         </div>
@@ -49,7 +49,7 @@ export default {
             popup_meal_description: "",
             popup_meal_calories: "",
             popup_meal_price: "",
-            popup_meal_customizations: [],
+            popup_meal_custom_options: [],
             show_meal_item_detail: false
         }
     },
@@ -61,7 +61,7 @@ export default {
             this.popup_meal_description = meal.description;
             this.popup_meal_calories = meal.calories;
             this.popup_meal_price = meal.price;
-            this.popup_meal_customizations = meal.customizations;
+            this.popup_meal_custom_options = meal.custom_options;
         },
         close_meal_item_detail() {
             this.show_meal_item_detail = false;
