@@ -17,10 +17,10 @@ const orderItemSchema = mongoose.Schema({
         type:Date,
         require: true
     },
-    staff_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: User
-    },
+    // staff_id: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: User
+    // },
     isDone:{
         type:Boolean,
         default:false
@@ -37,19 +37,10 @@ const orderItemSchema = mongoose.Schema({
         type:Boolean,
         default:false
     },
-    meal:{
-        type:Meal
-    },
-    sides: [
-        {
-            quantity:Number,
-            item: OrderItemSide
-        }
+    meals:[
+        Meal
     ],
-    note:{
-        type:String
-    },
-    price:{
+    total_price:{
         type:Number,
         require:true
     }

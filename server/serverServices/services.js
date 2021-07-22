@@ -5,12 +5,12 @@ const BLO = require("../serverServices/businessLogic/BLL/bllModules")
 const services = express();
 
 // ========== Middlewares ===========
-app.use(cors());
-app.use(express.json({}));
+services.use(cors());
+services.use(express.json({}));
 
 // ======== Request handlers =========
 // --- LOG ---
-app.use((req, res, next) => {
+services.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   console.log("======================== REQUEST ==========================");
   console.log(
@@ -43,7 +43,7 @@ services.get("/feed", (req, res) => {
 });
 
 // Get info for a restaurant with specific ID
-app.get("/feed/:id", (req, res) => {
+services.get("/feed/:id", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   console.log(`Getting specific restaurant with id:${req.params.id}`);
   Thread.findById(req.params.id, (err, restaurants) => {

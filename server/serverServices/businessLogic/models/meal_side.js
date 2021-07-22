@@ -9,13 +9,13 @@ const mealSideSchema = new mongoose.Schema({
     background_image: String,
     side_type:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: SideType
+      ref: "SideType"
     },
     meal_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Meal
+      ref: "Meal"
     }
 });
 
-const MealSide = mongoose.model("Meal", mealSideSchema);
-module.exports = {MealSide}
+const MealSide = mongoose.model("MealSide", mealSideSchema);
+module.exports = MealSide
