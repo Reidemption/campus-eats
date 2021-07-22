@@ -8,6 +8,7 @@ const {
 } = require("./FrontEnd_Object_Models/restaurant.js");
 const services = express();
 const dataAccess = require("../dataAccess/DAO");
+// mongoose.set("useFindAndModify", false);
 // const model = require("./FrontEnd_Object_Models/frontendModel");
 
 // ========== Middlewares ===========
@@ -106,6 +107,7 @@ services.post("/restaurant", function (req, res) {
         });
         return;
       }
+      console.log(restaurant);
       res.status(201).json(restaurant);
     }
   );
@@ -131,7 +133,7 @@ services.post("/category", function (req, res) {
 
   Restaurants.findByIdAndUpdate(
     req.body.restaurant_id,
-    { $push: { category: newCategory } },
+    { $push: { categories: newCategory } },
     (err, restaurant) => {
       if (err) {
         console.log(`unable to create category`);
@@ -147,24 +149,100 @@ services.post("/category", function (req, res) {
         );
 
         res.status(404).json({
-          message: "Unable to find thread",
+          message: "Unable to find restaurant",
           error: err,
         });
       }
-      res.status(201).json(restaurant.category[restaurant.category.length - 1]);
+      console.log(restaurant.categories);
+      res
+        .status(201)
+        .json(restaurant.categories[restaurant.categories.length - 1]);
     }
   );
 });
 
-// ========= ERROR HANDLER ==========
-services.use((req, res, next) => {
-  if (req.headers.error != undefined) {
-    console.log(`-------------------- ERROR ---------------------`);
-    console.log(`- ${Date.now()} - Cannot connect to Mysql`);
-    console.log(`--- Error: ${err}`);
-    console.log(`------------------------------------------------`);
+// POST/create menu for a specific category
+services.post("/menu", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`creating a menu with a body ${req.body}`);
+  console.log(`${req.body.category_id}`);
+
+  if (
+    !req.body.name ||
+    !req.body.description ||
+    !req.body.price ||
+    !req.body.category_id ||
+    !req.body.restaurant_id
+  ) {
+    console.log(`unable to create menu because fields are missing`);
+    res.status(400).json({
+      message: "unable to create menu",
+      error: "field is missing",
+    });
+    return;
   }
-  next();
+  let newMenu = {
+    name: req.body.name,
+    image_url: req.body.image_url,
+    description: req.body.description,
+    calories: req.body.calories,
+    price: req.body.price,
+    category_id: req.body.category_id,
+    restaurant_id: req.body.restaurant_id,
+  };
+  Restaurants.findById(
+    req.body.restaurant_id,
+    // { $push: { menu: newMenu } },
+    (err, restaurant) => {
+      console.log(req.body.restaurant_id);
+      if (err) {
+        console.log(`unable to create menu`);
+        res.status(500).json({
+          message: "unable to create menu",
+          error: err,
+        });
+        return;
+      } else if (restaurant === null) {
+        console.log(`${restaurant} N0LL`);
+        console.log(
+          `Unable to find restaurant with id: ${req.body.restaurant_id}`
+        );
+
+        res.status(404).json({
+          message: "Unable to find restaurant",
+          error: err,
+        });
+      } else {
+        console.log("restaurant id is valid");
+
+        // the restaurant is valid, now you need to update its stuff
+        // because category is a list we need to find the right one
+        console.log(restaurant.categories);
+        restaurant.categories.forEach((category) => {
+          if (category._id === req.body.category_id) {
+            category.menu.push(newMenu);
+          }
+        });
+        // okay so now we have to go tell the database about our change
+
+        Restaurants.replaceOne(
+          req.body.restaurant_id,
+          restaurant,
+          {},
+          (err) => {
+            if (err) {
+              console.log("Error replacing restaurant in DB:", err);
+            } else {
+              console.log("Successfully replaced restaurant in DB.");
+            }
+          }
+        ),
+          console.log(`${restaurant} Success`);
+        res.status(201).json(restaurant.categories.menu);
+      }
+    }
+  );
 });
+
 // ========= EXPORT MODULE ==========
 module.exports = services;

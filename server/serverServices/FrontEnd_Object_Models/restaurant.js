@@ -19,19 +19,21 @@ const customizationSchema = new mongoose.Schema({
 
 const menuSchema = new mongoose.Schema({
   name: String,
+  image_url: String,
   description: String,
   calories: String,
   price: Number,
-  customization: [customizationSchema],
+  customizations: [customizationSchema],
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categories",
   },
+  restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurants" },
 });
 
 const categorySchema = new mongoose.Schema({
   name: String,
-  menu: [menuSchema],
+  menus: [menuSchema],
   restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurants" },
 });
 
@@ -49,8 +51,8 @@ const restaurantSchema = new mongoose.Schema({
   background_image: String,
   description: String,
   location: String,
-  hour: [hourSchema],
-  category: [categorySchema],
+  hours: [hourSchema],
+  categories: [categorySchema],
 });
 
 const Restaurants = mongoose.model("Restaurants", restaurantSchema);
