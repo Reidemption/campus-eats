@@ -22,48 +22,78 @@
                     </div>
                 </div>
 
-                <div class="popup_meal_customizations_title">
+                <div class="popup_meal_custom_options_title">
                     Custom your order:
                 </div>
 
-                <div class="popup_meal_customizations_wrapper">
-                    <div class="single_customization_wrapper" v-for="customization in new_popup_meal_customizations" 
-                        :key="customization.name">
+                <div class="popup_meal_custom_options_wrapper">
+                    <div class="single_customization_wrapper" v-for="custom_option in new_popup_meal_custom_options" 
+                        :key="custom_option.main_type">
                         
                         <div class="title_and_arrow_buttons">
-                            <div class="title">{{ customization.name }}</div>
+                            <div class="title">{{ custom_option.main_type }}
+                                <span v-if="custom_option.choices.length > 1">(Select up to 1 choice)</span>
+                            </div>
 
-                            <div class="arrow_buttons" v-if="customization.show_options">
-                                <div class="single_arrow_button" @click="hide_customization_options(customization)">
+                            <div class="arrow_buttons" v-if="custom_option.show_choices">
+                                <div class="single_arrow_button" @click="custom_option.show_choices = false">
                                     <span class="material-icons">expand_more</span>
                                 </div>
                             </div>
 
                             <div class="arrow_buttons" v-else>
-                                <div class="single_arrow_button" @click="show_customization_options(customization)">
+                                <div class="single_arrow_button" @click="custom_option.show_choices = true">
                                     <span class="material-icons">expand_less</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div v-if="customization.show_options">
-                            <div class="single_custom_option" v-for="option in customization.options" :key="option.name">
-                                <div class="checkbox" @click="toggle_option_selection(option)"
-                                    :class="{ option_selected: option.selected }">
+                        <div v-if="custom_option.show_choices">
+                            <div class="single_custom_choice" v-for="choice in custom_option.choices" :key="choice.name">
+                                <div class="checkbox" v-if="!choice.selected"
+                                    @click="choice_selected(choice)">
                                     <div class="check_box_center"></div>
                                 </div>
-                                
-                                <div class="option_infos_and_price">
-                                    <div class="option_infos">
-                                        <div class="option_name">{{ option.name }}</div>
+
+                                <div class="checkbox" v-else 
+                                    @click="choice_unselected(choice)"
+                                    :class="{ choice_selected: choice.selected }">
+                                    <div class="check_box_center"></div>
+                                </div>
+                                    
+                                <div class="choice_infos_and_price">
+                                    <div class="choice_infos">
+                                        <div class="choice_name">{{ choice.name }}</div>
                                     </div>
 
-                                    <div class="option_price">
-                                        + {{ option.price }}
+                                    <div class="choice_price">
+                                        + {{ choice.price.toFixed(2) }}
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="popup_meal_included_message">
+                    <div class="title_and_arrow_buttons">
+                        <div class="title">Include a Message</div>
+
+                        <div class="arrow_buttons" v-if="show_include_message_box">
+                            <div class="single_arrow_button" @click="show_include_message_box = false">
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                        </div>
+
+                        <div class="arrow_buttons" v-else>
+                            <div class="single_arrow_button" @click="show_include_message_box = true">
+                                <span class="material-icons">expand_less</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="include_message_box" v-if="show_include_message_box">
+                        <textarea rows="2" placeholder="Add specific message (allergy, etc)"></textarea>
                     </div>
                 </div>
 
@@ -92,7 +122,7 @@
                         
                         <div class="total_price">
                             <span class="dollar_sign">$</span>
-                            {{ total_price }}
+                            {{ total_price.toFixed(2) }}
                         </div>
                     </div>
                 </div>  
@@ -108,45 +138,122 @@ export default {
         popup_meal_name: String,
         popup_meal_description: String,
         popup_meal_calories: String,
-        popup_meal_price: String,
-        popup_meal_customizations: Array,
+        popup_meal_price: Number,
+        popup_meal_custom_options: Array,
     },
     data() {
         return {
             total_price: this.popup_meal_price,
-            new_popup_meal_customizations: [],
-
-            quantity_to_add: 1
+            new_popup_meal_custom_options: [],
+            quantity_to_add: 1,
+            show_include_message_box: false,
         }
     },
     created() {
-        this.popup_meal_customizations.forEach(customization => {
-            this.new_popup_meal_customizations.push({
-                ...customization,
-                show_options: true
-            })
-        });
+        this.create_new_popup_meal_custom_options_list();
     },
     methods: {
+        create_new_popup_meal_custom_options_list() {
+            let custom_options_main_types = [];
+
+            this.popup_meal_custom_options.forEach(option => {
+                if(!custom_options_main_types.includes(option.type)) {
+                    custom_options_main_types.push(option.type);
+                }
+            })
+
+            custom_options_main_types.forEach(type => {
+                this.new_popup_meal_custom_options.push({
+                    main_type: type,
+                    choices: [],
+                    show_choices: true
+                })
+            })
+
+            this.popup_meal_custom_options.forEach(option => {
+                this.new_popup_meal_custom_options.forEach(new_option => {
+                    if(option.type === new_option.main_type) {
+                        new_option.choices.push(option);
+                    }
+                })
+            })
+        },
         close_button_clicked() {
             this.$emit("close_button_clicked");
         },
-        toggle_option_selection(option) {
-            option.selected = ! option.selected;
+        choice_selected(choice) {
+            this.new_popup_meal_custom_options.forEach(new_option => {
+                new_option.choices.forEach(new_option_choice => {
+                    if (choice.type === new_option_choice.type ) {
+                        if (choice.name === new_option_choice.name) {
+                            choice.selected = true;
+                            this.total_price += (choice.price * this.quantity_to_add);
+                        } else {
+                            if (new_option_choice.selected === true) {
+                                this.total_price -= (new_option_choice.price * this.quantity_to_add);
+                            }
+                            new_option_choice.selected = false;
+                        }
+                    }
+                })
+            })
         },
-        hide_customization_options(customization) {
-            customization.show_options = false;
-        },
-        show_customization_options(customization) {
-            customization.show_options = true;
+        choice_unselected(choice) {
+            choice.selected = false;
+            this.total_price -= (choice.price * this.quantity_to_add);
         },
         decrease_quantity_to_add() {
+            let meal_price = this.popup_meal_price;
+            let total_price_before_update = this.total_price;
+            let new_total_price;
+            let custom_options_price = [];
+
+            this.new_popup_meal_custom_options.forEach(new_option => {
+                new_option.choices.forEach(choice => {
+                    if (choice.selected) { 
+                        custom_options_price.push(choice.price);
+                    }
+                })
+            })
+
+            if(custom_options_price.length !== 0) {
+                custom_options_price.forEach(option_price => {
+                    total_price_before_update -= option_price;
+                })
+            }
+
             if(this.quantity_to_add > 1) {
                 this.quantity_to_add--;
+
+                new_total_price = total_price_before_update - meal_price;
+            
+                this.total_price = new_total_price;
             }
         },
         increase_quantity_to_add() {
+            let total_price_before_update = this.popup_meal_price;
+            let new_total_price;
+            let custom_options_price = [];
+
             this.quantity_to_add++;
+
+            this.new_popup_meal_custom_options.forEach(new_option => {
+                new_option.choices.forEach(choice => {
+                    if (choice.selected) { 
+                        custom_options_price.push(choice.price);
+                    }
+                })
+            })
+
+            if(custom_options_price.length !== 0) {
+                custom_options_price.forEach(option_price => {
+                    total_price_before_update += option_price;
+                })
+            }
+
+            new_total_price = total_price_before_update * this.quantity_to_add;
+            
+            this.total_price = new_total_price;
         }
     }
 }
@@ -171,7 +278,6 @@ export default {
     display: grid;
     grid-template-columns: 1fr 2fr;
     width: 60%;
-    max-height: 80%;
     max-height: 80%;
     overflow: hidden;
     overflow-y: scroll;
@@ -305,7 +411,7 @@ export default {
     margin: 0 5px;
 }
 
-.popup_meal_customizations_title {
+.popup_meal_custom_options_title {
     font-size: 20px;
     margin-top: 20px;
 }
@@ -315,7 +421,7 @@ export default {
     color: var(--red-dark);
 }
 
-.single_customization_wrapper > .title_and_arrow_buttons {
+.title_and_arrow_buttons {
     background-color: var(--gray);
     padding: 15px 20px;
     font-size: 17px;
@@ -343,13 +449,13 @@ export default {
     color: var(--navy);
 }
 
-.single_custom_option {
+.single_custom_choice {
     display: grid;
     grid-template-columns: 10% 90%;
     margin: 20px 20px 0;
 }
 
-.option_infos_and_price {
+.choice_infos_and_price {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -382,8 +488,28 @@ export default {
     border-radius: 50%;
 }
 
-.option_selected {
+.choice_selected {
     border: 2px solid var(--navy);
     background-color: var(--navy);
+}
+
+.popup_meal_included_message {
+    margin-top: 30px;
+}
+
+.include_message_box > textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px 30px;
+    font-size: 16px;
+    margin-top: 20px;
+    border: 1px solid var(--gray-fade);
+    color: var(--gray-dark);
+}
+
+.title_and_arrow_buttons > .title > span {
+    margin-left: 10px;
+    font-size: 15px;
+    color: var(--gray-dark);
 }
 </style>
