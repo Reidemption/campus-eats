@@ -14,7 +14,7 @@
                 <div class="cart_icon" @click="view_mini_cart">
                     <i class="cart_icon_link las la-shopping-cart"></i>
                 </div>
-                <div class="cart_items_tracker">0</div>
+                <div class="cart_items_tracker">{{ total_items_in_cart }}</div>
             </div>
         </div>
 
@@ -34,13 +34,28 @@ export default {
     },
     data() {
         return {
+            total_items_in_cart: 0,
             show_mini_cart: false
         }
     },
     created () {
         window.addEventListener('scroll', this.handle_scroll);
+
+        this.get_number_of_items_in_cart();
     },
     methods: {
+        get_number_of_items_in_cart() {
+            let customer_cart = this.$store.state.customer_cart;
+            let items_in_cart = 0;
+
+            customer_cart.forEach(order => {
+                order.meals.forEach(meal => {
+                    items_in_cart += 1;
+                })
+            });
+
+            this.total_items_in_cart = items_in_cart;
+        },
         view_mini_cart() {
             this.show_mini_cart = true;
         },

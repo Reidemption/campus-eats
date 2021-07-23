@@ -285,7 +285,7 @@ const state = {
                     quantity: 1,
                     meal_price: 3.89,
                     subtotal_price: 6.99,
-                    note: "",
+                    note: "Please don't add chicken, I am allergic to it.",
                     custom_options: [
                         {
                             type: "Make it Deluxe",
@@ -307,6 +307,46 @@ const state = {
                             calories: "40",
                             price: 2.5,
                             selected: true
+                        },
+                        {
+                            type: "Add Drink",
+                            name: "Sprite",
+                            calories: "30",
+                            price: 2.5,
+                            selected: false
+                        }
+                    ]
+                },
+                {
+                    name: "Chick-fil-A Chicken",
+                    image_url: "TrailblazersCafe/ChickFilA/og_meal_chicken.png",
+                    description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
+                    calories: "440",
+                    quantity: 2,
+                    meal_price: 3.89,
+                    subtotal_price: 7.78,
+                    note: "",
+                    custom_options: [
+                        {
+                            type: "Make it Deluxe",
+                            name: "Add American cheese, lettuce, and tomato",
+                            calories: "20", 
+                            price: 0.6,
+                            selected: false
+                        },
+                        {
+                            type: "Add Sides",
+                            name: "Fries",
+                            calories: "20",
+                            price: 1.9,
+                            selected: false
+                        },
+                        {
+                            type: "Add Drink",
+                            name: "Coke",
+                            calories: "40",
+                            price: 2.5,
+                            selected: false
                         },
                         {
                             type: "Add Drink",

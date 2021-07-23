@@ -28,10 +28,8 @@
                                     </div>
                                 </div>
                                 
-                                <div class="cart_item_message_included">
-                                    Message included:
-                                    <span v-if="order.note">Yes</span>
-                                    <span v-else>No</span>
+                                <div class="cart_item_message_included" v-if="meal.note">
+                                    Message included
                                 </div>
                             </div>
 

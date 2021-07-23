@@ -75,6 +75,46 @@
                     </div>
                 </div>
 
+                <div class="popup_meal_edit_inluded_message_section">
+                    <div class="popup_meal_included_message" v-if=" popup_meal_edit_note !== '' ">
+                        <div class="title_and_arrow_buttons">
+                            <div class="title">Your message</div>
+
+                            <div class="arrow_buttons">
+                                <div class="single_arrow_button">
+                                    <span class="material-icons">expand_more</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="include_message_box">
+                            <textarea rows="2" :value="popup_meal_edit_note"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="popup_meal_included_message" v-else>
+                        <div class="title_and_arrow_buttons">
+                            <div class="title">Include a Message</div>
+
+                            <div class="arrow_buttons" v-if="show_include_message_box">
+                                <div class="single_arrow_button" @click="show_include_message_box = false">
+                                    <span class="material-icons">expand_more</span>
+                                </div>
+                            </div>
+
+                            <div class="arrow_buttons" v-else>
+                                <div class="single_arrow_button" @click="show_include_message_box = true">
+                                    <span class="material-icons">expand_less</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="include_message_box" v-if="show_include_message_box">
+                            <textarea rows="2" placeholder="Add specific message (allergy, etc)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="popup_meal_quantity_and_add_button_and_total_price">
                     <div class="quantify_control">
                         <div class="quantity_button subtract_quantity_button"
@@ -120,9 +160,10 @@ export default {
     },
     data() {
         return {
-            total_price: this.popup_meal_edit_subtotal_price * this.popup_meal_edit_quantity,
+            total_price: this.popup_meal_edit_subtotal_price,
             new_popup_meal_edit_custom_options: [],
-            quantity_to_add: this.popup_meal_edit_quantity
+            quantity_to_add: this.popup_meal_edit_quantity,
+            show_include_message_box: false
         }
     },
     created() {
@@ -243,6 +284,7 @@ export default {
     width: 100%;
     height: 100vh;
     background-color: rgba(0,0,0,0.4);
+    z-index: 1;
 }
 
 .my_popup_meal_edit_wrapper {
@@ -305,6 +347,7 @@ export default {
     color: var(--gray-dark);
     font-size: 15px;
     margin: 10px 0;
+    line-height: 22px;
 }
 
 .popup_meal_calories {

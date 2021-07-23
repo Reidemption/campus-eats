@@ -146,7 +146,7 @@ export default {
             total_price: this.popup_meal_price,
             new_popup_meal_custom_options: [],
             quantity_to_add: 1,
-            show_include_message_box: false,
+            show_include_message_box: false
         }
     },
     created() {
@@ -329,6 +329,7 @@ export default {
     color: var(--gray-dark);
     font-size: 15px;
     margin: 10px 0;
+    line-height: 22px;
 }
 
 .popup_meal_calories {

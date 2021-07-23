@@ -101,6 +101,7 @@ export default {
 
 .my_delivery_additional_info {
     color: var(--gray-dark);
+    margin-top: 5px;
 }
 
 .my_delivery_section_edit_button {
