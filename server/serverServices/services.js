@@ -114,8 +114,8 @@ services.post("/restaurant", function (req, res) {
 // POST/create categories for a specific restaurant
 services.post("/category", function (req, res) {
   res.setHeader("Content-Type", "application/json");
-  console.log(`creating a category with a body ${req.body}`);
-
+  console.log(`creating a category with a body`);
+  console.log(req.body);
   if (!req.body.name || !req.body.restaurant_id) {
     console.log(`unable to create category because fields are missing`);
     res.status(400).json({
@@ -164,7 +164,6 @@ services.post("/category", function (req, res) {
 services.post("/menu", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(`creating a menu with a body:`);
-  console.log(req.body);
 
   if (
     !req.body.name ||
@@ -190,10 +189,15 @@ services.post("/menu", function (req, res) {
     restaurant_id: req.body.restaurant_id,
   };
 
-  Restaurants.updateOne(
-    { _id: req.body.restaurant_id, categories_id: req.body.category_id },
-    { $push: { "categories.$.menus": newMenu } },
+  Restaurants.findOneAndUpdate(
+    {
+      $match: { _id: req.body.restaurant_id },
+      $unwind: "$categories",
+      $match: { _id: req.body.category_id },
+    },
+    { $push: { "categories.menus": newMenu } },
     (err, restaurant) => {
+      console.log(`=>restaurant: ${restaurant}`);
       if (err) {
         console.log(`unable to create menu error 500`);
         res.status(500).json({
