@@ -26,7 +26,8 @@
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
                     :category_name="category.name"
-                    :menu="category.menu">
+                    :menu="category.menu"
+                    :path="current_restaurant.path">
                 </MyMenuByCategory>
             </div>
 

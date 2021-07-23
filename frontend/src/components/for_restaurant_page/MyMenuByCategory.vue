@@ -41,6 +41,7 @@ export default {
     props: {
         category_name: String,
         menu: Array,
+        path: String
     },
     data() {
         return {
