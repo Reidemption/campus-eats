@@ -1,13 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const {
-  Restaurants,
-  Categories,
-  Menus,
-  Customizations,
-} = require("./FrontEnd_Object_Models/restaurant.js");
-const BLO = require("../serverServices/businessLogic/BLL/bllModules");
+const {  Restaurants,  Categories,  Menus,  Customizations} = require("./FrontEnd_Object_Models/restaurant.js");
+const BLO = require("../serverServices/businessLogic/BLL/bllModules")
 const services = express();
+const main_path = "/campuseats"
 
 // ========== Middlewares ===========
 services.use(cors());

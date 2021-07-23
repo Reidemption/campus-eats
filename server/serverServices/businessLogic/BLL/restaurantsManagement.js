@@ -1,58 +1,65 @@
 const Restaurant = require("../models/restaurant")
 
+function findRestaurantById(id){
+    Restaurant.RestaurantModel.find({
+        _id:id
+    }, (err, restaurant) => {
+        if (err) {
+          return {error:err, result :null};
+        }
+        return {error:null, result :restaurant};
+      });
+}
+
 function findRestaurantsByName(name){
-    Restaurants.find({
+    Restaurant.RestaurantModel.find({
         "name":{$regex:`(?i)${name}`}
     }, (err, restaurants) => {
         if (err != null) {
-          res.status(500).json({
-            err: error,
-            message: "unable to list all restaurants",
-          });
-          return {Error:err, result :undefined};
+          return {error:err, result :null};
         }
-        return {Error:undefined, result :restaurants};
-      });
+        return {error:null, result :restaurants};
+    });
 }
 function findOneRestaurantsByName(name){
-    Restaurants.findOne({
+    Restaurant.RestaurantModel.findOne({
         name:`${name}`
     }, (err, restaurant) => {
         if (err != null) {
-            return {Error:err, result :undefined};
+            return {error:err, result :null};
         }
-        return {Error:undefined, result :restaurant};
+        return {error:null, result :restaurant};
       });
 }
 
 function createRestaurant(restaurant_obj){
     //TODO: check if that restaurant name is existed?!?
-    Restaurant.create(restaurant_obj, (err,restaurant)=>{
+    Restaurant.RestaurantModel.create(restaurant_obj, (err,restaurant)=>{
         if (err){
             console.log(`Couldn't create a restaurant with body ${req.body}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:restaurant
         }
     });
 }
 
 function updateRestaurant(restaurant_obj){
-    Restaurant.findByIdAndUpdate(restaurant_obj._id,restaurant_obj, (err,restaurant)=>{
+    Restaurant.RestaurantModel.findByIdAndUpdate(restaurant_obj._id,restaurant_obj, (err,restaurant)=>{
         if (err){
             console.log(`Couldn't update a restaurant with body ${restaurant_obj}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:restaurant
         }
     });
@@ -60,22 +67,23 @@ function updateRestaurant(restaurant_obj){
 
 
 function deleteRestaurant(restaurant_id){
-    Restaurant.findByIdAndDelete(restaurant_id, (err,restaurant)=>{
+    Restaurant.RestaurantModel.findByIdAndDelete(restaurant_id, (err,restaurant)=>{
         if (err){
             console.log(`Couldn't delete a restaurant with id ${restaurant_id}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:restaurant
         }
     });
 }
 
 module.exports={
+    findRestaurantById,
     findOneRestaurantsByName,
     findRestaurantsByName,
     createRestaurant,

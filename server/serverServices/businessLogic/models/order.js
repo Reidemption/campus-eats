@@ -2,18 +2,10 @@ const mongoose = require("mongoose");
 const User = require("./user")
 const OrderItem = require("./order_item")
 
-const orderSchema = new mongoose.Schema({
-    order_id:{
-        type:String,
-        require:true
-    },
+const OrderSchema = new mongoose.Schema({
     customer_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: User
-    },
-    destination:{
-        type:String,
-        require:true
+        ref: "User"
     },
     order_time: {
         type:Date,
@@ -23,24 +15,23 @@ const orderSchema = new mongoose.Schema({
         type:Date,
         require:true
     },
-    isPickedUp:{
-        type:Boolean,
-        default:false
+    lastPickup: {
+        type:Date,
+        require:true
     },
     DeliveryTime: {
         type:Date,
         require:true
     },
-    isDelivered:{
+    isCompletelyDelivered:{
         type:Boolean,
         default:false
     },
-    items:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: OrderItem
-        }
-    ],
+    destination:{
+        type:String,
+        require:true
+    },
+    order_items:[OrderItem.OrderItemSchema],
     paid_by_meal_plan:{
         type:Boolean,
         default:true
@@ -49,16 +40,21 @@ const orderSchema = new mongoose.Schema({
         type:Number,
         require:true
     },
+    is_paid_by_meal_plan:{
+        type:Boolean,
+        require:true,
+        default:true
+    },
     tax:{
         type:Number,
         require:function(){
-            return this.paid_by_meal_plan;
+            return this.is_paid_by_meal_plan;
         }
     },
     final_Price:{
         type:Number
     }
-});
-const Order = mongoose.model("Order", orderSchema);
+},{timestamps:true});
+const OrderModel = mongoose.model("Order", OrderSchema);
 
-module.exports = Order
+module.exports = {OrderModel,OrderSchema}

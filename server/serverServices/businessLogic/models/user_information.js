@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("./user");
+const Order = require("./order");
 
 const userInfoSchema = new mongoose.Schema({
     username: {
@@ -37,8 +38,10 @@ const userInfoSchema = new mongoose.Schema({
     user_id:{
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User"
-    }
-});
+    },
+    order_history:[],
+    delivery_history:[]
+},{timestamps:true});
 const UserInfo = mongoose.model("UserInfo", userInfoSchema);
 
 module.exports = UserInfo

@@ -1,5 +1,16 @@
 const User = require("../models/user")
 
+function findUsertById(id){
+    User.UserModel.find({
+        _id:id
+    }, (err, user) => {
+        if (err != null) {
+          return {Error:err, result :undefined};
+        }
+        return {Error:undefined, result :user};
+      });
+}
+
 function findUsersByName(name){
     Users.find({
         "name":{$regex:`(?i)${name}`}
