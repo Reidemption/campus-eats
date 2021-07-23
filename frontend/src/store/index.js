@@ -283,7 +283,8 @@ const state = {
                     description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
                     calories: "440",
                     quantity: 1,
-                    price: 6.99,
+                    meal_price: 3.89,
+                    subtotal_price: 6.99,
                     note: "",
                     custom_options: [
                         {
@@ -294,12 +295,26 @@ const state = {
                             selected: true
                         },
                         {
+                            type: "Add Sides",
+                            name: "Fries",
+                            calories: "20",
+                            price: 1.9,
+                            selected: false
+                        },
+                        {
                             type: "Add Drink",
                             name: "Coke",
-                            calories: "20", 
+                            calories: "40",
                             price: 2.5,
                             selected: true
                         },
+                        {
+                            type: "Add Drink",
+                            name: "Sprite",
+                            calories: "30",
+                            price: 2.5,
+                            selected: false
+                        }
                     ]
                 }
             ]

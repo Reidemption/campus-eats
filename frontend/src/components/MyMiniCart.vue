@@ -22,7 +22,9 @@
                                 </div>
                                 <div class="cart_item_custom_options">
                                     <div class="single_custom_option" v-for="option in meal.custom_options" :key="option.name">
-                                        <div class="option_name">{{ option.name }}</div>
+                                        <div v-if="option.selected">
+                                            <div class="option_name">{{ option.type }}</div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -35,7 +37,7 @@
 
                             <div class="price_section">
                                     <span class="dollar_sign">$</span>
-                            <div class="total_price">{{ meal.price }}</div>
+                            <div class="total_price">{{ meal.subtotal_price }}</div>
                             </div>
                         </div>
                     </div>
@@ -47,7 +49,7 @@
                 <div class="circle_spacing"></div>
                 <div class="total_cart_price">
                     <span class="dollar_sign">$</span>
-                    <div class="total_price">20.99</div>
+                    <div class="total_price">{{ subtotal.toFixed(2) }}</div>
                 </div>
             </router-link>
         </div>
@@ -66,7 +68,10 @@
             :popup_meal_edit_description="popup_meal_edit_description"
             :popup_meal_edit_calories="popup_meal_edit_calories"
             :popup_meal_edit_quantity="popup_meal_edit_quantity"
+            :popup_meal_edit_meal_price="popup_meal_edit_meal_price"
+            :popup_meal_edit_subtotal_price="popup_meal_edit_subtotal_price"
             :popup_meal_edit_note="popup_meal_edit_note"
+            :popup_meal_edit_custom_options="popup_meal_edit_custom_options"
             @close_popup_meal_edit="close_popup_meal_edit">
         </MyPopupMealEdit>
     </div>
@@ -84,13 +89,17 @@ export default {
             empty_cart: true,
             customer_cart: [],
             view_popup_meal_edit: false,
+            subtotal: 20,
 
             popup_meal_edit_name: "",
             popup_meal_edit_background_image: "",
             popup_meal_edit_description: "",
             popup_meal_edit_calories: "",
             popup_meal_edit_quantity: "",
+            popup_meal_edit_meal_price: "",
+            popup_meal_edit_subtotal_price: "",
             popup_meal_edit_note: "",
+            popup_meal_edit_custom_options: []
         }
     },
     created() {
@@ -101,8 +110,21 @@ export default {
         } else {
             this.empty_cart = true;
         }
+
+        this.calculate_cart_subtotal();
     },
     methods: {
+        calculate_cart_subtotal() {
+            let cart_subtutal = [];
+
+            this.customer_cart.forEach(order => {
+                order.meals.forEach(meal => {
+                    cart_subtutal.push(meal.subtotal_price);
+                })
+            });
+
+            this.subtotal = cart_subtutal.reduce((a, b) => a + b, 0);
+        },
         close_button_clicked() {
             this.$emit("close_button_clicked");
         },
@@ -114,8 +136,10 @@ export default {
             this.popup_meal_edit_description = meal.description;
             this.popup_meal_edit_calories = meal.calories;
             this.popup_meal_edit_quantity = meal.quantity;
+            this.popup_meal_edit_meal_price = meal.meal_price;
+            this.popup_meal_edit_subtotal_price = meal.subtotal_price,
             this.popup_meal_edit_note = meal.note;
-
+            this.popup_meal_edit_custom_options = meal.custom_options;
         },
         close_popup_meal_edit() {
             this.view_popup_meal_edit = false;
@@ -130,7 +154,7 @@ export default {
     top: 70px;
     right: 75px;
     width: 40%;
-    height: 70%;
+    height: fit-content;
     max-height: 70%;
     background-color: white;
     padding: 30px;
@@ -302,5 +326,9 @@ export default {
 
 .cart_item_name_section > span:hover {
     color: var(--navy);
+}
+
+.option_name {
+    margin-bottom: 5px;
 }
 </style>
