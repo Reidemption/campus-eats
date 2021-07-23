@@ -23,8 +23,15 @@ const userSchema = new mongoose.Schema({
     },
     logged_in:{
         type: Boolean
+    },
+    last_loggin_time:{
+        type:Date
+    },
+    isActive:{
+        type:Boolean,
+        default:false
     }
-});
+},{timestamps:true});
 const User = mongoose.model("User", userSchema);
 
 module.exports = User

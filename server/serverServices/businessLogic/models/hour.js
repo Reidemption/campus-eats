@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
-const Restaurant = require("./restaurant");
+// const Restaurant = require("./restaurant");
 
-const hourSchema = new mongoose.Schema({
+const HourSchema = new mongoose.Schema({
     date: String,
     open: String,
     close: String,
     restaurant_id: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Restaurant"
-    },
-});
+    }
+},{timestamps:true});
 
-const Hour = mongoose.model("Hour", hourSchema);
+const HourModel = mongoose.model("Hour", HourSchema);
 
-module.exports =  Hour
+module.exports =  {HourModel,HourSchema}

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Meal = require("./meal");
 const SideType = require("./side_type");
 
-const mealSideSchema = new mongoose.Schema({
+const MealSideSchema = new mongoose.Schema({
     name: String,
     calories: String,
     price: Number,
@@ -15,7 +15,7 @@ const mealSideSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Meal"
     }
-});
+},{timestamps:true});
 
-const MealSide = mongoose.model("MealSide", mealSideSchema);
-module.exports = MealSide
+const MealSideModel = mongoose.model("MealSide", MealSideSchema);
+module.exports = {MealSideModel,MealSideSchema}

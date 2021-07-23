@@ -2,25 +2,28 @@ const mongoose = require("mongoose");
 const Meal = require("./meal");
 const Order = require("./order");
 const Restaurant = require("./restaurant")
-const OrderItemSide = require("./order_item_side")
 
-const orderItemSchema = mongoose.Schema({
+const OrderItemSchema = mongoose.Schema({
     order_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: Order
+        ref: "Order"
+    },
+    customer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     restaurant_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: Restaurant
+        ref: "Restaurant"
     },
     orderTime: {
         type:Date,
         require: true
     },
-    // staff_id: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: User
-    // },
+    staff_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     isDone:{
         type:Boolean,
         default:false
@@ -31,21 +34,18 @@ const orderItemSchema = mongoose.Schema({
     },
     deliverer_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: User
+        ref: "User"
     },
     isDelivered:{
         type:Boolean,
         default:false
     },
-    meals:[
-        Meal
-    ],
+    items:[Meal.MealSchema],
     total_price:{
-        type:Number,
-        require:true
+        type:Number
     }
-});
+},{timestamps:true});
 
-const OrderItem = mongoose.model("OrderItem", orderItemSchema);
-module.exports = OrderItem
+const OrderItemModel = mongoose.model("OrderItem", OrderItemSchema);
+module.exports = {OrderItemModel,OrderItemSchema}
 

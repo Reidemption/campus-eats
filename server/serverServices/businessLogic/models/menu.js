@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Meal = require("./meal");
 const Category = require("./category");
 
-const menuSchema = new mongoose.Schema({
+const MenuSchema = new mongoose.Schema({
     name: String,
     description: String,
     calories: String,
@@ -12,8 +12,8 @@ const menuSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category"
     },
-    items:["Meal"]
-});
+    items:[Meal.MealSchema]
+},{timestamps:true});
 
-const Menu = mongoose.model("Menu", menuSchema);
-module.exports = Menu
+const MenuModel = mongoose.model("Menu", MenuSchema);
+module.exports = {MenuModel,MenuSchema}
