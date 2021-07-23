@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const User = require("./user");
-const Order = require("./order");
 
-const userInfoSchema = new mongoose.Schema({
+const UserInfoSchema = new mongoose.Schema({
     username: {
         type:String,
         require:true
@@ -10,6 +8,10 @@ const userInfoSchema = new mongoose.Schema({
     hashed_pwd: {
         type:String,
         require:true
+    },
+    role_id:{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Role",
     },
     dnumber: {
         type:String,
@@ -31,17 +33,14 @@ const userInfoSchema = new mongoose.Schema({
         phone:String,
         email:String
     },
-    position:{
-        type:String,
-        require:true
-    },
     user_id:{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "User"
+        ref: "User",
+        require:true
     },
     order_history:[],
     delivery_history:[]
 },{timestamps:true});
-const UserInfo = mongoose.model("UserInfo", userInfoSchema);
+const UserInfoModel = mongoose.model("UserInfo", UserInfoSchema);
 
-module.exports = UserInfo
+module.exports = {UserInfoModel,UserInfoSchema}

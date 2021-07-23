@@ -10,4 +10,4 @@ const SideTypeSchema = new mongoose.Schema({
 },{timestamps:true});
 
 const SideTypeModel = mongoose.model("SideType", SideTypeSchema);
-module.exports = [SideTypeModel,SideTypeSchema]
+module.exports = {SideTypeModel,SideTypeSchema}

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const {  Restaurants,  Categories,  Menus,  Customizations} = require("./FrontEnd_Object_Models/restaurant.js");
 const BLO = require("../serverServices/businessLogic/BLL/bllModules")
+const BLOModel = require("../serverServices/businessLogic/models/data_models")
 const services = express();
 const main_path = "/campuseats"
 
@@ -219,6 +220,80 @@ services.post("/menu", function (req, res) {
 });
 
 // -------------- Duy's Section ------------------
+
+// Get every restaurant
+services.get("/users", (req, res) => {
+  console.log(`Getting all User`);
+  let result = BLO.UserBLO.getAllUsers();
+  if (result.error != null) {
+    res.status(500).json({
+      error: result.error,
+      message: "unable to list all users",
+    });
+  }else{
+    res.status(200).json(result.result);
+  }
+});
+
+// Get info for a user with specific ID
+services.get("/users/:id", (req, res) => {
+  console.log(`Getting specific user with id:${req.params.id}`);
+  let result = BLO.UserBLO.findUsertById(req.params.id);
+  if (result.error != null) {
+    res.status(500).json({
+      err: err,
+      message: "Unable to find user with that id",
+    });
+  } else if (result.result === null) {
+    res.status(404)
+      .json({ 
+        message: `Cannot find user with id: ${req.params.id}`
+      });
+  }else{
+  res.status(200).json(result.result);}
+});
+
+// POST/create restaurant
+services.post("/users", function (req, res) {
+  console.log(`creating a user with a body ${req.body}`);
+  if (
+    !req.body.username ||
+    !req.body.firstname ||
+    !req.body.lastname ||
+    !req.body.background_image ||
+    !req.body.description ||
+    !req.body.location
+  ) {
+    console.log(`unable to create restaurant because fields are missing`);
+    res.status(400).json({
+      message: "unable to create restaurant",
+      error: "field is missing",
+    });
+    return;
+  }
+  Restaurants.create(
+    {
+      path: req.body.path,
+      name: req.body.name,
+      logo: req.body.logo,
+      background_image: req.body.background_image,
+      description: req.body.description,
+      location: req.body.location,
+    },
+    (err, restaurant) => {
+      if (err) {
+        console.log(`unable to create restaurant`);
+        res.status(400).json({
+          message: "unable to create restaurant",
+          error: err,
+        });
+        return;
+      }
+      console.log(restaurant);
+      res.status(201).json(restaurant);
+    }
+  );
+});
 
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {

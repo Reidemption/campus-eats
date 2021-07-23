@@ -1,13 +1,22 @@
 const User = require("../models/user")
 
+function getAllUsers(){
+    User.UserModel.find({}, (err, users) => {
+        if (err != null) {
+          return {error:err, result :null};
+        }
+        return {error:null, result :users};
+      });
+}
+
 function findUsertById(id){
     User.UserModel.find({
         _id:id
     }, (err, user) => {
         if (err != null) {
-          return {Error:err, result :undefined};
+          return {error:err, result :null};
         }
-        return {Error:undefined, result :user};
+        return {error:null, result :user};
       });
 }
 
@@ -20,9 +29,9 @@ function findUsersByName(name){
             err: error,
             message: "unable to list all users",
           });
-          return {Error:err, result :undefined};
+          return {error:err, result :null};
         }
-        return {Error:undefined, result :users};
+        return {error:null, result :users};
       });
 }
 function findOneUsersByName(name){
@@ -30,9 +39,9 @@ function findOneUsersByName(name){
         name:`${name}`
     }, (err, user) => {
         if (err != null) {
-            return {Error:err, result :undefined};
+            return {error:err, result :null};
         }
-        return {Error:undefined, result :user};
+        return {error:null, result :user};
       });
 }
 
@@ -42,12 +51,12 @@ function createUser(user_obj){
         if (err){
             console.log(`Couldn't create a user with body ${req.body}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:user
         }
     });
@@ -58,12 +67,12 @@ function updateUser(user_obj){
         if (err){
             console.log(`Couldn't update a user with body ${user_obj}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:user
         }
     });
@@ -75,15 +84,19 @@ function deleteUser(user_id){
         if (err){
             console.log(`Couldn't delete a user with id ${user_id}`);
             return{
-                Error:err,
-                result:undefined
+                error:err,
+                result:null
             }
         };
         return{
-            Error:undefined,
+            error:null,
             result:user
         }
     });
 }
 
-module.exports={findOneUsersByName,findUsersByName,createUser,updateUser,deleteUser}
+module.exports={
+    getAllUsers,
+    findUsertById,findOneUsersByName,findUsersByName,
+    createUser,updateUser,deleteUser
+}
