@@ -1,21 +1,27 @@
 const Category = require("../models/category")
 
+function findCategoryById(id){
+    Category.CategoryModel.find({
+        _id:id
+    }, (err, category) => {
+        if (err != null) {
+          return {Error:err, result :undefined};
+        }
+        return {Error:undefined, result :category};
+      });
+}
 function findCategorysByName(name){
-    Categorys.find({
+    Category.CategoryModel.find({
         "name":{$regex:`(?i)${name}`}
     }, (err, categorys) => {
         if (err != null) {
-          res.status(500).json({
-            err: error,
-            message: "unable to list all categorys",
-          });
           return {Error:err, result :undefined};
         }
         return {Error:undefined, result :categorys};
       });
 }
 function findOneCategorysByName(name){
-    Categorys.findOne({
+    Category.CategoryModel.findOne({
         name:`${name}`
     }, (err, category) => {
         if (err != null) {
@@ -27,7 +33,7 @@ function findOneCategorysByName(name){
 
 function createCategory(category_obj){
     //TODO: check if that category name is existed?!?
-    Category.create(category_obj, (err,category)=>{
+    Category.CategoryModel.create(category_obj, (err,category)=>{
         if (err){
             console.log(`Couldn't create a category with body ${req.body}`);
             return{
@@ -43,7 +49,7 @@ function createCategory(category_obj){
 }
 
 function updateCategory(category_obj){
-    Category.findByIdAndUpdate(category_obj._id,category_obj, (err,category)=>{
+    Category.CategoryModel.findByIdAndUpdate(category_obj._id,category_obj, (err,category)=>{
         if (err){
             console.log(`Couldn't update a category with body ${category_obj}`);
             return{
@@ -60,7 +66,7 @@ function updateCategory(category_obj){
 
 
 function deleteCategory(category_id){
-    Category.findByIdAndDelete(category_id, (err,category)=>{
+    Category.CategoryModel.findByIdAndDelete(category_id, (err,category)=>{
         if (err){
             console.log(`Couldn't delete a category with id ${category_id}`);
             return{
@@ -76,6 +82,7 @@ function deleteCategory(category_id){
 }
 
 module.exports={
+    findCategoryById,
     findOneCategorysByName,
     findCategorysByName,
     createCategory,

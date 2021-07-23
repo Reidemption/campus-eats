@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const Menu = require("./menu");
+// const Menu = require("./menu");
 const MealSide = require("./meal_side");
 
-const mealSchema = new mongoose.Schema({
+const MealSchema = new mongoose.Schema({
     name: String,
     description: String,
     calories: String,
@@ -15,8 +15,8 @@ const mealSchema = new mongoose.Schema({
     note:{
         type:String
     },
-    meal_sides:["MealSide"]
-});
+    meal_sides:[MealSide.MealSideSchema]
+},{timestamps:true});
 
-const Meal = mongoose.model("Meal", mealSchema);
-module.exports = Meal
+const MealModel = mongoose.model("Meal", MealSchema);
+module.exports = {MealModel,MealSchema}

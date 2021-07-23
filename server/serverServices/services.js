@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const {  Restaurants,  Categories,  Menus,  Customizations,} = require("./FrontEnd_Object_Models/restaurant.js");
+const {  Restaurants,  Categories,  Menus,  Customizations} = require("./FrontEnd_Object_Models/restaurant.js");
 const BLO = require("../serverServices/businessLogic/BLL/bllModules")
 const services = express();
+const main_path = "/campuseats"
 
 // ========== Middlewares ===========
 services.use(cors());
@@ -63,8 +64,7 @@ services.get("/feed/:id", (req, res) => {
   });
 });
 
-// -------------- Duy's Section ------------------
-
+// -------------- Admin's Section ------------------
 
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
