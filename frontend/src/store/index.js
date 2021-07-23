@@ -26,6 +26,7 @@ const state = {
                             description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
                             calories: "440",
                             price: 3.89,
+                            note: "",
                             custom_options: [
                                 {
                                     type: "Make it Deluxe",
@@ -63,6 +64,7 @@ const state = {
                             description: "A boneless breast of chicken seasoned with a spicy blend of peppers, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
                             calories: "540",
                             price: 4.25,
+                            note: "",
                             custom_options: [
                                 {   
                                     type: "Make it Deluxe",
@@ -100,6 +102,7 @@ const state = {
                             description: "Bite-sized pieces of tender all breast meat chicken, seasoned to perfection, hand-breaded and pressure cooked in 100% refined peanut oil.",
                             calories: "250",
                             price: 3.99,
+                            note: "",
                             custom_options: [
                                 {
                                     type: "Me want more",
@@ -149,6 +152,7 @@ const state = {
                             description: "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce and tomato. Served with Honey Roasted BBQ Sauce.",
                             calories: "320",
                             price: 5.55,
+                            note: "",
                             custom_options: [
                                 {
                                     type: "Make it Deluxe",
@@ -186,6 +190,7 @@ const state = {
                             description: "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce, tomato, bacon & Colby-Jack cheese. Served with Honey Roasted BBQ Sauce.",
                             calories: "460",
                             price: 6.89,
+                            note: "",
                             custom_options: [
                                 {   
                                     type: "Make it Deluxe",
@@ -223,6 +228,7 @@ const state = {
                             description: "Bite-sized pieces of boneless breast of chicken, marinated with a special blend of seasonings and grilled for a tender and juicy backyard-grilled taste.",
                             calories: "130",
                             price: 4.79,
+                            note: "",
                             custom_options: [
                                 {
                                     type: "Me want more",
@@ -266,18 +272,37 @@ const state = {
             ]
         }
     ],
-    items_in_cart: [
-        {
-            quantity: 1,
-            name: "Chick-fil-A Chicken",
-            price: 6.99,
-            message_included: true
-        },
-        {
-            quantity: 2,
-            name: "Grilled Chicken Club",
-            price: 10.99,
-            message_included: false
+    customer_cart: [
+        {   
+            path: "ChickFilA",
+            restaurant_name: "Chick-Fil-A",
+            meals: [
+                {
+                    name: "Chick-fil-A Chicken",
+                    image_url: "TrailblazersCafe/ChickFilA/og_meal_chicken.png",
+                    description: "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
+                    calories: "440",
+                    quantity: 1,
+                    price: 6.99,
+                    note: "",
+                    custom_options: [
+                        {
+                            type: "Make it Deluxe",
+                            name: "Add American cheese, lettuce, and tomato",
+                            calories: "20", 
+                            price: 0.6,
+                            selected: true
+                        },
+                        {
+                            type: "Add Drink",
+                            name: "Coke",
+                            calories: "20", 
+                            price: 2.5,
+                            selected: true
+                        },
+                    ]
+                }
+            ]
         }
     ],
 

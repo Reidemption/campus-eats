@@ -1,7 +1,7 @@
 <template>
     <div class="my_delivery_section_wrapper">
         <div class="title_and_add_item_button">
-            <div class="my_delievery_section_title">Your items</div>
+            <div class="my_delievery_section_title">Your Order</div>
             <div class="add_item_button">
                 <div class="plus_icon">
                     <i class="las la-plus"></i>
@@ -11,21 +11,27 @@
             </div>
         </div>
 
-        <div class="items_in_cart">
-            <div class="single_cart_item" v-for="item in items_in_cart" :key="item.name">
-                <div class="quantity_section">
-                    <input type="number" :value="item.quantity">
-                </div>
+        <div class="customer_cart">
+            <div class="single_order" v-for="order in customer_cart" :key="order.restaurant_name">
+                <div class="restaurant_name">{{ order.restaurant_name }}</div>
 
-                <div class="infos_section">
-                    <div class="cart_item_name">{{ item.name }}</div>
-                    <div class="cart_item_message_included" v-if="item.message_included">Message included: Yes</div>
-                    <div class="cart_item_message_included" v-else>Message included: No</div>
-                </div>
+                <div class="cart_items_of_one_order">
+                    <div class="single_cart_item" v-for="meal in order.meals" :key="meal.name">
+                        <div class="quantity_section">
+                            <input type="number" :value="meal.quantity">
+                        </div>
 
-                <div class="price_section">
-                    <span class="dollar_sign">$</span>
-                    <div class="total_price">{{ item.price }}</div>
+                        <div class="infos_section">
+                            <div class="cart_item_name">{{ meal.name }}</div>
+                            <div class="cart_item_message_included" v-if="meal.note">Message included: Yes</div>
+                            <div class="cart_item_message_included" v-else>Message included: No</div>
+                        </div>
+
+                        <div class="price_section">
+                            <span class="dollar_sign">$</span>
+                            <div class="total_price">{{ meal.price }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,11 +42,11 @@
 export default {
     data() {
         return {
-            items_in_cart: []
+            customer_cart: []
         }
     },
     created() {
-        this.items_in_cart = this.$store.state.items_in_cart;
+        this.customer_cart = this.$store.state.customer_cart;
     }
 }
 </script>
@@ -75,7 +81,7 @@ export default {
     margin-right: 10px;
 }
 
-.items_in_cart {
+.customer_cart {
     margin-top: 20px;
 }
 
@@ -88,7 +94,7 @@ export default {
 }
 
 .single_cart_item:last-child {
-    margin-bottom: 0;  
+    margin-bottom: 10px;  
     border-bottom: none;      
 }
 
@@ -136,5 +142,21 @@ export default {
     font-size: 19px;
     color: var(--navy);
     margin-bottom: 5px;
+}
+
+.restaurant_name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.cart_items_of_one_order {
+    padding-left: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--gray-dark);
+}
+
+.single_order:last-child > .cart_items_of_one_order{
+    border-bottom: none;
 }
 </style>

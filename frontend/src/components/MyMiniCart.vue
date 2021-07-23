@@ -5,23 +5,39 @@
         </div>
 
         <div class="main_cart_content" v-if="!empty_cart">
-            <div class="restaurant_name">Chick-fil-A</div>
+            <div class="cart_orders">
+                <div class="single_cart_order" v-for="order in customer_cart" :key="order.restaurant_name">
+                    <div class="restaurant_name">{{ order.restaurant_name }}</div>
 
-            <div class="cart_items_infos">
-                <div class="single_cart_item" v-for="item in items_in_cart" :key="item.name">
-                    <div class="quantity_section">
-                        <input type="number" :value="item.quantity">
-                    </div>
+                    <div class="cart_items_infos">
+                        <div class="single_cart_item" v-for="meal in order.meals" :key="meal.name">
+                            <div class="quantity_section">
+                                <input type="number" :value="meal.quantity">
+                            </div>
 
-                    <div class="infos_section">
-                        <div class="cart_item_name">{{ item.name }}</div>
-                        <div class="cart_item_message_included" v-if="item.message_included">Message included: Yes</div>
-                        <div class="cart_item_message_included" v-else>Message included: No</div>
-                    </div>
+                            <div class="infos_section">
+                                <div class="cart_item_name_section" @click="show_popup_meal_edit(meal)">
+                                    <div class="cart_item_name">{{ meal.name }}</div>
+                                    <span class="material-icons">edit</span>
+                                </div>
+                                <div class="cart_item_custom_options">
+                                    <div class="single_custom_option" v-for="option in meal.custom_options" :key="option.name">
+                                        <div class="option_name">{{ option.name }}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cart_item_message_included">
+                                    Message included:
+                                    <span v-if="order.note">Yes</span>
+                                    <span v-else>No</span>
+                                </div>
+                            </div>
 
-                    <div class="price_section">
-                        <span class="dollar_sign">$</span>
-                    <div class="total_price">{{ item.price }}</div>
+                            <div class="price_section">
+                                    <span class="dollar_sign">$</span>
+                            <div class="total_price">{{ meal.price }}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,7 +51,7 @@
                 </div>
             </router-link>
         </div>
-
+        
         <div class="empty_cart" v-else>
             <div class="cart_icon">
                 <i class="las la-shopping-cart"></i>
@@ -43,23 +59,66 @@
             
             <div class="message">Add items from a restaurant to start a new cart</div>
         </div>
+
+        <MyPopupMealEdit v-if="view_popup_meal_edit"
+            :popup_meal_edit_name="popup_meal_edit_name"
+            :popup_meal_edit_background_image="popup_meal_edit_background_image"
+            :popup_meal_edit_description="popup_meal_edit_description"
+            :popup_meal_edit_calories="popup_meal_edit_calories"
+            :popup_meal_edit_quantity="popup_meal_edit_quantity"
+            :popup_meal_edit_note="popup_meal_edit_note"
+            @close_popup_meal_edit="close_popup_meal_edit">
+        </MyPopupMealEdit>
     </div>
 </template>
 
 <script>
+import MyPopupMealEdit from "../components/MyPopupMealEdit.vue"
+
 export default {
+    components: {
+        MyPopupMealEdit
+    },
     data() {
         return {
-            empty_cart: false,
-            items_in_cart: [],
+            empty_cart: true,
+            customer_cart: [],
+            view_popup_meal_edit: false,
+
+            popup_meal_edit_name: "",
+            popup_meal_edit_background_image: "",
+            popup_meal_edit_description: "",
+            popup_meal_edit_calories: "",
+            popup_meal_edit_quantity: "",
+            popup_meal_edit_note: "",
         }
     },
     created() {
-        this.items_in_cart = this.$store.state.items_in_cart;
+        this.customer_cart = this.$store.state.customer_cart;
+
+        if (this.customer_cart.length !== 0) {
+            this.empty_cart = false;
+        } else {
+            this.empty_cart = true;
+        }
     },
     methods: {
         close_button_clicked() {
             this.$emit("close_button_clicked");
+        },
+        show_popup_meal_edit(meal) {
+            this.view_popup_meal_edit = true;
+
+            this.popup_meal_edit_name = meal.name;
+            this.popup_meal_edit_background_image = meal.image_url;
+            this.popup_meal_edit_description = meal.description;
+            this.popup_meal_edit_calories = meal.calories;
+            this.popup_meal_edit_quantity = meal.quantity;
+            this.popup_meal_edit_note = meal.note;
+
+        },
+        close_popup_meal_edit() {
+            this.view_popup_meal_edit = false;
         }
     }
 }
@@ -76,8 +135,12 @@ export default {
     background-color: white;
     padding: 30px;
     border: 1px solid var(--gray-fade);
-    display: grid;
-    grid-template-rows: 10% 90%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.close_button {
+    margin-bottom: 20px;
 }
 
 .close_button > span {
@@ -110,11 +173,6 @@ export default {
     text-align: center;
     font-size: 20px;
     color: var(--gray-dark);
-}
-
-.main_cart_content {
-    display: grid;
-    grid-template-rows: 10% 80% 10%;
 }
 
 .restaurant_name {
@@ -159,10 +217,8 @@ export default {
 }
 
 .cart_items_infos {
-    margin: 20px 0 30px;
-    overflow: hidden;
-    overflow-y: scroll;
-    padding: 0 30px;
+    margin: 20px 0 10px;
+    padding-left: 30px;
 }
 
 .single_cart_item {
@@ -185,7 +241,7 @@ export default {
     border-radius: 25px;
     width: 80%;
     padding: 5px 10px;
-    margin: auto 0;
+    margin: 0 0 auto;
 }
 
 .quantity_section > input {
@@ -200,7 +256,6 @@ export default {
 .price_section {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
 }
 
 .price_section > .dollar_sign {
@@ -219,5 +274,33 @@ export default {
     font-size: 19px;
     color: var(--red-dark);
     margin-bottom: 5px;
+}
+
+.single_cart_order {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--gray-dark);
+}
+
+.cart_items_infos > .single_cart_item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.cart_orders > .single_cart_order:last-child {
+    border-bottom: none;
+}
+
+.cart_item_name_section {
+    display: flex;
+    cursor: pointer;
+}
+
+.cart_item_name_section > span {
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+.cart_item_name_section > span:hover {
+    color: var(--navy);
 }
 </style>
