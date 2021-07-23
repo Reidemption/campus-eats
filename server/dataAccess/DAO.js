@@ -6,6 +6,7 @@ function connectToDb(callback) {
     "mongodb+srv://reid_gubler:AHg0i8fGhb8Gh8va@cluster0.tmhn8.mongodb.net/campus_eats?retryWrites=true&w=majority";
   mongoose
     .connect(connectionString, {
+      useFindAndModify: false,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
