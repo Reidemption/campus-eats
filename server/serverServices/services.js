@@ -108,6 +108,38 @@ services.post("/restaurant", function (req, res) {
   );
 });
 
+// POST/create category??
+services.post("/categoryyy", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`creating a category with a body ${req.body}`);
+  if (!req.body.name || !req.body.restaurant_id) {
+    console.log(`unable to create category because fields are missing`);
+    res.status(400).json({
+      message: "unable to create category",
+      error: "field is missing",
+    });
+    return;
+  }
+  Categories.create(
+    {
+      name: req.body.name,
+      restaurant_id: req.body.restaurant_id,
+    },
+    (err, category) => {
+      if (err) {
+        console.log(`unable to create category`);
+        res.status(400).json({
+          message: "unable to create category",
+          error: err,
+        });
+        return;
+      }
+      console.log(category);
+      res.status(201).json(category);
+    }
+  );
+});
+
 // POST/create categories for a specific restaurant
 services.post("/category", function (req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -188,11 +220,11 @@ services.post("/menu", function (req, res) {
 
   Restaurants.findOneAndUpdate(
     {
-      $match: { _id: req.body.restaurant_id },
-      $unwind: "$categories",
-      $match: { _id: req.body.category_id },
+      _id: req.body.restaurant_id,
+      "categories._id": req.body.category_id,
     },
-    { $push: { "categories.menus": newMenu } },
+    { $push: { "categories.$.menus": newMenu } },
+    { new: true },
     (err, restaurant) => {
       console.log(`=>restaurant: ${restaurant}`);
       if (err) {
