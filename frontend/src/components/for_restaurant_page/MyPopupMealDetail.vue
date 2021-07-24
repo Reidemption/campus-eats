@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="include_message_box" v-if="show_include_message_box">
-                        <textarea rows="2" placeholder="Add specific message (allergy, etc)"></textarea>
+                        <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="popup_meal_note"></textarea>
                     </div>
                 </div>
 
@@ -113,12 +113,13 @@
                         </div>
                     </div>
 
-                    <div class="add_button_and_total_price">
+                    <div class="add_button_and_total_price" @click="add_one_meal_to_cart">
                         <div class="add_to_cart_button">
                             Add {{ quantity_to_add }} 
                             <span class="item_items" v-if="quantity_to_add === 1">item</span>
                             <span class="item_items" v-else>items</span>
-                            to cart</div>
+                            to cart
+                        </div>
                         
                         <div class="total_price">
                             <span class="dollar_sign">$</span>
@@ -134,6 +135,8 @@
 <script>
 export default {
     props: {
+        popup_meal_restaurant_path: String,
+        popup_meal_restaurant_name: String,
         popup_meal_background_image: String,
         popup_meal_name: String,
         popup_meal_description: String,
@@ -146,7 +149,8 @@ export default {
             total_price: this.popup_meal_price,
             new_popup_meal_custom_options: [],
             quantity_to_add: 1,
-            show_include_message_box: false
+            show_include_message_box: false,
+            popup_meal_note: "",
         }
     },
     created() {
@@ -254,6 +258,22 @@ export default {
             new_total_price = total_price_before_update * this.quantity_to_add;
             
             this.total_price = new_total_price;
+        },
+        add_one_meal_to_cart() {
+            let meal_to_add = {
+                restaurant_path: this.popup_meal_restaurant_path,
+                restaurant_name: this.popup_meal_restaurant_name,
+                name: this.popup_meal_name,
+                image_url: this.popup_meal_background_image,
+                description: this.popup_meal_description,
+                calories: this.popup_meal_calories,
+                quantity: this.quantity_to_add,
+                meal_price: this.popup_meal_price,
+                subtotal_price: this.total_price,
+                note: this.popup_meal_note,
+                custom_options: this.popup_meal_custom_options
+            };
+            this.$store.commit('add_one_meal_to_cart', meal_to_add);
         }
     }
 }

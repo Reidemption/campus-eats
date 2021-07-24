@@ -360,6 +360,7 @@ const state = {
             ]
         }
     ],
+    new_customer_cart: JSON.parse(localStorage.getItem("customer_cart") || "[]"),
 
     restaurants_maps_list: [
         {
@@ -376,7 +377,11 @@ const state = {
 }
 
 const mutations = {
-    
+    add_one_meal_to_cart: (state, meal_to_add) => {
+        let customer_cart = state.new_customer_cart;
+        customer_cart.push(meal_to_add)
+        localStorage.setItem("customer_cart", JSON.stringify(customer_cart));
+    }
 }
 
 const store = createStore({

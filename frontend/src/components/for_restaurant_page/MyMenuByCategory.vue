@@ -20,6 +20,8 @@
             </div>
 
             <MyPopupMealDetail v-if="show_meal_item_detail"
+                :popup_meal_restaurant_path="restaurant_path"
+                :popup_meal_restaurant_name="restaurant_name"
                 :popup_meal_name="popup_meal_name"
                 :popup_meal_background_image="popup_meal_background_image"
                 :popup_meal_description="popup_meal_description"
@@ -39,9 +41,10 @@ export default {
         MyPopupMealDetail
     },
     props: {
+        restaurant_path: String,
+        restaurant_name: String,
         category_name: String,
-        menu: Array,
-        path: String
+        menu: Array
     },
     data() {
         return {

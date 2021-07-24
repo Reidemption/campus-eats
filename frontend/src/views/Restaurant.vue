@@ -25,9 +25,10 @@
 
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
+                    :restaurant_path="current_restaurant.path"
+                    :restaurant_name="current_restaurant.name"
                     :category_name="category.name"
-                    :menu="category.menu"
-                    :path="current_restaurant.path">
+                    :menu="category.menu">
                 </MyMenuByCategory>
             </div>
 
@@ -78,8 +79,7 @@ export default {
             if (this.current_restaurant.name === restaurant_maps.restaurant_name) {
                 this.current_restaurant_maps = restaurant_maps;
             }
-        })
-
+        });
     }
 }
 </script>
