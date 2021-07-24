@@ -379,7 +379,7 @@ const state = {
 const mutations = {
     add_one_meal_to_cart: (state, meal_to_add) => {
         let customer_cart = state.new_customer_cart;
-        customer_cart.push(meal_to_add)
+        customer_cart.push(meal_to_add);
         localStorage.setItem("customer_cart", JSON.stringify(customer_cart));
     }
 }
