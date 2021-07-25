@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="popup_meal_custom_options_wrapper">
-                    <div class="single_customization_wrapper" v-for="custom_option in new_popup_meal_edit_custom_options" 
+                    <div class="single_customization_wrapper" v-for="custom_option in popup_meal_edit_custom_options" 
                         :key="custom_option.main_type">
                         
                         <div class="title_and_arrow_buttons">
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="include_message_box">
-                            <textarea rows="2" :placeholder="popup_meal_edit_note" v-model="popup_meal_edit_note"></textarea>
+                            <textarea rows="2" :placeholder="popup_meal_edit_note" v-model="new_meal_note"></textarea>
                         </div>
                     </div>
 
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="include_message_box" v-if="show_include_message_box">
-                            <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="popup_meal_edit_note"></textarea>
+                            <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="new_meal_note"></textarea>
                         </div>
                     </div>
                 </div>
@@ -164,45 +164,17 @@ export default {
     data() {
         return {
             total_price: this.popup_meal_edit_subtotal_price,
-            new_popup_meal_edit_custom_options: [],
             quantity_to_add: this.popup_meal_edit_quantity,
-            show_include_message_box: false
+            show_include_message_box: false,
+            new_meal_note: ""
         }
     },
-    created() {
-        this.create_new_popup_meal_custom_options_list();
-    },
     methods: {
-        create_new_popup_meal_custom_options_list() {
-            let custom_options_main_types = [];
-
-            this.popup_meal_edit_custom_options.forEach(option => {
-                if(!custom_options_main_types.includes(option.type)) {
-                    custom_options_main_types.push(option.type);
-                }
-            })
-
-            custom_options_main_types.forEach(type => {
-                this.new_popup_meal_edit_custom_options.push({
-                    main_type: type,
-                    choices: [],
-                    show_choices: true
-                })
-            })
-
-            this.popup_meal_edit_custom_options.forEach(option => {
-                this.new_popup_meal_edit_custom_options.forEach(new_option => {
-                    if(option.type === new_option.main_type) {
-                        new_option.choices.push(option);
-                    }
-                })
-            })
-        },
         close_popup_meal_edit() {
             this.$emit("close_popup_meal_edit");
         },
         choice_selected(choice) {
-            this.new_popup_meal_edit_custom_options.forEach(new_option => {
+            this.popup_meal_edit_custom_options.forEach(new_option => {
                 new_option.choices.forEach(new_option_choice => {
                     if (choice.type === new_option_choice.type ) {
                         if (choice.name === new_option_choice.name) {
@@ -228,7 +200,7 @@ export default {
             let new_total_price;
             let custom_options_price = [];
 
-            this.new_popup_meal_edit_custom_options.forEach(new_option => {
+            this.popup_meal_edit_custom_options.forEach(new_option => {
                 new_option.choices.forEach(choice => {
                     if (choice.selected) { 
                         custom_options_price.push(choice.price);
@@ -257,7 +229,7 @@ export default {
 
             this.quantity_to_add++;
 
-            this.new_popup_meal_edit_custom_options.forEach(new_option => {
+            this.popup_meal_edit_custom_options.forEach(new_option => {
                 new_option.choices.forEach(choice => {
                     if (choice.selected) { 
                         custom_options_price.push(choice.price);
@@ -283,10 +255,11 @@ export default {
         update_one_meal_in_cart() {
             let meal_id = this.popup_meal_edit_id;
             let new_meal_quantity = this.quantity_to_add;
-            let new_meal_note = this.popup_meal_edit_note;
+            let new_meal_note = this.new_meal_note;
             let new_meal_subtotal_price = this.total_price;
-            let new_meal_custom_options = this.new_popup_meal_edit_custom_options;
-
+            let new_meal_custom_options = this.popup_meal_edit_custom_options;
+            
+            this.$emit("update_one_meal_in_cart");
             this.$store.commit("update_one_meal_in_cart", { meal_id, new_meal_quantity, new_meal_note, new_meal_subtotal_price, new_meal_custom_options });
         }
     }

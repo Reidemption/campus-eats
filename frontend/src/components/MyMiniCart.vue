@@ -12,7 +12,7 @@
                     <div class="cart_items_infos">
                         <div class="single_cart_item" v-for="meal in order.meals" :key="meal.meal_id">
                             <div class="quantity_section">
-                                <input type="number" :value="meal.meal_infos.quantity">
+                                <div class="quantity_amount">{{ meal.meal_infos.quantity }}</div>
                             </div>
 
                             <div class="infos_section">
@@ -22,8 +22,10 @@
                                 </div>
                                 <div class="cart_item_custom_options">
                                     <div class="single_custom_option" v-for="option in meal.meal_infos.custom_options" :key="option.name">
-                                        <div v-if="option.selected">
-                                            <div class="option_name">{{ option.type }}</div>
+                                        <div v-for="choice in option.choices" :key="choice.name">
+                                            <div v-if="choice.selected">
+                                                <div class="option_name">{{ choice.type }}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +74,8 @@
             :popup_meal_edit_note="popup_meal_edit_note"
             :popup_meal_edit_custom_options="popup_meal_edit_custom_options"
             @close_popup_meal_edit="close_popup_meal_edit"
-            @remove_one_meal_from_cart="update_items_in_cart">
+            @remove_one_meal_from_cart="update_items_in_cart_after_delete"
+            @update_one_meal_in_cart="update_items_in_cart_after_changes">
         </MyPopupMealEdit>
     </div>
 </template>
@@ -172,7 +175,7 @@ export default {
         close_popup_meal_edit() {
             this.view_popup_meal_edit = false;
         },
-        update_items_in_cart(meal_id) {
+        update_items_in_cart_after_delete(meal_id) {
             this.view_popup_meal_edit = false;
 
             this.customer_cart_by_orders.forEach(order => {
@@ -188,6 +191,22 @@ export default {
                 if (this.customer_cart_by_orders[0].meals.length === 0) {
                     this.empty_cart = true;
                 }
+            }
+
+            this.update_items_in_cart_after_changes();
+        },
+        update_items_in_cart_after_changes() {
+            if (window.location.pathname === "/") {
+                this.$router.push({
+                    name: "Homc",
+                });
+            } else {
+                this.$router.push({
+                    name: "Restaurani",
+                    query: {
+                        menu: this.$route.query.menu
+                    }
+                });
             }
         }
     }
@@ -306,23 +325,13 @@ export default {
 }
 
 .quantity_section {
-    display: flex;
-    align-items: center;
+    text-align: center;
     border: 1px solid var(--gray-fade);
     background-color: var(--gray);
     border-radius: 25px;
-    width: 80%;
+    width: 50%;
     padding: 5px 10px;
     margin: 0 0 auto;
-}
-
-.quantity_section > input {
-    width: 100%;
-    text-align: center;
-    font-size: 15px;
-    border: none;
-    outline: none;
-    background-color: var(--gray);
 }
 
 .price_section {

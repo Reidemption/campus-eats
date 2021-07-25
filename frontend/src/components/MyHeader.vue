@@ -40,6 +40,7 @@ export default {
     },
     created () {
         window.addEventListener('scroll', this.handle_scroll);
+
     },
     methods: {
         view_mini_cart() {
@@ -136,5 +137,6 @@ export default {
     width: 100%;
     height: 100vh;
     z-index: 1;
+    background-color: rgba(0,0,0,0.4)
 }
 </style>

@@ -40,14 +40,14 @@
 </template>
 
 <script>
-import MyNavBar from "../components/MyNavBar.vue"
-import MyHeader from "../components/MyHeader.vue"
-import MyBackground from "../components/for_restaurant_page/MyBackground.vue"
-import MyRestaurantInfos from "../components/for_restaurant_page/MyRestaurantInfos.vue"
-import MyCategoriesNav from "../components/for_restaurant_page/MyCategoriesNav.vue"
-import MyMenuByCategory from "../components/for_restaurant_page/MyMenuByCategory.vue"
-import MyRestaurants from "../components/MyRestaurants.vue"
-import MyFooter from "../components/MyFooter.vue"
+import MyNavBar from "../../components/MyNavBar.vue"
+import MyHeader from "../../components/MyHeader.vue"
+import MyBackground from "../../components/for_restaurant_page/MyBackground.vue"
+import MyRestaurantInfos from "../../components/for_restaurant_page/MyRestaurantInfos.vue"
+import MyCategoriesNav from "../../components/for_restaurant_page/MyCategoriesNav.vue"
+import MyMenuByCategory from "../../components/for_restaurant_page/MyMenuByCategory.vue"
+import MyRestaurants from "../../components/MyRestaurants.vue"
+import MyFooter from "../../components/MyFooter.vue"
 
 export default {
     components: {

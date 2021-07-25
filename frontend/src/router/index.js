@@ -4,7 +4,9 @@ import Orders from '../views/Orders.vue'
 import Account from '../views/Account.vue'
 import Restaurant from '../views/Restaurant.vue'
 import Checkout from '../views/Checkout.vue'
-import MealAdded from '../views/MealAdded.vue'
+
+import Homc from "../views/redirecting/Homc.vue"
+import Restaurani from '../views/redirecting/Restaurani.vue'
 
 const routes = [
   {
@@ -29,9 +31,14 @@ const routes = [
     component: Checkout
   },
   {
+    path: '/.',
+    name: 'Homc',
+    component: Homc
+  },
+  {
     path: '/Restaurani',
     name: 'Restaurani',
-    component: MealAdded
+    component: Restaurani
   }
 ]
 

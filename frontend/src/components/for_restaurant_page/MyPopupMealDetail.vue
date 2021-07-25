@@ -275,7 +275,7 @@ export default {
                 meal_price: this.popup_meal_price,
                 subtotal_price: this.total_price,
                 note: this.popup_meal_note,
-                custom_options: this.popup_meal_custom_options
+                custom_options: this.new_popup_meal_custom_options
             };
             this.$store.commit('add_one_meal_to_cart', meal_to_add);
             
