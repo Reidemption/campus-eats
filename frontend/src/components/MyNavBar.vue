@@ -47,6 +47,11 @@ export default {
                     path: "/Orders"
                 },
                 {
+                    icon: "las la-clipboard-list",
+                    name: "Tasks",
+                    path: "/Tasks"
+                },
+                {
                     icon: "las la-user",
                     name: "Account",
                     path: "/Account"

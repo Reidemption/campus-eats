@@ -1,10 +1,10 @@
 <template>
   <div class="whole_page_wrapper">
     <div class="navigation_bar">
-      <MyNavBar current_page="Account"></MyNavBar>
+      <MyNavBar current_page="Tasks"></MyNavBar>
     </div>
 
-    <div class="account_page_wrapper">
+    <div class="tasks_page_wrapper">
       <MyComingSoon></MyComingSoon>
     </div>
   </div>
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.account_page_wrapper {
+.tasks_page_wrapper {
     height: 100vh;
     background-color: var(--gray);
 }

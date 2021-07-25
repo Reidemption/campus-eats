@@ -35,6 +35,6 @@ export default {
 
 .nav_item:hover {
     cursor: pointer;
-    border-bottom: 1px solid var(--navy);
+    border-bottom: 2px solid var(--navy);
 }
 </style>

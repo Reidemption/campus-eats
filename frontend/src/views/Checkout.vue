@@ -23,7 +23,7 @@
 
                 <MyPayment></MyPayment>
 
-                <MyFinalCart></MyFinalCart>
+                <MyFinalCart :at_checkout_page=true></MyFinalCart>
             </div>
 
             <div class="place_order_section">
@@ -31,18 +31,7 @@
             </div>
         </div>
 
-        <div class="mini_footer">
-            <div class="license">© 2021 Campus Eats Inc.</div>
-            <div class="policy_and_terms">
-                <span><a class="privacy_policy" href="https://policies.google.com/privacy" target="_blank">
-                    Privacy Policy
-                </a></span>
-                |
-                <span><a class="terms_of_service" href="https://policies.google.com/terms" target="_blank">
-                    Terms
-                </a></span>
-            </div>
-        </div>
+        <MyMiniFooter></MyMiniFooter>
 
         <div class="popup_edit_modals_overlay_section" v-if="view_edit_modals"
             @click.self="close_popup_edit_modals">
@@ -68,6 +57,7 @@ import MyDeliveryOptions from "../components/for_checkout_page/MyDeliveryOptions
 import MyPayment from "../components/for_checkout_page/MyPayment.vue"
 import MyFinalCart from "../components/for_checkout_page/MyFinalCart.vue"
 import MyTotalFees from "../components/for_checkout_page/MyTotalFees.vue"
+import MyMiniFooter from "../components/MyMiniFooter.vue"
 
 import MyEditDestination from "../components/for_checkout_page/popup_edit_modals/MyEditDestination.vue"
 import MyEditInstructions from "../components/for_checkout_page/popup_edit_modals/MyEditInstructions.vue"
@@ -82,6 +72,7 @@ export default {
         MyPayment,
         MyFinalCart,
         MyTotalFees,
+        MyMiniFooter,
 
         MyEditDestination,
         MyEditInstructions,
@@ -172,23 +163,6 @@ export default {
 
 .place_order_section {
     border-left: 1px solid var(--navy);
-}
-
-.mini_footer {
-    background-color: var(--navy);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 40px;
-}
-
-.policy_and_terms > span > a {
-    text-decoration: none;
-    color: white;
-}
-
-.policy_and_terms > span > a:hover {
-    color: var(--yellow);
 }
 
 .popup_edit_modals_overlay_section {

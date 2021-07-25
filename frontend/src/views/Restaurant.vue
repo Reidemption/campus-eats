@@ -67,6 +67,12 @@ export default {
         }
     },
     created() {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        })
+
         let restaurants_list = this.$store.state.restaurants_list;
         restaurants_list.forEach(restaurant => {
             if (restaurant.path === this.$route.query.menu) {

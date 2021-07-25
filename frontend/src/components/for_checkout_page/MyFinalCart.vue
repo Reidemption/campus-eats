@@ -1,6 +1,6 @@
 <template>
     <div class="my_delivery_section_wrapper">
-        <div class="my_delievery_section_title">Your Order</div>
+        <div class="my_delievery_section_title" v-if="at_checkout_page">Your Order</div>
 
         <div class="customer_cart">
             <div class="single_order" v-for="order in customer_cart_by_orders" :key="order.restaurant_name">
@@ -8,7 +8,8 @@
                 <div class="restaurant_name_and_add_button">
                   <div class="restaurant_name">{{ order.restaurant_name }}</div>
 
-                    <div class="add_item_button" @click="go_to_restaurant_page(order.meals[0].meal_infos.restaurant_path)">
+                    <div class="add_item_button" @click="go_to_restaurant_page(order.meals[0].meal_infos.restaurant_path)"
+                        v-if="at_checkout_page">
                         <div class="plus_icon">
                             <i class="las la-plus"></i>
                         </div>
@@ -24,9 +25,15 @@
                         </div>
 
                         <div class="infos_section">
-                            <div class="cart_item_name_section" @click="show_popup_meal_edit(meal)">
+                            <div class="cart_item_name_section" @click="show_popup_meal_edit(meal)"
+                                v-if="at_checkout_page">
                                 <div class="cart_item_name">{{ meal.meal_infos.name }}</div>
                                 <span class="material-icons">edit</span>
+                            </div>
+
+                            <div class="cart_item_name_section" v-else
+                                :class="{disable_hover_effect: !at_checkout_page}">
+                                <div class="cart_item_name">{{ meal.meal_infos.name }}</div>
                             </div>
 
                             <div class="cart_item_custom_options">
@@ -75,6 +82,9 @@ import MyPopupMealEdit from "../../components/MyPopupMealEdit.vue"
 export default {
     components: {
         MyPopupMealEdit
+    },
+    props: {
+        at_checkout_page: Boolean
     },
     data() {
         return {
@@ -284,5 +294,9 @@ export default {
 
 .cart_item_name_section > span:hover {
     color: var(--navy);
+}
+
+.disable_hover_effect:hover {
+    cursor: default;
 }
 </style>
