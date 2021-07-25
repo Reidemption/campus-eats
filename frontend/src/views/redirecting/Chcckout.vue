@@ -62,17 +62,17 @@
 </template>
 
 <script>
-import MyDeliveryMap from "../components/for_checkout_page/MyDeliveryMap.vue"
-import MyDeliveryInstructions from "../components/for_checkout_page/MyDeliveryInstructions.vue"
-import MyDeliveryOptions from "../components/for_checkout_page/MyDeliveryOptions.vue"
-import MyPayment from "../components/for_checkout_page/MyPayment.vue"
-import MyFinalCart from "../components/for_checkout_page/MyFinalCart.vue"
-import MyTotalFees from "../components/for_checkout_page/MyTotalFees.vue"
+import MyDeliveryMap from "../../components/for_checkout_page/MyDeliveryMap.vue"
+import MyDeliveryInstructions from "../../components/for_checkout_page/MyDeliveryInstructions.vue"
+import MyDeliveryOptions from "../../components/for_checkout_page/MyDeliveryOptions.vue"
+import MyPayment from "../../components/for_checkout_page/MyPayment.vue"
+import MyFinalCart from "../../components/for_checkout_page/MyFinalCart.vue"
+import MyTotalFees from "../../components/for_checkout_page/MyTotalFees.vue"
 
-import MyEditDestination from "../components/for_checkout_page/popup_edit_modals/MyEditDestination.vue"
-import MyEditInstructions from "../components/for_checkout_page/popup_edit_modals/MyEditInstructions.vue"
-import MyEditPayment from "../components/for_checkout_page/popup_edit_modals/MyEditPayment.vue"
-import MyEditPromoCode from "../components/for_checkout_page/popup_edit_modals/MyEditPromoCode.vue"
+import MyEditDestination from "../../components/for_checkout_page/popup_edit_modals/MyEditDestination.vue"
+import MyEditInstructions from "../../components/for_checkout_page/popup_edit_modals/MyEditInstructions.vue"
+import MyEditPayment from "../../components/for_checkout_page/popup_edit_modals/MyEditPayment.vue"
+import MyEditPromoCode from "../../components/for_checkout_page/popup_edit_modals/MyEditPromoCode.vue"
 
 export default {
     components: {
@@ -100,11 +100,9 @@ export default {
     created() {
         this.get_main_restaurant_names_and_paths_from_cart();
 
-        if(this.main_restaurant_names.length < 1) {
-            this.$router.push({
-                path: "/"
-            });
-        }
+        this.$router.push({
+            path: "/Checkout",
+        });
     },
     methods: {
         get_main_restaurant_names_and_paths_from_cart() {

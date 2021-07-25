@@ -7,6 +7,7 @@ import Checkout from '../views/Checkout.vue'
 
 import Homc from "../views/redirecting/Homc.vue"
 import Restaurani from '../views/redirecting/Restaurani.vue'
+import Chcckout from "../views/redirecting/Chcckout.vue"
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     path: '/Restaurani',
     name: 'Restaurani',
     component: Restaurani
+  },
+  {
+    path: '/Chcckout',
+    name: 'Chcckout',
+    component: Chcckout
   }
 ]
 

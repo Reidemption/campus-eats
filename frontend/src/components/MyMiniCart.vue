@@ -74,7 +74,7 @@
             :popup_meal_edit_note="popup_meal_edit_note"
             :popup_meal_edit_custom_options="popup_meal_edit_custom_options"
             @close_popup_meal_edit="close_popup_meal_edit"
-            @remove_one_meal_from_cart="update_items_in_cart_after_delete"
+            @remove_one_meal_from_cart="update_items_in_cart_after_changes"
             @update_one_meal_in_cart="update_items_in_cart_after_changes">
         </MyPopupMealEdit>
     </div>
@@ -145,15 +145,15 @@ export default {
             }
         },
         calculate_cart_subtotal() {
-            let cart_subtutal = [];
+            let cart_subtotal = [];
 
             this.customer_cart_by_orders.forEach(order => {
                 order.meals.forEach(meal => {
-                    cart_subtutal.push(meal.meal_infos.subtotal_price);
+                    cart_subtotal.push(meal.meal_infos.subtotal_price);
                 })
             });
 
-            this.subtotal = cart_subtutal.reduce((a, b) => a + b, 0);
+            this.subtotal = cart_subtotal.reduce((a, b) => a + b, 0);
         },
         close_button_clicked() {
             this.$emit("close_button_clicked");
@@ -174,26 +174,6 @@ export default {
         },
         close_popup_meal_edit() {
             this.view_popup_meal_edit = false;
-        },
-        update_items_in_cart_after_delete(meal_id) {
-            this.view_popup_meal_edit = false;
-
-            this.customer_cart_by_orders.forEach(order => {
-                let meals_list = order.meals.filter(meal => {
-                    if (meal.meal_id !== meal_id) {
-                        return meal;
-                    }
-                })
-                order.meals = meals_list;
-            })
-
-            if (this.customer_cart_by_orders.length === 1) {
-                if (this.customer_cart_by_orders[0].meals.length === 0) {
-                    this.empty_cart = true;
-                }
-            }
-
-            this.update_items_in_cart_after_changes();
         },
         update_items_in_cart_after_changes() {
             if (window.location.pathname === "/") {

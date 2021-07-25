@@ -10,7 +10,7 @@
 
                 <div class="fee_price_amount">
                     <span class="dollar_sign">$</span>
-                    17.98
+                    {{ subtotal.toFixed(2) }}
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
 
                 <div class="fee_price_amount">
                     <span class="dollar_sign">$</span>
-                    3.42
+                    {{ taxes_and_fees.toFixed(2) }}
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
 
                 <div class="fee_price_amount">
                     <span class="dollar_sign">$</span>
-                    0.1
+                    {{ delivery_fee.toFixed(2) }}
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
 
             <div class="total_amount">
                 <span class="dollar_sign">$</span>
-                21.5
+                {{ final_total_price.toFixed(2) }}
             </div>
         </div>
 
@@ -87,7 +87,7 @@
 
                     <div class="service_fee_amount">
                         <span class="dollar_sign">$</span>
-                        5.00
+                        {{ service_fee.toFixed(2) }}
                     </div>
                 </div>
 
@@ -103,10 +103,17 @@
             </div>
 
             <div class="taxes">
-                <div class="name">Taxes:</div>
-                <div class="taxes_amount">
-                    <span class="dollar_sign">$</span>
-                    6.34
+                <div class="main_info">
+                    <div class="name">Taxes</div>
+
+                    <div class="taxes_amount">
+                        <span class="dollar_sign">$</span>
+                        {{ taxes.toFixed(2) }}
+                    </div>
+                </div>
+
+                <div class="additional_info">
+                    6.75% of subtotal
                 </div>
             </div>
         </div>
@@ -126,8 +133,52 @@ export default {
     data() {
         return {
             taxes_and_fees_hover: false,
-            delivery_fee_hover: false
+            delivery_fee_hover: false,
+
+            subtotal: "",
+            service_fee: "",
+            taxes: "",
+            taxes_and_fees: "",
+            delivery_fee: "",
+            final_total_price: ""
         }
+    },
+    created() {
+        this.calculate_all_fees();
+    },
+    methods: {
+        calculate_all_fees() {
+            let customer_cart_by_meals = this.$store.state.customer_cart_by_meals;
+            let cart_subtotal = [];
+
+            customer_cart_by_meals.forEach(meal => {
+                cart_subtotal.push(meal.meal_infos.subtotal_price);
+            });
+
+            //* Subtotal price of the cart
+            this.subtotal = cart_subtotal.reduce((a, b) => a + b, 0);
+
+            //* Service fee (15% of subtotal price, $3 min - $5 max)
+            this.service_fee = this.subtotal * 15 / 100;
+            if(this.service_fee < 3.00) {
+                this.service_fee = 3.00;
+            } 
+            if(this.service_fee > 5.00) {
+                this.service_fee = 5.00;
+            }
+
+            //* Taxes
+            this.taxes = this.subtotal * 6.75 / 100;
+
+            //* Total of taxes and service fee
+            this.taxes_and_fees = this.service_fee + this.taxes;
+
+            //* Delivery fee
+            this.delivery_fee = 0.1
+
+            //* Cart total price
+            this.final_total_price = this.subtotal + this.taxes_and_fees + this.delivery_fee;
+        },
     }
 }
 </script>
@@ -174,7 +225,7 @@ export default {
 }
 
 .fee_price_amount, .total_amount {
-    font-size: 18px;
+    font-size: 19px;
 }
 
 .dollar_sign {
@@ -228,12 +279,12 @@ export default {
 }
 
 .service_fee > .main_info,
-.taxes {
+.taxes > .main_info {
     display: flex;
 }
 
 .service_fee > .main_info > .name,
-.taxes > .name {   
+.taxes > .main_info > .name {   
     font-size: 17px;
     color: var(--navy);
     font-family: 'Cabin';
@@ -252,7 +303,8 @@ export default {
     margin-right: 3px;
 }
 
-.service_fee > .additional_info {
+.service_fee > .additional_info,
+.taxes > .additional_info {
     margin-left: 0;
     font-size: 15px;
     margin: 5px 0 10px;
