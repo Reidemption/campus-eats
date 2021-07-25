@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="include_message_box">
-                            <textarea rows="2" :value="popup_meal_edit_note"></textarea>
+                            <textarea rows="2" :placeholder="popup_meal_edit_note" v-model="popup_meal_edit_note"></textarea>
                         </div>
                     </div>
 
@@ -110,10 +110,12 @@
                         </div>
 
                         <div class="include_message_box" v-if="show_include_message_box">
-                            <textarea rows="2" placeholder="Add specific message (allergy, etc)"></textarea>
+                            <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="popup_meal_edit_note"></textarea>
                         </div>
                     </div>
                 </div>
+
+                <div class="popup_meal_remove_item_section" @click="remove_one_meal_from_cart">Remove this item</div>
 
                 <div class="popup_meal_quantity_and_add_button_and_total_price">
                     <div class="quantify_control">
@@ -131,7 +133,7 @@
                         </div>
                     </div>
 
-                    <div class="add_button_and_total_price">
+                    <div class="add_button_and_total_price" @click="update_one_meal_in_cart">
                         <div class="add_to_cart_button">Save changes</div>
                         
                         <div class="total_price">
@@ -148,6 +150,7 @@
 <script>
 export default {
     props: {
+        popup_meal_edit_id: Number,
         popup_meal_edit_name: String,
         popup_meal_edit_background_image: String,
         popup_meal_edit_description: String,
@@ -271,6 +274,20 @@ export default {
             new_total_price = total_price_before_update * this.quantity_to_add;
             
             this.total_price = new_total_price;
+        },
+        remove_one_meal_from_cart() {
+            let meal_id = this.popup_meal_edit_id;
+            this.$emit("remove_one_meal_from_cart", meal_id);
+            this.$store.commit("remove_one_meal_from_cart", meal_id);
+        },
+        update_one_meal_in_cart() {
+            let meal_id = this.popup_meal_edit_id;
+            let new_meal_quantity = this.quantity_to_add;
+            let new_meal_note = this.popup_meal_edit_note;
+            let new_meal_subtotal_price = this.total_price;
+            let new_meal_custom_options = this.new_popup_meal_edit_custom_options;
+
+            this.$store.commit("update_one_meal_in_cart", { meal_id, new_meal_quantity, new_meal_note, new_meal_subtotal_price, new_meal_custom_options });
         }
     }
 }
@@ -526,5 +543,15 @@ export default {
     margin-left: 10px;
     font-size: 15px;
     color: var(--gray-dark);
+}
+
+.popup_meal_remove_item_section {
+    color: var(--red);
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 40px;
+    border-top: 1px solid var(--gray-fade);
+    cursor: pointer;
 }
 </style>

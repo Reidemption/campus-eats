@@ -34,28 +34,14 @@ export default {
     },
     data() {
         return {
-            total_items_in_cart: 0,
+            total_items_in_cart: this.$store.state.customer_cart_by_meals.length,
             show_mini_cart: false
         }
     },
     created () {
         window.addEventListener('scroll', this.handle_scroll);
-
-        this.get_number_of_items_in_cart();
     },
     methods: {
-        get_number_of_items_in_cart() {
-            let customer_cart = this.$store.state.customer_cart;
-            let items_in_cart = 0;
-
-            customer_cart.forEach(order => {
-                order.meals.forEach(meal => {
-                    items_in_cart += 1;
-                })
-            });
-
-            this.total_items_in_cart = items_in_cart;
-        },
         view_mini_cart() {
             this.show_mini_cart = true;
         },

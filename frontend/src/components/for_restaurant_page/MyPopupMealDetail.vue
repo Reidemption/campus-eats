@@ -150,11 +150,15 @@ export default {
             new_popup_meal_custom_options: [],
             quantity_to_add: 1,
             show_include_message_box: false,
-            popup_meal_note: "",
+            popup_meal_note: ""
         }
     },
     created() {
         this.create_new_popup_meal_custom_options_list();
+
+        this.popup_meal_custom_options.forEach(custom_option => {
+            custom_option.selected = false;
+        })
     },
     methods: {
         create_new_popup_meal_custom_options_list() {
@@ -274,6 +278,13 @@ export default {
                 custom_options: this.popup_meal_custom_options
             };
             this.$store.commit('add_one_meal_to_cart', meal_to_add);
+            
+            this.$router.push({
+                name: "Restaurani",
+                query: {
+                    menu: this.popup_meal_restaurant_path
+                }
+            });
         }
     }
 }

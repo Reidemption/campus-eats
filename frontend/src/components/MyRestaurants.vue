@@ -107,7 +107,7 @@ export default {
         },
         restaurant_selected(restaurant_name) {
             this.$router.push({
-                name: "Restaurant",
+                name: "Restaurani",
                 query: {
                     menu: restaurant_name
                 }

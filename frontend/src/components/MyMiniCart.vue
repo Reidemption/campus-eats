@@ -6,36 +6,36 @@
 
         <div class="main_cart_content" v-if="!empty_cart">
             <div class="cart_orders">
-                <div class="single_cart_order" v-for="order in customer_cart" :key="order.restaurant_name">
+                <div class="single_cart_order" v-for="order in customer_cart_by_orders" :key="order.restaurant_name">
                     <div class="restaurant_name">{{ order.restaurant_name }}</div>
 
                     <div class="cart_items_infos">
-                        <div class="single_cart_item" v-for="meal in order.meals" :key="meal.name">
+                        <div class="single_cart_item" v-for="meal in order.meals" :key="meal.meal_id">
                             <div class="quantity_section">
-                                <input type="number" :value="meal.quantity">
+                                <input type="number" :value="meal.meal_infos.quantity">
                             </div>
 
                             <div class="infos_section">
                                 <div class="cart_item_name_section" @click="show_popup_meal_edit(meal)">
-                                    <div class="cart_item_name">{{ meal.name }}</div>
+                                    <div class="cart_item_name">{{ meal.meal_infos.name }}</div>
                                     <span class="material-icons">edit</span>
                                 </div>
                                 <div class="cart_item_custom_options">
-                                    <div class="single_custom_option" v-for="option in meal.custom_options" :key="option.name">
+                                    <div class="single_custom_option" v-for="option in meal.meal_infos.custom_options" :key="option.name">
                                         <div v-if="option.selected">
                                             <div class="option_name">{{ option.type }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <div class="cart_item_message_included" v-if="meal.note">
+                                <div class="cart_item_message_included" v-if="meal.meal_infos.note">
                                     Message included
                                 </div>
                             </div>
 
                             <div class="price_section">
-                                    <span class="dollar_sign">$</span>
-                            <div class="total_price">{{ meal.subtotal_price }}</div>
+                                <span class="dollar_sign">$</span>
+                                <div class="total_price">{{ meal.meal_infos.subtotal_price.toFixed(2) }}</div>
                             </div>
                         </div>
                     </div>
@@ -61,6 +61,7 @@
         </div>
 
         <MyPopupMealEdit v-if="view_popup_meal_edit"
+            :popup_meal_edit_id="popup_meal_edit_id"
             :popup_meal_edit_name="popup_meal_edit_name"
             :popup_meal_edit_background_image="popup_meal_edit_background_image"
             :popup_meal_edit_description="popup_meal_edit_description"
@@ -70,7 +71,8 @@
             :popup_meal_edit_subtotal_price="popup_meal_edit_subtotal_price"
             :popup_meal_edit_note="popup_meal_edit_note"
             :popup_meal_edit_custom_options="popup_meal_edit_custom_options"
-            @close_popup_meal_edit="close_popup_meal_edit">
+            @close_popup_meal_edit="close_popup_meal_edit"
+            @remove_one_meal_from_cart="update_items_in_cart">
         </MyPopupMealEdit>
     </div>
 </template>
@@ -85,10 +87,11 @@ export default {
     data() {
         return {
             empty_cart: true,
-            customer_cart: [],
+            customer_cart_by_orders: [],
             view_popup_meal_edit: false,
             subtotal: 20,
-
+            
+            popup_meal_edit_id: "",
             popup_meal_edit_name: "",
             popup_meal_edit_background_image: "",
             popup_meal_edit_description: "",
@@ -101,23 +104,49 @@ export default {
         }
     },
     created() {
-        this.customer_cart = this.$store.state.customer_cart;
-
-        if (this.customer_cart.length !== 0) {
-            this.empty_cart = false;
-        } else {
-            this.empty_cart = true;
-        }
+        this.create_customer_cart_by_orders();
 
         this.calculate_cart_subtotal();
     },
     methods: {
+        create_customer_cart_by_orders() {
+            let customer_cart_by_meals = this.$store.state.customer_cart_by_meals;
+            let customer_cart_by_orders = this.customer_cart_by_orders;
+            let main_restaurant_names = [];
+
+            customer_cart_by_meals.forEach(meal => {
+                if(!main_restaurant_names.includes(meal.meal_infos.restaurant_name)) {
+                    main_restaurant_names.push(meal.meal_infos.restaurant_name);
+                }
+            })
+
+            main_restaurant_names.forEach(name => {
+                customer_cart_by_orders.push({
+                    restaurant_name: name,
+                    meals: []
+                })
+            })
+
+            customer_cart_by_meals.forEach(meal => {
+                customer_cart_by_orders.forEach(order => {   
+                    if(meal.meal_infos.restaurant_name === order.restaurant_name) {
+                        order.meals.push(meal);
+                    }
+                })
+            })
+
+            if (customer_cart_by_orders.length !== 0) {
+            this.empty_cart = false;
+            } else {
+                this.empty_cart = true;
+            }
+        },
         calculate_cart_subtotal() {
             let cart_subtutal = [];
 
-            this.customer_cart.forEach(order => {
+            this.customer_cart_by_orders.forEach(order => {
                 order.meals.forEach(meal => {
-                    cart_subtutal.push(meal.subtotal_price);
+                    cart_subtutal.push(meal.meal_infos.subtotal_price);
                 })
             });
 
@@ -129,18 +158,37 @@ export default {
         show_popup_meal_edit(meal) {
             this.view_popup_meal_edit = true;
 
-            this.popup_meal_edit_name = meal.name;
-            this.popup_meal_edit_background_image = meal.image_url;
-            this.popup_meal_edit_description = meal.description;
-            this.popup_meal_edit_calories = meal.calories;
-            this.popup_meal_edit_quantity = meal.quantity;
-            this.popup_meal_edit_meal_price = meal.meal_price;
-            this.popup_meal_edit_subtotal_price = meal.subtotal_price,
-            this.popup_meal_edit_note = meal.note;
-            this.popup_meal_edit_custom_options = meal.custom_options;
+            this.popup_meal_edit_id = meal.meal_id;
+            this.popup_meal_edit_name = meal.meal_infos.name;
+            this.popup_meal_edit_background_image = meal.meal_infos.image_url;
+            this.popup_meal_edit_description = meal.meal_infos.description;
+            this.popup_meal_edit_calories = meal.meal_infos.calories;
+            this.popup_meal_edit_quantity = meal.meal_infos.quantity;
+            this.popup_meal_edit_meal_price = meal.meal_infos.meal_price;
+            this.popup_meal_edit_subtotal_price = meal.meal_infos.subtotal_price,
+            this.popup_meal_edit_note = meal.meal_infos.note;
+            this.popup_meal_edit_custom_options = meal.meal_infos.custom_options;
         },
         close_popup_meal_edit() {
             this.view_popup_meal_edit = false;
+        },
+        update_items_in_cart(meal_id) {
+            this.view_popup_meal_edit = false;
+
+            this.customer_cart_by_orders.forEach(order => {
+                let meals_list = order.meals.filter(meal => {
+                    if (meal.meal_id !== meal_id) {
+                        return meal;
+                    }
+                })
+                order.meals = meals_list;
+            })
+
+            if (this.customer_cart_by_orders.length === 1) {
+                if (this.customer_cart_by_orders[0].meals.length === 0) {
+                    this.empty_cart = true;
+                }
+            }
         }
     }
 }
@@ -180,6 +228,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 30px;
 }
 
 .cart_icon > i {
@@ -199,7 +248,8 @@ export default {
 
 .restaurant_name {
     font-family: 'Roboto', sans-serif;
-    font-size: 30px;
+    font-size: 25px;
+    margin-bottom: 30px;
 }
 
 .checkout_button {
