@@ -5,25 +5,32 @@
       </div>
 
       <div class="tasks_page_wrapper">
-          <div class="app_name">
-              <router-link to="/">Campus Eats</router-link>
-                  <div class="additional_name">Delivery</div>
-          </div>
+          <div class="page_focus">
+              <div class="app_name">
+                  <router-link to="/">Campus Eats</router-link>
+                      <div class="additional_name">Delivery</div>
+              </div>
 
-          <div class="sort_orders_options">
-              <div class="title">Sort orders by:</div>
-        
-              <div class="dropdown_options">
-                  <button class="dropdown_button">Select an option</button>
-                  
-                  <div class="overlay_section">
+              <div class="sort_orders_options">
+                  <div class="title">Sort orders by:</div>
+            
+                  <div class="dropdown_options">
+                      <button class="dropdown_button">{{ current_sort_order_option }}</button>
+                      
                       <div class="dropdown_content">
-                          <p>Closest to furthest location</p>
-                          <p>Oldest to newest orders</p>
-                          <p>Shortest to longest prep time</p>
+                          <p v-for="option in sort_orders_options" :key="option"
+                              @click="sort_orders_option_selected(option)">
+                              {{ option }}
+                          </p>
                       </div>
                   </div>
               </div>
+
+              <MyTasksList></MyTasksList>
+          </div>  
+
+          <div class="mini_footer_wrapper">
+              <MyMiniFooter></MyMiniFooter>
           </div>
     </div>
   </div>
@@ -31,18 +38,42 @@
 
 <script>
 import MyNavBar from "../components/MyNavBar.vue"
+import MyTasksList from "../components/for_tasks_page/MyTasksList.vue"
+import MyMiniFooter from "../components/MyMiniFooter.vue"
 
 export default {
     components: {
         MyNavBar,
+        MyTasksList,
+        MyMiniFooter
+    },
+    data() {
+      return {
+        current_sort_order_option: "Select an option",
+        sort_orders_options: [
+          "Closest to furthest location",
+          "Oldest to newest orders",
+          "Shortest to longest prep time"
+        ]
+      }
+    },
+    methods: {
+      sort_orders_option_selected(option) {
+        this.current_sort_order_option = option;
+      } 
     }
 }   
 </script>
 
 <style scoped>
 .tasks_page_wrapper {
-    height: 100vh;
     background-color: var(--gray);
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .app_name {
@@ -67,7 +98,7 @@ export default {
 }
 
 .sort_orders_options {
-    padding: 30px 40px;
+    padding: 20px 40px;
     display: flex;
     align-items: center;
 }
@@ -79,11 +110,12 @@ export default {
 .dropdown_button {
     background-color: white;
     color: var(--gray-dark);
-    padding: 10px 40px;
+    padding: 10px;
     font-size: 16px;
     border: 1px solid var(--gray-fade);
     cursor: pointer;
     width: 100%;
+    border-radius: 25px;
 }
 
 .dropdown_options {
@@ -94,6 +126,7 @@ export default {
 }
 
 .dropdown_content {
+    display: none;
     position: absolute;
     background-color: #f9f9f9;
     width: 100%;
