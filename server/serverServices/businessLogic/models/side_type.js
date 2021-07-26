@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 // const Restaurant = require("./restaurant");
 
-const SideTypeSchema = new mongoose.Schema({
+const SideTypeSchema = new mongoose.Schema(
+  {
     name: String,
     restaurant_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant"
-    }
-},{timestamps:true});
+      ref: "Restaurant",
+    },
+  },
+  { timestamps: true }
+);
 
 const SideTypeModel = mongoose.model("SideType", SideTypeSchema);
-module.exports = [SideTypeModel,SideTypeSchema]
+module.exports = { SideTypeModel, SideTypeSchema };

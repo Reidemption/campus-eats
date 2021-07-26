@@ -1,12 +1,19 @@
 const mongoose = require("mongoose");
-const UserInfo = require("./user_information");
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type:String,
         require:true
     },
-    name: {
+    password_hash:{
+        type:String,
+        require:true
+    },
+    firstname: {
+        type:String,
+        require:true
+    },
+    lastname: {
         type:String,
         require:true
     },
@@ -14,7 +21,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: "UserInfo"
     },
-    position:{
+    location:{
         type:String,
         require:true
     },
@@ -32,6 +39,6 @@ const userSchema = new mongoose.Schema({
         default:false
     }
 },{timestamps:true});
-const User = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", UserSchema);
 
-module.exports = User
+module.exports = {UserModel,UserSchema}
