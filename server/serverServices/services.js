@@ -536,6 +536,35 @@ services.delete(
   }
 );
 
+// Patch - update
+app.patch("/customization/:custom_id", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`Patching id: ${req.params.custom_id}`, req.body);
+  let updateCustomization = {};
+  if (req.body.selected) {
+    updateCustomization.selected = req.body.selected;
+  }
+
+  Restaurants.updateOne(
+    { _id: req.params.custom_id },
+    {
+      $set: updateCustomization,
+    },
+    function (err, updateOneResponse) {
+      if (err) {
+        console.log(`unable to PATCH with id: ${req.params.id}`);
+        res.status(404).json({
+          message: `unable to update customization with id ${req.params.id}`,
+          error: err,
+        });
+      } else if (updateOneResponse.n) {
+        res.status(200).json(updateCustomization);
+      }
+      return;
+    }
+  );
+});
+
 // -------------- Duy's Section ------------------
 
 // Get every users
