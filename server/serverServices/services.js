@@ -4,7 +4,6 @@ const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
 const services = express();
-const main_path = "/campuseats";
 
 // ========== Middlewares ===========
 services.use(cors());

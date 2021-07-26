@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Role = require("../serverServices/businessLogic/BLL/roleManagement");
 const db = mongoose.connection;
 
 function connectToDb(callback) {
@@ -16,8 +17,13 @@ function connectToDb(callback) {
       console.log(`- Connection String: ${connectionString}`);
       console.log(`--- Error: ${err}`);
       console.log(`------------------------------------------------`);
+      process.exit();
     });
-  db.once("open", callback);
+  db.once("open", function(){
+    console.log("> Init <super admin> role!")
+    Role.init(null);
+    callback();
+  });
 }
 
 module.exports = {

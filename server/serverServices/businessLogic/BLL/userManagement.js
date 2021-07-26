@@ -52,14 +52,16 @@ function findAUserByName(name, callback) {
 
 function createUser(user_obj, callback) {
   //TODO: check if that user name is existed?!?
-  User.UserModel.create(user_obj, (err, user) => {
-    if (err) {
-      console.log(`Couldn't create a user with body ${user_obj}`);
-    } else {
-      console.log(`Successfully create user with body ${user_obj}`);
-    }
-    callback(err, user);
-  });
+  if(!isDuplicatedEmail(user_obj.email)&&!isDuplicatedUsername(user_obj.username)){
+    User.UserModel.create(user_obj, (err, user) => {
+      if (err) {
+        console.log(`Couldn't create a user with body ${user_obj}`);
+      } else {
+        console.log(`Successfully create user with body ${user_obj}`);
+      }
+      callback(err, user);
+    });
+  }
 }
 
 function updateUser(user_obj, callback) {
@@ -81,6 +83,50 @@ function deleteUser(id, callback) {
       console.log(`Successfully delete a user with id ${id}`);
     }
     callback(err, user);
+  });
+}
+
+//========== HELPERS ==============
+
+function isDuplicatedUsername(username){
+  // Username
+  User.UserModel.findOne({
+    username: username
+  }).exec((err, user) => {
+    if (err) {
+        return {
+          err,
+          result = true
+        };
+    }
+    if (user) {
+        return{
+          err: {message: "Failed! Username is already in use!"},
+          result = true
+        };
+    }
+    return false;
+  });
+};
+
+function isDuplicatedEmail(email){
+    // Email
+    User.UserModel.findOne({
+      "contacts.email": email
+    }).exec((err, user) => {
+      if (err) {
+          return {
+            err,
+            result = true
+          };
+      }
+      if (user) {
+          return{
+            err: {message: "Failed! Email is already in use!"},
+            result = true
+          };
+      }
+    return false;
   });
 }
 

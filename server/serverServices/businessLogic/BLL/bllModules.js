@@ -1,4 +1,4 @@
-const RestaurantBLO = require("./restaurantsManagement"); 
 const UserBLO = require("./userManagement"); 
+const RoleBLO = require("./roleManagement"); 
 
-module.exports={RestaurantBLO, UserBLO}
+module.exports={RoleBLO, UserBLO}
