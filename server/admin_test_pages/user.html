@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management</title>
+</head>
+<body>
+    <div id="app">
+        <div id=#user_list>
+            <h1>User list</h1>
+            <div class="bar">
+                <input type="text" v-model="search_string" placeholder=" Enter user's name to search ">
+            <button v-on:click="page = 'lookup'">lookup</button>
+            </div>
+            <div v-if="page == 'admin'">
+                <button v-on:click="page = 'create'">Add new user</button>
+                <ul>
+                    <li v-for="(user,index) in users" >
+                        <div>{{user.email}}</div>
+                            <div>Password: {{user.hashed_password}}</div>
+                            <div>Is Active: {{user.isActive}} </div>
+                            <div>Session: {{user.session}} </div>
+                            <div>Is Logged in: {{user.logged_in}} </div>
+                            <div>Last login: {{user.last_loggin_time}}</div>
+                            <div>Location: {{user.location}} </div>
+                            <div style="border: 1pz">
+                                <ul>
+                                    <li>Role : {{user_info.role}}</li>
+                                    <li>Dnumber : {{user_info.dnumber}}</li>
+                                    <li>Firstname : {{user_info.firstname}}</li>
+                                    <li>Lastname : {{user_info.lastname}}</li>
+                                    <ul>
+                                        <li>Address: {{user_info.address}}</li>
+                                        <li>Phone: {{user_info.phone}}</li>
+                                        <li>Email: {{user_info.email}}</li>
+                                    </ul>
+                                    <ul>
+                                        <li v-on:click="showOrderHistory(user._id)">Order History</li>
+                                        <li v-on:click="showDeliveryHistory(index._id)">Delivery History</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        <button v-on:click="editUser(user._id )">Edit</button>
+                        <button v-on:click="deleteUser(user._id )">Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="./code.js"></script>
+</body>
+</html>

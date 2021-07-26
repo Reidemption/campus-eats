@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "campus-eats",
   "version": "1.0.0",
@@ -24,3 +25,32 @@
     "mongoose": "^5.13.3"
   }
 }
+=======
+{
+  "name": "campus-eats",
+  "version": "1.0.0",
+  "description": "CodeSchool 2021 Final Project",
+  "main": "./server/serverServices/init.js",
+  "scripts": {
+    "start": "node ./server/serverServices/init.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reidemption/campus-eats.git"
+  },
+  "author": "Reid, Duy, Minh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Reidemption/campus-eats/issues"
+  },
+  "homepage": "https://github.com/Reidemption/campus-eats#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.10",
+    "mongoose": "^5.13.3",
+    "vuejs": "^3.0.1"
+  }
+}
+>>>>>>> backend

@@ -8,10 +8,22 @@ const Meal = require("./meal");
 const MealSide = require("./meal_side");
 const Category = require("./category");
 const Restaurant = require("./restaurant");
-const RestaurantSideType = require("./restaurant_side_type.js");
+const SideType = require("./side_type");
+
+const UserInfoModel=UserInfo.UserInfoModel;
+const UserModel= User.UserModel;
+const OrderModel = Order.OrderModel;
+const OrderItemModel = OrderItem.OrderItemModel;
+const OrderItemSideModel = OrderItemSide.OrderItemSideModel;
+const MenuModel = Menu.MenuModel;
+const MealModel = Meal.MealModel;
+const MealSideModel = MealSide.MealSideModel;
+const CategoryModel = Category.CategoryModel;
+const RestaurantModel = Restaurant.RestaurantModel;
+const SideTypeModel = SideType.SideTypeModel;
 
 module.exports={
-    User, UserInfo,
-    Order,OrderItem,OrderItemSide,
-    Restaurant, Category,Menu, Meal, MealSide, RestaurantSideType
+    UserInfoModel,UserModel,
+    OrderModel,OrderItemModel,OrderItemSideModel,
+    RestaurantModel,CategoryModel,MenuModel,MealModel,MealSideModel,SideTypeModel
 }

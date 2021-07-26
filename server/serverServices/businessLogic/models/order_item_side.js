@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const Meal = require("./meal");
-const OrderItem = require("./order_item");
 const MealSide = require("./meal_side");
 
 const OrderItemSideSchema = mongoose.Schema({
     item_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: OrderItem
+        ref: "OrderItem"
     },
     orderDate: {
         type:Date,

@@ -9,6 +9,7 @@ const main_path = "/campuseats";
 // ========== Middlewares ===========
 services.use(cors());
 services.use(express.json({}));
+services.use(express.static("~/admin_test_pages"));
 
 // ======== Request handlers =========
 // --- LOG ---
@@ -22,6 +23,8 @@ services.use((req, res, next) => {
     req.method,
     "- Url:",
     req.originalUrl,
+    "- Headers:",
+    req.headers,
     "- Body:",
     req.body
   ),
@@ -361,111 +364,6 @@ services.post("/customization", function (req, res) {
   );
 });
 
-// -------------- Duy's Section ------------------
-
-// Get every user
-services.get("/users", (req, res) => {
-  console.log(`Getting all User`);
-  BLOModules.UserBLO.getAllUsers((err, users) => {
-    if (err != null) {
-      res.status(500).json({
-        Error: err,
-        message: "unable to list all users",
-      });
-    } else {
-      res.status(200).json(users);
-    }
-  });
-});
-
-// Get info for a user with specific ID
-services.get("/users/:id", (req, res) => {
-  console.log(`Getting specific user with id:${req.params.id}`);
-  BLOModules.UserBLO.findUserById(req.params.id, (err, user) => {
-    if (err != null) {
-      res.status(500).json({
-        err: err,
-        message: "Unable to find user with that id",
-      });
-    } else if (user === null) {
-      res.status(404).json({
-        message: `Cannot find user with id: ${req.params.id}`,
-      });
-    } else {
-      res.status(200).json(user);
-    }
-  });
-});
-
-// POST/create a user
-services.post("/users", function (req, res) {
-  let userInfoObj = new BLOModels.UserInfoModel({});
-  userInfoObj.dnumber = req.body.dnumber;
-  userInfoObj.firstname = req.body.firstname;
-  userInfoObj.lastname = req.body.lastname;
-  userInfoObj.contacts = {
-    address: req.body.address,
-    phone: req.body.phone,
-    email: req.body.email,
-  };
-  let userObj = new BLOModels.UserModel({});
-  userObj.email = req.body.email;
-  userObj.hashed_password = req.body.password;
-  userObj.location = req.body.location;
-  userObj.user_info = userInfoObj;
-  let isValid = userObj.validateSync();
-  if (isValid !== undefined) {
-    console.log(isValid);
-    res.status(400).json({
-      message: "Fields are invalid",
-      isValid,
-    });
-  } else {
-    BLOModules.UserBLO.createUser(userObj, (err, user) => {
-      if (err !== null) {
-        res.status(500).json({
-          message: "=> Unable to create user",
-          error: err,
-        });
-      } else {
-        res.status(200).json(user);
-      }
-    });
-  }
-});
-
-// PUT/update a user
-services.put("/users", function (req, res) {
-  console.log(req.body);
-  if (
-    !req.body.username ||
-    !req.body.firstname ||
-    !req.body.lastname ||
-    !req.body.password ||
-    !req.body.phone ||
-    !req.body.dnumber
-  ) {
-    console.log(`unable to update user because fields are missing`);
-    res.status(400).json({
-      message: "unable to update user",
-      error: "Field is missing",
-    });
-    return;
-  }
-
-  BLOModules.UserBLO.updateUser(new BLOModels.UserModel({}), (err, user) => {
-    if (err !== null) {
-      res.status(400).json({
-        message: "unable to create user",
-        error: err,
-      });
-    } else {
-      console.log(user);
-      res.status(201).json(user);
-    }
-  });
-});
-
 // delete a Restaurant using its id
 services.delete("/restaurant/:id", (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -639,6 +537,126 @@ services.delete(
 );
 
 // -------------- Duy's Section ------------------
+
+// Get every users
+services.get("/users", (req, res) => {
+  console.log(`Getting all User`);
+  BLOModules.UserBLO.getAllUsers((err, users) => {
+    if (err != null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all users",
+      });
+    } else {
+      res.status(200).json(users);
+    }
+  });
+});
+
+// Get info for a user with specific ID
+services.get("/users/:id", (req, res) => {
+  console.log(`Getting specific user with id:${req.params.id}`);
+  BLOModules.UserBLO.findUserById(req.params.id, (err, user) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find user with that id",
+      });
+    } else if (user === null) {
+      res.status(404).json({
+        message: `Cannot find user with id: ${req.params.id}`,
+      });
+    } else {
+      res.status(200).json(user);
+    }
+  });
+});
+
+// POST/create a user
+services.post("/users", function (req, res) {
+  let userInfoObj = new BLOModels.UserInfoModel({});
+  userInfoObj.dnumber = req.body.dnumber;
+  userInfoObj.firstname = req.body.firstname;
+  userInfoObj.lastname = req.body.lastname;
+  userInfoObj.contacts = {
+    address: req.body.address,
+    phone: req.body.phone,
+    email: req.body.email,
+  };
+  let userObj = new BLOModels.UserModel({});
+  userObj.email = req.body.email;
+  userObj.hashed_password = req.body.password;
+  userObj.location = req.body.location;
+  userObj.user_info = userInfoObj;
+  let isValid = userObj.validateSync();
+  if (isValid !== undefined) {
+    console.log(isValid);
+    res.status(400).json({
+      message: "Fields are invalid",
+      isValid,
+    });
+  } else {
+    BLOModules.UserBLO.createUser(userObj, (err, user) => {
+      if (err !== null) {
+        res.status(500).json({
+          message: "=> Unable to create user",
+          error: err,
+        });
+      } else {
+        res.status(200).json(user);
+      }
+    });
+  }
+});
+
+// PUT/update a user
+services.put("/users", function (req, res) {
+  console.log(req.body);
+  if (
+    !req.body.username ||
+    !req.body.firstname ||
+    !req.body.lastname ||
+    !req.body.password ||
+    !req.body.phone ||
+    !req.body.dnumber
+  ) {
+    console.log(`unable to update user because fields are missing`);
+    res.status(400).json({
+      message: "unable to update user",
+      error: "Field is missing",
+    });
+    return;
+  }
+
+  BLOModules.UserBLO.updateUser(new BLOModels.UserModel({}), (err, user) => {
+    if (err !== null) {
+      res.status(400).json({
+        message: "unable to create user",
+        error: err,
+      });
+    } else {
+      console.log(user);
+      res.status(201).json(user);
+    }
+  });
+});
+
+// DELETE/delete a user
+services.delete("/users/:id", function (req, res) {
+  console.log(`Delete with id : ${req.params.id}`);
+  BLOModules.UserBLO.deleteUser(req.params.id, (err, user) => {
+    if (err !== null) {
+      res.status(400).json({
+        message: "unable to delete user",
+        error: err,
+      });
+    } else {
+      console.log(user);
+      res.status(201).json(user);
+    }
+  });
+});
+
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {
