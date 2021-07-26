@@ -5,7 +5,7 @@
         </router-link>
 
         <div class="location_input_and_cart_button">
-            <div class="location_input" @click="location_input_clicked">
+            <div class="location_input">
                 <i class="las la-map-marker"></i>
                 <input class="location_text_input" type="text" placeholder="Enter your location">
             </div>
@@ -51,14 +51,6 @@ export default {
         },
         handle_scroll(event) {
             this.show_mini_cart = false;
-        },
-        location_input_clicked() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    console.log(position.coords.latitude);
-                    console.log(position.coords.longitude);
-                })
-            }
         }
     }
 }
