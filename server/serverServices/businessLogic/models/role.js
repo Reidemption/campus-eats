@@ -4,9 +4,14 @@ const Permission = require("./permission");
 const RoleSchema = new mongoose.Schema({
     name: {
         type:String,
-        require:true
+        required:[true,"Please enter Role's name"],
+        default:""
     },
-    permissions:[Permission]
+    permissions:[Permission.PermissionSchema],
+    user_id:{        
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 },{timestamps:true});
 const RoleModel = mongoose.model("Role", RoleSchema);
 
