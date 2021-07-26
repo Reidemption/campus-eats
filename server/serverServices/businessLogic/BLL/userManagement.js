@@ -1,102 +1,87 @@
 const User = require("../models/user")
 
-function getAllUsers(){
+function getAllUsers(callback){
     User.UserModel.find({}, (err, users) => {
-        if (err != null) {
-          return {error:err, result :null};
+        if (err){
+            console.log(`Couldn't find any user.`);
+        }else{
+            console.log(`Successfully found users.`);
         }
-        return {error:null, result :users};
-      });
+        callback(err, users)
+    });
 }
 
-function findUsertById(id){
-    User.UserModel.find({
-        _id:id
-    }, (err, user) => {
-        if (err != null) {
-          return {error:err, result :null};
+function findUserById(user_id,callback){
+    User.UserModel.findById(user_id, (err, user) => {
+        if (err){
+            console.log(`Couldn't find a user with id: ${user_id}`);
+        }else{
+            console.log(user);
+            console.log(`Successfully found user with id: ${user_id}`);
         }
-        return {error:null, result :user};
-      });
+        callback(err, user)
+    });
 }
 
-function findUsersByName(name){
-    Users.find({
+function findUsersByName(name,callback){
+    Users.UserModel.find({
         "name":{$regex:`(?i)${name}`}
     }, (err, users) => {
-        if (err != null) {
-          res.status(500).json({
-            err: error,
-            message: "unable to list all users",
-          });
-          return {error:err, result :null};
+        if (err){
+            console.log(`Couldn't find a user with name ${name}`);
+        }else{
+            console.log(`Successfully found user with name ${name}`);
         }
-        return {error:null, result :users};
-      });
+        callback(err, users)
+    });
 }
-function findOneUsersByName(name){
-    Users.findOne({
+
+function findAUserByName(name,callback){
+    Users.UserModel.findOne({
         name:`${name}`
     }, (err, user) => {
-        if (err != null) {
-            return {error:err, result :null};
-        }
-        return {error:null, result :user};
-      });
-}
-
-function createUser(user_obj){
-    //TODO: check if that user name is existed?!?
-    User.create(user_obj, (err,user)=>{
-        if (err){
-            console.log(`Couldn't create a user with body ${req.body}`);
-            return{
-                error:err,
-                result:null
-            }
-        };
-        return{
-            error:null,
-            result:user
-        }
+        callback(err, user)
     });
 }
 
-function updateUser(user_obj){
-    User.findByIdAndUpdate(user_obj._id,user_obj, (err,user)=>{
+function createUser(user_obj,callback){
+    //TODO: check if that user name is existed?!?
+    User.UserModel.create(user_obj, (err,user)=>{
+        if (err){
+            console.log(`Couldn't create a user with body ${user_obj}`);
+        }else{
+            console.log(`Successfully create user with body ${user_obj}`);
+        }
+        callback(err, user)
+    });
+}
+
+function updateUser(user_obj,callback){
+    User.UserModel.findByIdAndUpdate(user_obj._id,user_obj, (err,user)=>{
         if (err){
             console.log(`Couldn't update a user with body ${user_obj}`);
-            return{
-                error:err,
-                result:null
-            }
-        };
-        return{
-            error:null,
-            result:user
+        }else{
+            
+            console.log(`Successfully updated a user with body ${user_obj}`);
         }
+        callback(err, user)
     });
 }
 
-
-function deleteUser(user_id){
-    User.findByIdAndDelete(user_id, (err,user)=>{
+function deleteUser(id,callback){
+    User.UserModel.findByIdAndDelete(id, (err,user)=>{
         if (err){
-            console.log(`Couldn't delete a user with id ${user_id}`);
-            return{
-                error:err,
-                result:null
-            }
-        };
-        return{
-            error:null,
-            result:user
+            console.log(`Couldn't delete a user with id ${id}`);
+        }else{
+            
+            console.log(`Successfully delete a user with id ${id}`);
         }
+        callback(err, user)
     });
 }
 
 module.exports={
     getAllUsers,
-    findUsertById,findOneUsersByName,findUsersByName,
+    findUserById,findAUserByName,findUsersByName,
     createUser,updateUser,deleteUser
 }

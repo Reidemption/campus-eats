@@ -1,45 +1,39 @@
 const mongoose = require("mongoose");
+const Role = require("./role");
 
-const UserInfoSchema = new mongoose.Schema({
-    username: {
-        type:String,
-        require:true
-    },
-    hashed_pwd: {
-        type:String,
-        require:true
-    },
-    role_id:{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Role",
+const UserInfoSchema = new mongoose.Schema({    
+    role:{
+        type:Role.RoleSchema,
+        default:null
     },
     dnumber: {
         type:String,
-        require:true
+        required:[true,"Please enter your Dnumber"] 
     },
-    first_name: {
+    firstname: {
         type:String,
-        require:true
+        required:[true,"Please enter your first name"]
     },
-    last_name: {
+    lastname: {
         type:String,
-        require:true
+        required:[true,"Please enter your last name"]
     },
     contacts:{
         address:{
             type: String,
-            require: true
+            default:""
         },
-        phone:String,
-        email:String
-    },
-    user_id:{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User",
-        require:true
+        phone:{
+            type: String,
+            required:[true,"Please enter your phone number"]
+        },
+        email:{
+            type: String,
+            default:""
+        }
     },
     order_history:[],
-    delivery_history:[]
+    delivery_history:[],
 },{timestamps:true});
 const UserInfoModel = mongoose.model("UserInfo", UserInfoSchema);
 
