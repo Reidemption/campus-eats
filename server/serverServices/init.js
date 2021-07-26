@@ -2,7 +2,7 @@ const services = require("./services");
 const dataAccess = require("../dataAccess/DAO.js");
 
 // define a port
-const port = process.argv[2] || process.env.port || 7777;
+const port = process.argv[2] || process.env.PORT || 7777;
 
 dataAccess.connectToDb(() => {
   services.listen(port, () => {
