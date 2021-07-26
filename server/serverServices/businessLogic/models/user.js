@@ -1,38 +1,35 @@
 const mongoose = require("mongoose");
+const UserInfo = require("./user_information");
 
 const UserSchema = new mongoose.Schema({
-    username: {
+    email: {
         type:String,
-        require:true
+        required:[true,"Please enter your email"]
     },
-    password_hash:{
+    hashed_password:{
         type:String,
-        require:true
+        required:[true,"Please enter your password"]
     },
-    firstname: {
+    profile_pic:{
         type:String,
-        require:true
+        default:""
     },
-    lastname: {
-        type:String,
-        require:true
-    },
-    user_info_id:{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "UserInfo"
-    },
+    user_info:UserInfo.UserInfoSchema,
     location:{
         type:String,
-        require:true
+        default:""
     },
     session:{
-      type:String
+      type:String,
+      default:""
     },
     logged_in:{
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     last_loggin_time:{
-        type:Date
+        type:Date,
+        default:Date.now
     },
     isActive:{
         type:Boolean,

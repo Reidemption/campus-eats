@@ -13,6 +13,7 @@ function connectToDb(callback) {
     .catch((err) => {
       console.log(`-------------------- ERROR ---------------------`);
       console.log(`- ${Date.now()} - Cannot connect to the Database`);
+      console.log(`- Connection String: ${connectionString}`);
       console.log(`--- Error: ${err}`);
       console.log(`------------------------------------------------`);
     });

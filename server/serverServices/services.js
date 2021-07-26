@@ -1,14 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const {  Restaurants,  Categories,  Menus,  Customizations} = require("./FrontEnd_Object_Models/restaurant.js");
-const BLO = require("../serverServices/businessLogic/BLL/bllModules")
-const BLOModel = require("../serverServices/businessLogic/models/data_models")
+const BLOModules = require("../serverServices/businessLogic/BLL/bllModules")
+const BLOModels = require("../serverServices/businessLogic/models/data_models")
 const services = express();
 const main_path = "/campuseats"
 
 // ========== Middlewares ===========
-services.use(cors());
-services.use(express.json({}));
+services.use(cors())
+services.use(express.json({}))
+services.use(express.static('~/admin_test_pages'))
 
 // ======== Request handlers =========
 // --- LOG ---
@@ -253,88 +254,120 @@ services.post("/menu", function (req, res) {
 
 // -------------- Duy's Section ------------------
 
-// Get every restaurant
+// Get every users
 services.get("/users", (req, res) => {
   console.log(`Getting all User`);
-  let result = BLO.UserBLO.getAllUsers();
-  if (result.error != null) {
-    res.status(500).json({
-      error: result.error,
-      message: "unable to list all users",
-    });
-  }else{
-    res.status(200).json(result.result);
-  }
+  BLOModules.UserBLO.getAllUsers((err,users)=>{
+    if (err!= null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all users",
+      });
+    }else{
+      res.status(200).json(users);
+    }
+  });  
 });
 
 // Get info for a user with specific ID
 services.get("/users/:id", (req, res) => {
   console.log(`Getting specific user with id:${req.params.id}`);
-  let result = BLO.UserBLO.findUsertById(req.params.id);
-  if (result.error != null) {
-    res.status(500).json({
-      err: err,
-      message: "Unable to find user with that id",
-    });
-  } else if (result.result === null) {
-    res.status(404)
-      .json({ 
-        message: `Cannot find user with id: ${req.params.id}`
+  BLOModules.UserBLO.findUserById(req.params.id,(err,user)=>{
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find user with that id",
       });
-  }else{
-  res.status(200).json(result.result);}
+    } else if (user === null) {
+      res.status(404)
+        .json({ 
+          message: `Cannot find user with id: ${req.params.id}`
+        });
+    }else{
+      res.status(200).json(user);
+    }
+  });  
 });
 
-// POST/create restaurant
+// POST/create a user
 services.post("/users", function (req, res) {
-  console.log(`creating a user with a body ${req.body}`);
+  let userInfoObj = new BLOModels.UserInfoModel({});
+  userInfoObj.dnumber = req.body.dnumber;
+  userInfoObj.firstname = req.body.firstname;
+  userInfoObj.lastname = req.body.lastname;
+  userInfoObj.contacts = { 
+      address:req.body.address,
+      phone:req.body.phone,
+      email:req.body.email
+  };
+  let userObj=new BLOModels.UserModel({});
+  userObj.email =req.body.email;
+  userObj.hashed_password =req.body.password;
+  userObj.location =req.body.location;
+  userObj.user_info= userInfoObj;
+  let isValid = userObj.validateSync();
+  if(isValid!==undefined){
+    console.log(isValid)
+    res.status(400).json({
+      message: "Fields are invalid",
+      isValid
+    })
+  }else{
+    BLOModules.UserBLO.createUser(
+      userObj,(err,user)=>{
+      if (err!==null) {
+        res.status(500).json({
+          message: "=> Unable to create user",
+          error: err,
+        })
+      }else{
+        res.status(200).json(user);
+      }
+    })
+  }
+});
+
+// PUT/update a user
+services.put("/users", function (req, res) {
+  console.log(req.body);
   if (
     !req.body.username ||
     !req.body.firstname ||
     !req.body.lastname ||
-    !req.body.background_image ||
-    !req.body.description ||
-    !req.body.location
+    !req.body.password ||
+    !req.body.phone ||
+    !req.body.dnumber
   ) {
-    console.log(`unable to create restaurant because fields are missing`);
+    console.log(`unable to update user because fields are missing`);
     res.status(400).json({
-      message: "unable to create restaurant",
-      error: "field is missing",
+      message: "unable to update user",
+      error: "Field is missing",
     });
     return;
   }
-  Restaurants.create(
-    {
-      path: req.body.path,
-      name: req.body.name,
-      logo: req.body.logo,
-      background_image: req.body.background_image,
-      description: req.body.description,
-      location: req.body.location,
-    },
-    (err, restaurant) => {
-      if (err) {
-        console.log(`unable to create restaurant`);
-        res.status(400).json({
-          message: "unable to create restaurant",
-          error: err,
-        });
-        return;
-      }
-      console.log(restaurant);
-      res.status(201).json(restaurant);
+
+  BLOModules.UserBLO.updateUser(new BLOModels.UserModel({}),(err,user)=>{
+    if (err!==null) {
+      res.status(400).json({
+        message: "unable to create user",
+        error: err,
+      })
+    }else{
+      console.log(user);
+      res.status(201).json(user);
     }
-  );
+  })
 });
 
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {
     console.log(`-------------------- ERROR ---------------------`);
-    console.log(`- ${Date.now()} - Cannot connect to Mysql`);
+    console.log(`- ${Date.now()}`);
     console.log(`--- Error: ${err}`);
     console.log(`------------------------------------------------`);
   }
+  // res.status(req.headers.status).json(req.headers.message);
 });
 // ========= EXPORT MODULE ==========
 module.exports = services;
