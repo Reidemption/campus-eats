@@ -1,11 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const {
-  Restaurants,
-  Categories,
-  Menus,
-  Customizations,
-} = require("./FrontEnd_Object_Models/restaurant.js");
+const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
 const services = express();
@@ -280,6 +275,159 @@ services.post("/menu", function (req, res) {
       }
       // console.log(`Contents of menu:${restaurant.categories.menus}`);
       res.status(201).json(restaurant);
+    }
+  );
+});
+
+// POST/create customizations for a specific category
+services.post("/customization", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`creating a customization with a body:`);
+  console.log(req.body);
+
+  if (!req.body.type) {
+    console.log("no type");
+  } else if (!req.body.name) {
+    console.log("no name");
+  } else if (!req.body.price) {
+    console.log("no price");
+  } else if (!req.body.selected) {
+    console.log("no selected");
+  } else if (!req.body.menu_id) {
+    console.log("not menu_id");
+  } else if (!req.body.category_id) {
+    console.log("not category_id");
+  } else if (!req.body.restaurant_id) {
+    console.log("no restaurant_id");
+  } else {
+    console.log(`unable to create customization because fields are missing`);
+    res.status(400).json({
+      message: "unable to create customization error 400",
+      error: "field(s) is missing",
+    });
+    return;
+  }
+  let newCustomization = {
+    type: req.body.type,
+    name: req.body.name,
+    calories: req.body.calories,
+    price: req.body.price,
+    selected: req.body.selected,
+    menu_id: req.body.menu_id,
+    category_id: req.body.category_id,
+    restaurant_id: req.body.restaurant_id,
+  };
+
+  Restaurants.findOneAndUpdate(
+    {
+      _id: req.body.restaurant_id,
+      "categories._id": req.body.category_id,
+      "categories.menus._id": req.body.menu_id,
+    },
+    // {},
+    {
+      $push: {
+        "categories.$[outer].menus.$[inner].custom_options": newCustomization,
+      },
+    },
+    {
+      new: true,
+      arrayFilters: [
+        { "outer._id": req.body.category_id },
+        { "inner._id": req.body.menu_id },
+      ],
+    },
+    (err, restaurant) => {
+      console.log(`=>restaurant: ${restaurant}`);
+      if (err) {
+        console.log(`unable to create custom option error 500`);
+        res.status(500).json({
+          message: "unable to create custom option",
+          error: err,
+        });
+        return;
+      } else if (restaurant === null) {
+        console.log(
+          "Unable to find restaurant with id:",
+          req.body.restaurant_id
+        );
+
+        res.status(404).json({
+          message: "Unable to find restaurant",
+          error: err,
+        });
+        return;
+      }
+      // console.log(`Contents of menu:${restaurant.categories.menus}`);
+      res.status(201).json(restaurant);
+    }
+  );
+});
+
+// delete a Restaurant using its id
+services.delete("/restaurant/:id", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`Deleting restaurant with id: ${req.body.id}`, req.body);
+  Restaurants.findByIdAndDelete(req.params.id, (err, restaurant) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find restaurant with that id",
+      });
+      return;
+    } else if (restaurant === null) {
+      res
+        .status(404)
+        .json({ message: `unable to find restaurant to delete`, error: err });
+      return;
+    }
+    res.status(200).json(restaurant);
+  });
+});
+
+// delete a category with a specific id
+services.delete("/category/:restaurant_id/:category_id", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(
+    `Deleting a category with restaurant id: ${req.params.restaurant_id} and category id: ${req.params.category_id}`,
+    req.body
+  );
+  Restaurants.findByIdAndUpdate(
+    req.params.restaurant_id,
+    {
+      $pull: {
+        categories: {
+          _id: req.params.category_id,
+        },
+      },
+    },
+    (err, restaurant) => {
+      if (err != null) {
+        res.status(500).json({
+          err: error,
+          message: "Unable to find category with that id",
+        });
+        return;
+      } else if (restaurant === null) {
+        res
+          .status(404)
+          .json({ message: `unable to find category to delete`, error: err });
+        return;
+      }
+      let category;
+      restaurant.categories.forEach((e) => {
+        if (e._id == req.params.category_id) {
+          category = e;
+        }
+      });
+      if (restaurant == undefined) {
+        res.status(404).json({
+          error: err,
+          message: "could not find restaurant",
+        });
+        return;
+      }
+      res.status(200).json(restaurant);
     }
   );
 });
