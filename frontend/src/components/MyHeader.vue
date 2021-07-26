@@ -5,10 +5,9 @@
         </router-link>
 
         <div class="location_input_and_cart_button">
-            <div class="location_input">
+            <div class="location_input" @click="location_input_clicked">
                 <i class="las la-map-marker"></i>
-                <input class="location_text_input" type="text" placeholder="Enter your location"
-                    @click="location_input_clicked">
+                <input class="location_text_input" type="text" placeholder="Enter your location">
             </div>
 
             <div class="cart_button">
@@ -28,7 +27,6 @@
 
 <script>
 import MyMiniCart from "../components/MyMiniCart.vue"
-import axios from "axios"
 
 export default {
     components: {
@@ -55,26 +53,12 @@ export default {
             this.show_mini_cart = false;
         },
         location_input_clicked() {
-            if(navigator.geolocation) {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    this.get_user_address(position.coords.latitude, position.coords.longitude);
+                    console.log(position.coords.latitude);
+                    console.log(position.coords.longitude);
                 })
             }
-        },
-        get_user_address(latitude, longitude) {
-            axios.get(
-                "https://maps.googleapis.com/maps/apis/geocode/json?latlng=" 
-                + latitude + "," + longitude + 
-                "&key=AIzaSyApxazPDB6ZXfIKS4WZZsSiXjMYWInZxSQ"
-            ).then(response => {
-                if(response.data.error_message) {
-                    console.log(response.data.error_message)
-                } else {
-                    console.log(response.data.results[0].formatted_address);
-                }
-            }).catch(error => {
-                console.log(error.message)
-            })
         }
     }
 }
