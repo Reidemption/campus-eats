@@ -5,28 +5,28 @@
     </div>
 
     <div class="orders_page_wrapper">
-      <div class="app_name">
-        <router-link to="/">Campus Eats</router-link>
-      </div>
-
-      <div class="orders_nav_wrapper">
-        <div class="nav_item" v-for="item in nav_items" :key="item.name"
-          :class="{ nav_item_seleted: item.selected }"
-          @click="update_current_nav_item(item)">
-          {{ item.name }}
+      <div class="page_focus">
+        <div class="app_name">
+          <router-link to="/">Campus Eats</router-link>
         </div>
-      </div>
 
-      <div class="main_content_and_footer">
+        <div class="orders_nav_wrapper">
+          <div class="nav_item" v-for="item in nav_items" :key="item.name"
+            :class="{ nav_item_seleted: item.selected }"
+            @click="update_current_nav_item(item)">
+            {{ item.name }}
+          </div>
+        </div>
+
         <div class="main_content">
           <MyCurrentOrders v-if="current_nav_item === 'Current'"></MyCurrentOrders>
           <MyPendingOrders v-if="current_nav_item === 'Pending'"></MyPendingOrders>
           <MyPastOrders    v-if="current_nav_item === 'History'"></MyPastOrders>
         </div>
+      </div>
 
-        <div class="mini_footer_wrapper">
-          <MyMiniFooter></MyMiniFooter>
-        </div>
+      <div class="mini_footer_wrapper">
+        <MyMiniFooter></MyMiniFooter>
       </div>
     </div>
   </div>
@@ -92,6 +92,12 @@ export default {
 <style scoped>
 .orders_page_wrapper {
     background-color: var(--gray);
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .app_name {
@@ -127,13 +133,5 @@ export default {
 .nav_item:hover, .nav_item_seleted {
     cursor: pointer;
     border-bottom: 2px solid var(--navy);
-}
-
-.main_content_and_footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    background-color: var(--gray);
 }
 </style>

@@ -112,6 +112,12 @@ export default {
                     menu: restaurant_name
                 }
             });
+
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            })
         }
     }
 }
