@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
-const optionSchema = new mongoose.Schema({
+const custom_optionSchema = new mongoose.Schema({
+  type: String,
   name: String,
   calories: String,
   price: Number,
   selected: Boolean,
-  customization_id: {
+  menu_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customizations",
+    ref: "Menus",
   },
-});
-
-const customizationSchema = new mongoose.Schema({
-  name: String,
-  options: [optionSchema],
-  menu_id: { type: mongoose.Schema.Types.ObjectId, ref: "Menus" },
+  category_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Categories",
+  },
+  restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurants" },
 });
 
 const menuSchema = new mongoose.Schema({
@@ -23,7 +23,8 @@ const menuSchema = new mongoose.Schema({
   description: String,
   calories: String,
   price: Number,
-  customizations: [customizationSchema],
+  note: String,
+  custom_options: [custom_optionSchema],
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categories",
@@ -56,8 +57,5 @@ const restaurantSchema = new mongoose.Schema({
 });
 
 const Restaurants = mongoose.model("Restaurants", restaurantSchema);
-const Categories = mongoose.model("Categories", categorySchema);
-const Menus = mongoose.model("Menus", menuSchema);
-const Customizations = mongoose.model("Customizations", customizationSchema);
 
-module.exports = { Restaurants, Categories, Menus, Customizations };
+module.exports = { Restaurants };
