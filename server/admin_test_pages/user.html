@@ -19,14 +19,13 @@
                 <ul>
                     <li v-for="(user,index) in users" >
                         <div>{{user.email}}</div>
-                        <div v-show="showUserDetailInfo(index)" v-on:click="getuserbyid(setUserInfo(),user._id)">
-                            <div>Password: {{user.password}}</div>
+                            <div>Password: {{user.hashed_password}}</div>
                             <div>Is Active: {{user.isActive}} </div>
                             <div>Session: {{user.session}} </div>
                             <div>Is Logged in: {{user.logged_in}} </div>
                             <div>Last login: {{user.last_loggin_time}}</div>
                             <div>Location: {{user.location}} </div>
-                            <div v-if="user._id == current_user._id" style="border: 1pz">
+                            <div style="border: 1pz">
                                 <ul>
                                     <li>Role : {{user_info.role}}</li>
                                     <li>Dnumber : {{user_info.dnumber}}</li>
@@ -39,13 +38,12 @@
                                     </ul>
                                     <ul>
                                         <li v-on:click="showOrderHistory(user._id)">Order History</li>
-                                        <li v-on:click="showDeliveryHistory(user._id)">Delivery History</li>
+                                        <li v-on:click="showDeliveryHistory(index._id)">Delivery History</li>
                                     </ul>
                                 </ul>
                             </div>
-                        </div>
-                        <button v-on:click="editUser('/users/'+user._id )">Edit</button>
-                        <button v-on:click="deleteUser('/users/'+user._id )">Delete</button>
+                        <button v-on:click="editUser(user._id )">Edit</button>
+                        <button v-on:click="deleteUser(user._id )">Delete</button>
                     </li>
                 </ul>
             </div>

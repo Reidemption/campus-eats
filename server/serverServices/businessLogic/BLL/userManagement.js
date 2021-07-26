@@ -11,12 +11,13 @@ function getAllUsers(callback){
     });
 }
 
-function findUserById(id,callback){
-    User.UserModel.findById(id, (err, user) => {
+function findUserById(user_id,callback){
+    User.UserModel.findById(user_id, (err, user) => {
         if (err){
-            console.log(`Couldn't find a user with id ${id}`);
+            console.log(`Couldn't find a user with id: ${user_id}`);
         }else{
-            console.log(`Successfully found user with id ${id}`);
+            console.log(user);
+            console.log(`Successfully found user with id: ${user_id}`);
         }
         callback(err, user)
     });
@@ -35,7 +36,7 @@ function findUsersByName(name,callback){
     });
 }
 
-function findOneUserByName(name,callback){
+function findAUserByName(name,callback){
     Users.UserModel.findOne({
         name:`${name}`
     }, (err, user) => {
@@ -55,7 +56,7 @@ function createUser(user_obj,callback){
     });
 }
 
-function updateUser(user_obj){
+function updateUser(user_obj,callback){
     User.UserModel.findByIdAndUpdate(user_obj._id,user_obj, (err,user)=>{
         if (err){
             console.log(`Couldn't update a user with body ${user_obj}`);
@@ -67,14 +68,13 @@ function updateUser(user_obj){
     });
 }
 
-
-function deleteUser(user_id){
-    User.UserModel.findByIdAndDelete(user_id, (err,user)=>{
+function deleteUser(id,callback){
+    User.UserModel.findByIdAndDelete(id, (err,user)=>{
         if (err){
-            console.log(`Couldn't delete a user with id ${user_id}`);
+            console.log(`Couldn't delete a user with id ${id}`);
         }else{
             
-            console.log(`Successfully delete a user with id ${user_id}`);
+            console.log(`Successfully delete a user with id ${id}`);
         }
         callback(err, user)
     });
@@ -82,6 +82,6 @@ function deleteUser(user_id){
 
 module.exports={
     getAllUsers,
-    findUserById,findOneUserByName,findUsersByName,
+    findUserById,findAUserByName,findUsersByName,
     createUser,updateUser,deleteUser
 }

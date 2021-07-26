@@ -23,6 +23,8 @@ services.use((req, res, next) => {
     req.method,
     "- Url:",
     req.originalUrl,
+    "- Headers:",
+    req.headers,
     "- Body:",
     req.body
   ),
@@ -128,7 +130,7 @@ services.post("/categoryyy", function (req, res) {
     },
     (err, category) => {
       if (err) {
-        console.log(`unable to create category`);
+        console.log(`unable to create category`);4
         res.status(400).json({
           message: "unable to create category",
           error: err,
@@ -350,6 +352,22 @@ services.put("/users", function (req, res) {
     if (err!==null) {
       res.status(400).json({
         message: "unable to create user",
+        error: err,
+      })
+    }else{
+      console.log(user);
+      res.status(201).json(user);
+    }
+  })
+});
+
+// DELETE/delete a user
+services.delete("/users/:id", function (req, res) {
+  console.log(`Delete with id : ${req.params.id}`);
+  BLOModules.UserBLO.deleteUser(req.params.id,(err,user)=>{
+    if (err!==null) {
+      res.status(400).json({
+        message: "unable to delete user",
         error: err,
       })
     }else{

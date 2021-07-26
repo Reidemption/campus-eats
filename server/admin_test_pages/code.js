@@ -1,4 +1,3 @@
-var server_url = "http://localhost:7777"
 var app = new Vue({
     el: '#app',
     data: {
@@ -8,7 +7,7 @@ var app = new Vue({
         users:[],
         search_string:"",
         showDetail:false,
-
+        
         email:"",
         hashed_password:"",
         profile_pic:"",
@@ -29,7 +28,8 @@ var app = new Vue({
             },
             order_history:[],
             delivery_history:[],
-        }
+        },
+        server_url: "http://localhost:7777"
     },
     created(){
         this.getUsers(this.setUserData)
@@ -44,7 +44,7 @@ var app = new Vue({
         setCurrentUser: function(data){
             this.selected_user = data
         },
-        getUserById:function(callback, id=""){
+        getUserById:function(callback,id){
             fetch(this.server_url + '/users/' + id).then(function(response) {
                 response.json().then(function(data){
                     callback(data)
@@ -62,12 +62,21 @@ var app = new Vue({
             user_data={
                 email: this.email,
                 hashed_password: this.hashed_password,
+                profile_pic:"",
+                location:"",
+                session:"",
+                logged_in:false,
+                last_loggin_time:Date.now,
+                isActive:false,
                 user_info:{
                     dnumber:this.dnumber,
+                    role:this.role,
                     firstname: this.firstname,
                     lastname: this.lastname,
                     contacts:{
-                        phone:this.phone
+                        phone:this.phone,
+                        email:this.email,
+                        address:this.address
                     }
                 }
             }
@@ -86,8 +95,9 @@ var app = new Vue({
                     this.location=""
             });
         },
-        deleteUser:function(url){
-            fetch(this.server_url + url, {
+        deleteUser:function(id){
+            console.log("delete button clicked with id :"+ id)
+            fetch(this.server_url + '/users/'+id, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -97,23 +107,25 @@ var app = new Vue({
                     clearForm();
             });
         },
-        editUser:function(url){
+        editUser:function(id){
             user_data={
                 email: this.email,
                 hashed_password: this.hashed_password,
+                profile_pic:this.profile_pic,
+                location:this.location,
+                isActive:this.isActive,
                 user_info:{            
-                    role:"",
-                    dnumber:"",
-                    firstname: "",
-                    lastname: "",
+                    role:this.role,
+                    firstname: this.firstname,
+                    lastname: this.lastname,
                     contacts:{
-                        address:"",
-                        phone:"",
-                        email:""
+                        address:this.address,
+                        phone:this.phone,
+                        email:this.email
                     }
                 }
             },
-            fetch(this.server_url + url, {
+            fetch(this.server_url + '/users/'+id, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -134,7 +146,7 @@ var app = new Vue({
     },
     //computed
     computed:{
-        showUserDetailInfo:function(){
+        showUserInfo:function(){
             this.showDetail =!this.showDetail
             return this.showDetail
         }
