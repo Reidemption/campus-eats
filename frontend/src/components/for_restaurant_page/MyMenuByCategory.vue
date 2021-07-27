@@ -16,7 +16,8 @@
                     </div>
                 </div>
                 
-                <img :src="require(`../../assets_main/${meal.image_url}`)" :alt="meal.name">
+                <img :src="require(`../../assets_main/${meal.image_url}`)" :alt="meal.name"
+                    @blur="handle_image_not_found">
             
             </div>
 
@@ -76,6 +77,9 @@ export default {
         },
         close_meal_item_detail() {
             this.show_meal_item_detail = false;
+        },
+        handle_image_not_found() {
+            //
         }
     }
 }

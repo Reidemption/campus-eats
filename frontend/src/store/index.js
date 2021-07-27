@@ -5,9 +5,10 @@ const state = {
     //! LocalStorage
     customer_cart_by_meals: JSON.parse(localStorage.getItem("customer_cart_by_meals") || "[]"),
     meal_id: 0,
+    customer_cart_by_orders: [],
 
     //! Server
-    server_url: "https://campus-eats.herokuapp.com",
+    server_url: "http://localhost:7777",
     current_restaurant: [],
 
     //! Local Vuex Store
@@ -80,6 +81,34 @@ const mutations = {
         state.customer_cart_by_meals = JSON.parse(localStorage.getItem("customer_cart_by_meals"));
     },
 
+    //! Redesign Customer Cart
+    create_customer_cart_by_orders(state) {
+        let customer_cart_by_meals = state.customer_cart_by_meals;
+        let customer_cart_by_orders = state.customer_cart_by_orders;
+        let main_restaurant_names = [];
+
+        customer_cart_by_meals.forEach(meal => {
+            if(!main_restaurant_names.includes(meal.meal_infos.restaurant_name)) {
+                main_restaurant_names.push(meal.meal_infos.restaurant_name);
+            }
+        })
+
+        main_restaurant_names.forEach(name => {
+            customer_cart_by_orders.push({
+                restaurant_name: name,
+                meals: []
+            })
+        })
+
+        customer_cart_by_meals.forEach(meal => {
+            customer_cart_by_orders.forEach(order => {   
+                if(meal.meal_infos.restaurant_name === order.restaurant_name) {
+                    order.meals.push(meal);
+                }
+            })
+        })
+    },
+
     //! Server
     get_one_restaurant_from_the_server(state, restaurant) {
         state.current_restaurant = restaurant;
@@ -110,6 +139,11 @@ const actions = {
                     }
                 })
             })
+    },
+    add_final_cart_to_server({commit}, final_customer_cart) {
+        axios.post(`${state.server_url}/orders`, {
+            final_cart: final_customer_cart
+        })
     }
 }
 
