@@ -34,7 +34,6 @@ export default {
     },
     data() {
         return {
-            total_items_in_cart: this.$store.state.customer_cart_by_meals.length,
             show_mini_cart: false
         }
     },
@@ -51,6 +50,15 @@ export default {
         },
         handle_scroll(event) {
             this.show_mini_cart = false;
+        }
+    },
+    computed: {
+        total_items_in_cart() {
+            if (this.$store.state.customer_cart_by_meals !== null) {
+                return this.$store.state.customer_cart_by_meals.length;
+            } else {
+                return 0;
+            }
         }
     }
 }

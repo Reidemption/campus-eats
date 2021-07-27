@@ -6,7 +6,7 @@ const port = process.argv[2] || process.env.PORT || 7777;
 
 dataAccess.connectToDb(() => {
   services.listen(port, () => {
-    console.log(`-> The CAMPUSEATS server is running at port:${port}`);
+    console.log(`-> The CAMPUS EATS server is running at port:${port}`);
     console.log(`--------------------------------------------------`);
   });
 });

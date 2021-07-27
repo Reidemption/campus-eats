@@ -1,7 +1,12 @@
 <template>
     <div class="my_mini_cart_wrapper">
-        <div class="close_button" @click="close_button_clicked">
-            <span class="material-icons">close</span>
+        <div class="close_button_and_remove_all_items_in_cart_option">
+            <div class="close_button" @click="close_button_clicked">
+                <span class="material-icons">close</span>
+            </div>
+
+            <div class="remove_all_items_in_cart_option"
+                @click="remove_all_items_in_cart">Remove all items in cart</div>
         </div>
 
         <div class="main_cart_content" v-if="!empty_cart">
@@ -188,6 +193,10 @@ export default {
                     }
                 });
             }
+        },
+        remove_all_items_in_cart() {
+            this.$store.commit("remove_all_items_in_cart");
+            this.update_items_in_cart_after_changes();
         }
     }
 }
@@ -208,6 +217,12 @@ export default {
     overflow-y: scroll;
 }
 
+.close_button_and_remove_all_items_in_cart_option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .close_button {
     margin-bottom: 20px;
 }
@@ -218,6 +233,15 @@ export default {
 }
 
 .close_button > span:hover {
+    cursor: pointer;
+    color: var(--red);
+}
+
+.remove_all_items_in_cart_option {
+    color: var(--gray-dark);
+}
+
+.remove_all_items_in_cart_option:hover {
     cursor: pointer;
     color: var(--red);
 }

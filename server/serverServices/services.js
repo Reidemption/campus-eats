@@ -14,7 +14,7 @@ services.use(express.static("~/admin_test_pages"));
 // ======== Request handlers =========
 // --- LOG ---
 services.use((req, res, next) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log("======================== REQUEST ==========================");
   console.log(
     "- Time:",
@@ -36,7 +36,7 @@ services.use((req, res, next) => {
 
 // Get every restaurant
 services.get("/feed", (req, res) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log(`return all Restaurants`);
   Restaurants.find({}, (err, restaurants) => {
     if (err != null) {
@@ -52,7 +52,7 @@ services.get("/feed", (req, res) => {
 
 // Get info for a restaurant with specific ID
 services.get("/feed/:id", (req, res) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log(`Getting specific restaurant with id:${req.params.id}`);
   Restaurants.findById(req.params.id, (err, restaurants) => {
     if (err != null) {
@@ -535,6 +535,35 @@ services.delete(
     );
   }
 );
+
+// Patch - update
+services.patch("/customization/:custom_id", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(`Patching id: ${req.params.custom_id}`, req.body);
+  let updateCustomization = {};
+  if (req.body.selected) {
+    updateCustomization.selected = req.body.selected;
+  }
+
+  Restaurants.updateOne(
+    { _id: req.params.custom_id },
+    {
+      $set: updateCustomization,
+    },
+    function (err, updateOneResponse) {
+      if (err) {
+        console.log(`unable to PATCH with id: ${req.params.id}`);
+        res.status(404).json({
+          message: `unable to update customization with id ${req.params.id}`,
+          error: err,
+        });
+      } else if (updateOneResponse.n) {
+        res.status(200).json(updateCustomization);
+      }
+      return;
+    }
+  );
+});
 
 // -------------- Duy's Section ------------------
 

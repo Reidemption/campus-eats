@@ -52,6 +52,11 @@ export default {
                     path: "/Tasks"
                 },
                 {
+                    icon: "las la-business-time",
+                    name: "Admin",
+                    path: "/Admin"
+                },
+                {
                     icon: "las la-user",
                     name: "Account",
                     path: "/Account"
@@ -126,25 +131,5 @@ export default {
 
 .logout_option {
     margin-bottom: 0;
-}
-
-@media only screen and (max-width: 1650px) {
-  .icon {
-      font-size: 25px;
-      padding: 25px;
-  }
-  .option_name {
-      font-size: 17px;
-  }
-}
-
-@media only screen and (max-width: 1425px) {
-  .icon {
-      font-size: 20px;
-      padding: 20px;
-  }
-  .option_name {
-      font-size: 15px;
-  }
 }
 </style>
