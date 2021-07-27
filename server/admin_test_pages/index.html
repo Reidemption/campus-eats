@@ -7,6 +7,20 @@
     <title>Campus Eats | Code School '21</title>
   </head>
   <body>
-    <h1>Hello World</h1>
+    <div id="app">
+      <h1>Hello World</h1>
+      <ul>
+        <li v-for="restaurant in Restaurants">
+          <div v-on:click="getSpecificRestaurant(restaurant._id)">
+            <h1>{{restaurant.name}}</h1>
+            <p>{{restaurant.hours}}</p>
+            <p>{{restaurant.categories}}</p>
+            <p>{{restaurant.description}}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
