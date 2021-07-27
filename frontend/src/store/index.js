@@ -7,6 +7,7 @@ const state = {
     meal_id: 0,
 
     //! Server
+    server_url: "https://campus-eats.herokuapp.com",
     current_restaurant: [],
 
     //! Local Vuex Store
@@ -40,7 +41,8 @@ const mutations = {
     add_one_meal_to_cart(state, meal_to_add) {
         let customer_cart_by_meals = state.customer_cart_by_meals;
         customer_cart_by_meals.push({
-            meal_id   : state.meal_id++,
+            user_id   : "user_id",
+            meal_index: state.meal_id++,
             meal_infos: meal_to_add
         });
         localStorage.setItem("customer_cart_by_meals", JSON.stringify(customer_cart_by_meals));
@@ -97,8 +99,8 @@ const mutations = {
 }
 
 const actions = {
-    get_one_restaurant_from_the_server({commit}, path) {
-        axios.get("http://localhost:7777/feed")
+    get_one_restaurant_from_the_server({commit, state}, path) {
+        axios.get(`${state.server_url}/feed`)
             .then(response => {
                 let restaurants_list = response.data;
                 

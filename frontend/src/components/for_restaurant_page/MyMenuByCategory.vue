@@ -15,13 +15,17 @@
                         {{ meal.price.toFixed(2) }}
                     </div>
                 </div>
-
+                
                 <img :src="require(`../../assets_main/${meal.image_url}`)" :alt="meal.name">
+            
             </div>
 
             <MyPopupMealDetail v-if="show_meal_item_detail"
+                :popup_meal_restaurant_id="restaurant_id"
                 :popup_meal_restaurant_path="restaurant_path"
                 :popup_meal_restaurant_name="restaurant_name"
+
+                :popup_meal_id="popup_meal_id"
                 :popup_meal_name="popup_meal_name"
                 :popup_meal_background_image="popup_meal_background_image"
                 :popup_meal_description="popup_meal_description"
@@ -41,6 +45,7 @@ export default {
         MyPopupMealDetail
     },
     props: {
+        restaurant_id: String,
         restaurant_path: String,
         restaurant_name: String,
         category_name: String,
@@ -48,6 +53,7 @@ export default {
     },
     data() {
         return {
+            popup_meal_id: "",
             popup_meal_name: "",
             popup_meal_background_image: "",
             popup_meal_description: "",
@@ -60,6 +66,7 @@ export default {
     methods: {
         view_meal_item_detail(meal) {
             this.show_meal_item_detail = true;
+            this.popup_meal_id = meal._id;
             this.popup_meal_name = meal.name;
             this.popup_meal_background_image = meal.image_url;
             this.popup_meal_description = meal.description;

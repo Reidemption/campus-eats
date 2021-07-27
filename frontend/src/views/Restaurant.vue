@@ -7,10 +7,10 @@
         <div class="restaurant_page_wrapper">
             <MyHeader></MyHeader>
 
-            <MyBackground 
+            <!-- <MyBackground 
                 :name="current_restaurant.name"
                 :background_image="current_restaurant.background_image">
-            </MyBackground>
+            </MyBackground> -->
 
             <MyRestaurantInfos
                 :description="current_restaurant.description"
@@ -25,6 +25,7 @@
 
             <div class="menu_list" v-for="category in current_restaurant.categories" :key="category.name">
                 <MyMenuByCategory 
+                    :restaurant_id="current_restaurant._id"
                     :restaurant_path="current_restaurant.path"
                     :restaurant_name="current_restaurant.name"
                     :category_name="category.name"
