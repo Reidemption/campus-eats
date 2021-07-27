@@ -12,12 +12,15 @@ const SideType = require("./side_type");
 
 const UserInfoModel=UserInfo.UserInfoModel;
 const UserModel= User.UserModel;
+
 const OrderModel = Order.OrderModel;
 const OrderItemModel = OrderItem.OrderItemModel;
 const OrderItemSideModel = OrderItemSide.OrderItemSideModel;
+
 const MenuModel = Menu.MenuModel;
 const MealModel = Meal.MealModel;
 const MealSideModel = MealSide.MealSideModel;
+
 const CategoryModel = Category.CategoryModel;
 const RestaurantModel = Restaurant.RestaurantModel;
 const SideTypeModel = SideType.SideTypeModel;

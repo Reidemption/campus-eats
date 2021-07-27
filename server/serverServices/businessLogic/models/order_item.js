@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const Meal = require("./meal");
-const Order = require("./order");
-const Restaurant = require("./restaurant")
 
 const OrderItemSchema = mongoose.Schema({
     order_id: {
@@ -18,7 +16,7 @@ const OrderItemSchema = mongoose.Schema({
     },
     orderTime: {
         type:Date,
-        require: true
+        required: true
     },
     staff_id: {
         type: mongoose.Schema.Types.ObjectId,

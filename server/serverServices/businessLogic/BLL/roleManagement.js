@@ -104,7 +104,7 @@ function deleteRole(id, callback) {
   });
 }
 //===================== HELPERS ==========================
-function isExistingRole(roleName){
+function isExistedRole(roleName){
   if(roleName){
     Role.RoleModel.findOne({
       username: username
@@ -112,22 +112,26 @@ function isExistingRole(roleName){
       if (err) {
           return {
             err,
-            result = true
+            result:true
           };
       }
       if (user) {
           return{
-            err: {message: "Failed! Username is already in use!"},
-            result = true
+            err: {message: "Failed! Role is existed!"},
+            result:true
           };
       }
-      return false;
+      return {
+        err: null,
+        result:false
+      };
     });
   }
 }
 
 module.exports = {
   init,
+  isExistedRole,
   getAllRoles,
   findRoleById,
   findARoleByName,

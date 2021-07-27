@@ -537,9 +537,9 @@ services.delete(
 
 // -------------- Duy's Section ------------------
 
-// Get every users
+// Get every user
 services.get("/users", (req, res) => {
-  console.log(`Getting all User`);
+  console.log(`Getting all Users`);
   BLOModules.UserBLO.getAllUsers((err, users) => {
     if (err != null) {
       res.status(500).json({
@@ -654,6 +654,72 @@ services.delete("/users/:id", function (req, res) {
       res.status(201).json(user);
     }
   });
+});
+
+//-------- ORDERS -------------------
+
+// Get every orders
+services.get("/orders", (req, res) => {
+  console.log(`Getting all Orders`);
+  BLOModules.OrderBLO.getAllOrders((err, orders) => {
+    if (err != null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all orders",
+      });
+    } else {
+      res.status(200).json(orders);
+    }
+  });
+});
+
+// Get info for a order with specific ID
+services.get("/orders/:id", (req, res) => {
+  console.log(`Getting specific order with id:${req.params.id}`);
+  BLOModules.OrderBLO.findOrderById(req.params.id, (err, order) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find order with that id",
+      });
+    } else if (order === null) {
+      res.status(404).json({
+        message: `Cannot find order with id: ${req.params.id}`,
+      });
+    } else {
+      res.status(200).json(order);
+    }
+  });
+});
+
+// POST/create a order
+services.post("/orders", function (req, res) {
+  res.status(200).json(req.body);
+
+  // let orderObj = new BLOModels.UserModel({});
+  // orderObj.email = req.body.email;
+  // orderObj.hashed_password = req.body.password;
+  // orderObj.location = req.body.location;
+  // orderObj.order_info = orderInfoObj;
+  // let isValid = orderObj.validateSync();
+  // if (isValid !== undefined) {
+  //   console.log(isValid);
+  //   res.status(400).json({
+  //     message: "Fields are invalid",
+  //     isValid,
+  //   });
+  // } else {
+  //   BLOModules.UserBLO.createUser(orderObj, (err, order) => {
+  //     if (err !== null) {
+  //       res.status(500).json({
+  //         message: "=> Unable to create order",
+  //         error: err,
+  //       });
+  //     } else {
+  //       res.status(200).json(order);
+  //     }
+  //   });
+  // }
 });
 
 // ========= ERROR HANDLER ==========

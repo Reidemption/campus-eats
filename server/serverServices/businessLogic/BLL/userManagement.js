@@ -88,7 +88,7 @@ function deleteUser(id, callback) {
 
 //========== HELPERS ==============
 
-function isDuplicatedUsername(username){
+function isExistedUsername(username){
   // Username
   User.UserModel.findOne({
     username: username
@@ -96,20 +96,20 @@ function isDuplicatedUsername(username){
     if (err) {
         return {
           err,
-          result = true
+          result: true
         };
     }
     if (user) {
         return{
           err: {message: "Failed! Username is already in use!"},
-          result = true
+          result:true
         };
     }
     return false;
   });
 };
 
-function isDuplicatedEmail(email){
+function isExistedEmail(email){
     // Email
     User.UserModel.findOne({
       "contacts.email": email
@@ -117,20 +117,32 @@ function isDuplicatedEmail(email){
       if (err) {
           return {
             err,
-            result = true
+            result:true
           };
       }
       if (user) {
           return{
             err: {message: "Failed! Email is already in use!"},
-            result = true
+            result:true
           };
       }
     return false;
   });
+};
+
+function verifySignUp(username, email){
+  if(isExistedUsername(username)){
+    return false;
+  }else{
+    if(isExistedEmail(email)){
+      return false;
+    }
+  }
+  return true;
 }
 
 module.exports = {
+  verifySignUp,
   getAllUsers,
   findUserById,
   findAUserByName,
