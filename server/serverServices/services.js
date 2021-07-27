@@ -14,7 +14,7 @@ services.use(express.static("~/admin_test_pages"));
 // ======== Request handlers =========
 // --- LOG ---
 services.use((req, res, next) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log("======================== REQUEST ==========================");
   console.log(
     "- Time:",
@@ -36,7 +36,7 @@ services.use((req, res, next) => {
 
 // Get every restaurant
 services.get("/feed", (req, res) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log(`return all Restaurants`);
   Restaurants.find({}, (err, restaurants) => {
     if (err != null) {
@@ -52,7 +52,7 @@ services.get("/feed", (req, res) => {
 
 // Get info for a restaurant with specific ID
 services.get("/feed/:id", (req, res) => {
-  res.setHeader("Content-Type", "serviceslication/json");
+  res.setHeader("Content-Type", "application/json");
   console.log(`Getting specific restaurant with id:${req.params.id}`);
   Restaurants.findById(req.params.id, (err, restaurants) => {
     if (err != null) {
@@ -537,7 +537,7 @@ services.delete(
 );
 
 // Patch - update
-app.patch("/customization/:custom_id", function (req, res) {
+services.patch("/customization/:custom_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(`Patching id: ${req.params.custom_id}`, req.body);
   let updateCustomization = {};
