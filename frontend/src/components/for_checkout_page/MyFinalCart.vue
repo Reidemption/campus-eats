@@ -104,6 +104,8 @@ export default {
     },
     created() {
         this.create_customer_cart_by_orders();
+
+        console.log(this.customer_cart_by_orders)
     },
     methods: {
         create_customer_cart_by_orders() {
