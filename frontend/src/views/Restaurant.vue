@@ -16,7 +16,7 @@
                 :description="current_restaurant.description"
                 :location="current_restaurant.location"
                 :hours="current_restaurant.hours"
-                :map="current_restaurant_maps.location">
+                :map="current_restaurant_map">
             </MyRestaurantInfos>
             
             <MyCategoriesNav
@@ -28,7 +28,7 @@
                     :restaurant_path="current_restaurant.path"
                     :restaurant_name="current_restaurant.name"
                     :category_name="category.name"
-                    :menu="category.menu">
+                    :menu="category.menus">
                 </MyMenuByCategory>
             </div>
 
@@ -60,26 +60,34 @@ export default {
         MyRestaurants,
         MyFooter
     },
-    data() {
-        return {
-            current_restaurant: "",
-            current_restaurant_maps: ""
+    mounted() {
+        this.get_one_restaurant_from_the_server();
+        this.get_one_map_from_vuex_store();
+    },
+    methods: {
+        get_one_restaurant_from_the_server() {
+            let path = this.$route.query.menu;
+            this.$store.dispatch("get_one_restaurant_from_the_server", path);
+        },
+
+        get_one_map_from_vuex_store() {
+            let path = this.$route.query.menu;
+            this.$store.commit("get_one_map_from_vuex_store", path);
         }
     },
-    created() {
-        let restaurants_list = this.$store.state.restaurants_list;
-        restaurants_list.forEach(restaurant => {
-            if (restaurant.path === this.$route.query.menu) {
-                this.current_restaurant = restaurant;
-            }
-        });
-
-        let restaurants_maps_list = this.$store.state.restaurants_maps_list;
-        restaurants_maps_list.forEach(restaurant_maps => {
-            if (this.current_restaurant.name === restaurant_maps.restaurant_name) {
-                this.current_restaurant_maps = restaurant_maps;
-            }
-        });
+    computed: {
+        current_restaurant() {
+            return this.$store.state.current_restaurant;
+        },
+        current_restaurant_map() {
+            return this.$store.state.current_restaurant_map;
+        }
+    },
+    watch: {
+        '$route.query.menu'() {
+            this.get_one_restaurant_from_the_server();
+            this.get_one_map_from_vuex_store();
+        }
     }
 }
 </script>
