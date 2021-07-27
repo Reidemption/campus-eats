@@ -8,7 +8,8 @@ const state = {
     customer_cart_by_orders: [],
 
     //! Server
-    server_url: "http://localhost:7777",
+    server_url: "https://campus-eats.herokuapp.com",
+    //server_url: "http://localhost:7777",
     current_restaurant: [],
 
     //! Local Vuex Store
@@ -27,12 +28,12 @@ const state = {
         {
             path: "Subway",
             location: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1591.0340294794805!2d-113.56580190145505!3d37.103497381427076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b2910544dc5%3A0xcbec3414e232a5f6!2sSubway!5e0!3m2!1sen!2sus!4v1627171111205!5m2!1sen!2sus",
-            deliver_to: [
-                {
-                    name: "Smith Computer Center",
-                    location: "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d3182.115087344501!2d-113.56902643442095!3d37.10237785833036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x80ca5b9f9be09795%3A0x757b98363308137f!2sChick-fil-A%2C%20Gardner%20Center%2C%20South%20700%20East%2C%20St.%20George%2C%20UT!3m2!1d37.1036205!2d-113.5660187!4m5!1s0x80ca5b2a08264067%3A0x89cd12e393b7cb19!2sSmith%20Computer%20Center%2C%20225%20S%20700%20E%2C%20St.%20George%2C%20UT%2084770!3m2!1d37.1011267!2d-113.56777539999999!5e0!3m2!1sen!2sus!4v1626751512455!5m2!1sen!2sus"
-                }
-            ]
+            deliver_to: []
+        },
+        {
+            path: "PizzaHut",
+            location: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d490.4041430332182!2d-113.56622633833774!3d37.103754868540015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b299c5b5a1d%3A0xfd975c8601b3cc6b!2sKenneth%20N.%20Gardner%20Student%20Center!5e0!3m2!1sen!2sus!4v1627422708704!5m2!1sen!2sus",
+            deliver_to: []
         }
     ]
 }
@@ -113,6 +114,9 @@ const mutations = {
     get_one_restaurant_from_the_server(state, restaurant) {
         state.current_restaurant = restaurant;
     },
+    handle_restaurant_not_found(state) {
+        state.current_restaurant = [];
+    },
 
     //! Local Vuex Store
     get_one_map_from_vuex_store(state, path) {
@@ -133,11 +137,17 @@ const actions = {
             .then(response => {
                 let restaurants_list = response.data;
                 
+                let restaurant_found = false;
                 restaurants_list.forEach(restaurant => {
                     if (restaurant.path === path) {
                         commit("get_one_restaurant_from_the_server", restaurant);
+                        restaurant_found = true;
                     }
                 })
+
+                if (!restaurant_found) {
+                    commit("handle_restaurant_not_found");
+                }
             })
     },
     add_final_cart_to_server({commit}, final_customer_cart) {

@@ -102,7 +102,9 @@ export default {
         }
     },
     mounted() {
-        this.create_customer_cart_by_orders();
+        if(this.customer_cart_by_orders.length === 0) {
+            this.create_customer_cart_by_orders();
+        }
     },
     methods: {
         create_customer_cart_by_orders() {
