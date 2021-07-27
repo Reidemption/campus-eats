@@ -9,7 +9,7 @@ const main_path = "/campuseats";
 // ========== Middlewares ===========
 services.use(cors());
 services.use(express.json({}));
-services.use(express.static("../../admin_test_pages"));
+services.use(express.static("../admin_test_pages"));
 
 // ======== Request handlers =========
 // --- LOG ---
