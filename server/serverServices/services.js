@@ -723,11 +723,22 @@ services.get("/orders/:id", (req, res) => {
 
 // POST/create a order
 services.post("/orders", function (req, res) {
+
+  console.log(req.body);
   res.status(200).json(req.body);
+
+  // let orderObj = new BLOModels.OrderModel({})
+  // orderObj.customer_id = order.user_id
+
+  // req.body.forEach(order => {    
+  //   let orderItemObj = new BLOModels.OrderItemModel({})
+  //   orderItemObj.customer_id = order.user_id   
+  // }); 
+
 
   // let orderObj = new BLOModels.UserModel({});
   // orderObj.email = req.body.email;
-  // orderObj.hashed_password = req.body.password;
+  // orderObj.hashed_password = req.body.password;S
   // orderObj.location = req.body.location;
   // orderObj.order_info = orderInfoObj;
   // let isValid = orderObj.validateSync();

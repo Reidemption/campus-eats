@@ -93,6 +93,10 @@ function deleteOrder(id, callback) {
   });
 }
 
+function priceCalculation(){
+  
+}
+
 module.exports = {
   getAllOrders,
   findSubOrderById,

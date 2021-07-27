@@ -16,7 +16,7 @@ const OrderItemSchema = mongoose.Schema({
     },
     orderTime: {
         type:Date,
-        required: true
+        require: true
     },
     staff_id: {
         type: mongoose.Schema.Types.ObjectId,

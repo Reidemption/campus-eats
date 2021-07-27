@@ -10,18 +10,6 @@ const OrderSchema = new mongoose.Schema({
         type:Date,
         require:true
     },
-    lastPickup: {
-        type:Date,
-        require:true
-    },
-    lastPickup: {
-        type:Date,
-        require:true
-    },
-    DeliveryTime: {
-        type:Date,
-        require:true
-    },
     isCompletelyDelivered:{
         type:Boolean,
         default:false
