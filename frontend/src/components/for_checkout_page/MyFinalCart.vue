@@ -88,7 +88,6 @@ export default {
     },
     data() {
         return {
-            customer_cart_by_orders: [],
             view_popup_meal_edit: false,
 
             popup_meal_edit_name: "",
@@ -102,43 +101,12 @@ export default {
             popup_meal_edit_custom_options: []
         }
     },
-    created() {
+    mounted() {
         this.create_customer_cart_by_orders();
-
-        console.log(this.customer_cart_by_orders)
     },
     methods: {
         create_customer_cart_by_orders() {
-            let customer_cart_by_meals = this.$store.state.customer_cart_by_meals;
-            let customer_cart_by_orders = this.customer_cart_by_orders;
-            let main_restaurant_names = [];
-
-            customer_cart_by_meals.forEach(meal => {
-                if(!main_restaurant_names.includes(meal.meal_infos.restaurant_name)) {
-                    main_restaurant_names.push(meal.meal_infos.restaurant_name);
-                }
-            })
-
-            main_restaurant_names.forEach(name => {
-                customer_cart_by_orders.push({
-                    restaurant_name: name,
-                    meals: []
-                })
-            })
-
-            customer_cart_by_meals.forEach(meal => {
-                customer_cart_by_orders.forEach(order => {   
-                    if(meal.meal_infos.restaurant_name === order.restaurant_name) {
-                        order.meals.push(meal);
-                    }
-                })
-            })
-
-            if (customer_cart_by_orders.length !== 0) {
-            this.empty_cart = false;
-            } else {
-                this.empty_cart = true;
-            }
+            this.$store.commit("create_customer_cart_by_orders");
         },
         go_to_restaurant_page(path) {
             this.$router.push({
@@ -169,6 +137,11 @@ export default {
             this.$router.push({
                 name: "Chcckout",
             });
+        }
+    },
+    computed: {
+        customer_cart_by_orders() {
+            return this.$store.state.customer_cart_by_orders;
         }
     }
 }
