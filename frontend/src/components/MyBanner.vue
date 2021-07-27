@@ -157,41 +157,6 @@ img {
     animation: spin 10s linear infinite;
 }
 
-@media only screen and (max-width: 1650px) {
-    .greeting {
-        font-size: 33px;
-    }
-    .main_message, .additional_message {
-        font-size: 18px;
-    }
-    .buttons_and_icon > .burger > img,
-    .drink > img , .pizza > img {
-        width: 40px;
-    }
-    .my_button_wrapper {
-    padding: 11px 35px;
-  }
-}
-
-@media only screen and (max-width: 1485px) {
-    .buttons_and_icon > .burger > img,
-     .drink > img , .pizza > img {
-        width: 40px;
-    }
-    .salad > img {
-        width: 60px;
-    }
-}
-
-@media only screen and (max-width: 1425px) {
-  .greeting {
-    font-size: 30px;
-  }
-  .main_message, .additional_message {
-    font-size: 18px;
-  }
-}
-
 @keyframes spin { 
     100% { 
         -webkit-transform: rotate(360deg); 

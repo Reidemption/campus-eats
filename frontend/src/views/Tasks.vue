@@ -1,66 +1,84 @@
 <template>
-  <div class="whole_page_wrapper">
-      <div class="navigation_bar">
-          <MyNavBar current_page="Tasks"></MyNavBar>
-      </div>
+    <div class="whole_page_wrapper">
+        <div class="navigation_bar">
+            <MyNavBar current_page="Tasks"></MyNavBar>
+        </div>
 
-      <div class="tasks_page_wrapper">
-          <div class="page_focus">
-              <div class="app_name">
-                  <router-link to="/">Campus Eats</router-link>
-                      <div class="additional_name">Delivery</div>
-              </div>
+        <div class="tasks_page_wrapper">
+            <div class="page_focus">
+                <div class="app_name">
+                    <router-link to="/">Campus Eats</router-link>
+                        <div class="additional_name">Delivery</div>
+                </div>
 
-              <div class="sort_orders_options">
-                  <div class="title">Sort orders by:</div>
-            
-                  <div class="dropdown_options">
-                      <button class="dropdown_button">{{ current_sort_order_option }}</button>
-                      
-                      <div class="dropdown_content">
-                          <p v-for="option in sort_orders_options" :key="option"
-                              @click="sort_orders_option_selected(option)">
-                              {{ option }}
-                          </p>
-                      </div>
-                  </div>
-              </div>
+                <div class="orders_nav_wrapper">
+                    <div class="nav_item" v-for="item in nav_items" :key="item.name"
+                        :class="{ nav_item_seleted: item.selected }"
+                        @click="update_current_nav_item(item)">
+                        {{ item.name }}
+                    </div>
+                </div>
 
-              <MyTasksList></MyTasksList>
-          </div>  
+                <div class="main_content">
+                    <MyAllTasks v-if="current_nav_item === 'All Tasks'"></MyAllTasks>
+                    <MyMyTasks v-if="current_nav_item === 'My Tasks'"></MyMyTasks>
+                    <MyHistoryTasks v-if="current_nav_item === 'History'"></MyHistoryTasks>
+                </div>
+            </div>  
 
-          <div class="mini_footer_wrapper">
-              <MyMiniFooter></MyMiniFooter>
-          </div>
+            <div class="mini_footer_wrapper">
+                <MyMiniFooter></MyMiniFooter>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import MyNavBar from "../components/MyNavBar.vue"
-import MyTasksList from "../components/for_tasks_page/MyTasksList.vue"
+import MyAllTasks from "../components/for_tasks_page/MyAllTasks.vue"
+import MyMyTasks from "../components/for_tasks_page/MyMyTasks.vue"
+import MyHistoryTasks from "../components/for_tasks_page/MyHistoryTasks.vue"
 import MyMiniFooter from "../components/MyMiniFooter.vue"
 
 export default {
     components: {
         MyNavBar,
-        MyTasksList,
+        MyAllTasks,
+        MyMyTasks,
+        MyHistoryTasks,
         MyMiniFooter
     },
     data() {
-      return {
-        current_sort_order_option: "Select an option",
-        sort_orders_options: [
-          "Closest to furthest location",
-          "Oldest to newest orders",
-          "Shortest to longest prep time"
-        ]
-      }
+        return {
+            nav_items: [
+                {
+                name: "All Tasks",
+                selected: true
+                },
+                {
+                name: "My Tasks",
+                selected: false
+                },
+                {
+                name: "History",
+                selected: false
+                }
+            ],
+            current_nav_item: "All Tasks"
+        }
     },
     methods: {
-      sort_orders_option_selected(option) {
-        this.current_sort_order_option = option;
-      } 
+        update_current_nav_item(item) {
+            this.nav_items.forEach(nav_item => {
+                if(nav_item.name === item.name) {
+                    item.selected = true;
+                    this.current_nav_item = item.name;
+                }
+                else {
+                    nav_item.selected = false;
+                }
+            })
+        } 
     }
 }   
 </script>
@@ -97,60 +115,26 @@ export default {
     margin-left: 10px;
 }
 
-.sort_orders_options {
-    padding: 20px 40px;
+.orders_nav_wrapper {
+    margin: 0 40px;
     display: flex;
-    align-items: center;
+    border-bottom: 1px solid var(--gray-fade);
+    height: 70px;
 }
 
-.sort_orders_options > .title {
-    font-size: 20px;
-}
-
-.dropdown_button {
-    background-color: white;
-    color: var(--gray-dark);
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid var(--gray-fade);
-    cursor: pointer;
-    width: 100%;
-    border-radius: 25px;
-}
-
-.dropdown_options {
-    position: relative;
-    display: inline-block;
-    margin-left: 10px;
-    width: 300px;
-}
-
-.dropdown_content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown_content > p {
-    color: black;
-    padding: 12px 16px;
-    display: block;
-    cursor: pointer;
-}
-
-.dropdown_content > p:hover {
-    background-color: #f1f1f1
-}
-
-.dropdown_options:hover .dropdown_content {
-    display: block;
-}
-
-.dropdown_options:hover .dropdown_button {
+.nav_item {
+    padding: 20px 0 25px 0;
+    margin-right: 60px;
+    font-size: 19px;
     color: var(--navy);
-    border: 1px solid var(--navy);  
+}
+
+.nav_item:last-child {
+    margin-right: 0;
+}
+
+.nav_item:hover, .nav_item_seleted {
+    cursor: pointer;
+    border-bottom: 2px solid var(--navy);
 }
 </style>
