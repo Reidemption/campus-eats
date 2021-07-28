@@ -7,7 +7,7 @@
         <div class="restaurant_page_wrapper">
             <MyHeader></MyHeader>
             
-            <div class="restaurant_page_main_content" v-if="current_restaurant.length !== 0">
+            <div class="restaurant_page_main_content" v-if="current_restaurant.length !== 0 && !my_error">
                 <MyBackground 
                     :name="current_restaurant.name"
                     :background_image="current_restaurant_background_image">
@@ -35,7 +35,11 @@
                 </div>
             </div>
 
-            <div class="restaurant_not_found" v-else>
+            <div class="restaurant_page_onload" v-if="current_restaurant.length === 0 && !my_error">
+                <img src="../assets_others/loading.gif" alt="Loading gif">
+            </div>
+
+            <div class="restaurant_not_found" v-if="my_error">
                 <MyComingSoon></MyComingSoon>
             </div>
 
@@ -97,8 +101,10 @@ export default {
             return this.$store.state.current_restaurant.background_image;
         },
         current_restaurant_map() {
-            console.log(this.$store.state.current_restaurant_map)
             return this.$store.state.current_restaurant_map;
+        },
+        my_error() {
+            return this.$store.state.my_error;
         }
     },
     watch: {
@@ -113,9 +119,23 @@ export default {
 <style scoped>
 .restaurant_page_wrapper {
     background-color: var(--gray);
+    position: relative;
 }
 
 .restaurant_not_found {
     height: 50%;
+}
+
+.restaurant_page_onload{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.restaurant_page_onload > img {
+    width: 100%;
+    height: 100vh;
 }
 </style>

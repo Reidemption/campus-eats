@@ -11,6 +11,7 @@ const state = {
     server_url: "https://campus-eats.herokuapp.com",
     //server_url: "http://localhost:7777",
     current_restaurant: [],
+    my_error: "",
 
     //! Local Vuex Store
     current_restaurant_map: "",
@@ -116,6 +117,7 @@ const mutations = {
     },
     handle_restaurant_not_found(state) {
         state.current_restaurant = [];
+        state.my_error = "Restaurant Not Found";
     },
 
     //! Local Vuex Store
@@ -133,6 +135,8 @@ const mutations = {
 
 const actions = {
     get_one_restaurant_from_the_server({commit, state}, path) {
+        state.my_error = "";
+        
         axios.get(`${state.server_url}/feed`)
             .then(response => {
                 let restaurants_list = response.data;
