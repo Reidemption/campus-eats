@@ -1,28 +1,60 @@
 <template>
-    <div class="my_nav_bar_wrapper">
-        <div class="main_menu_options">
-            <router-link class="single_option" :to="option.path"
-                v-for="option in main_menu_options_list" :key="option.name"
-                :class="{ current_menu_option: current_page === option.name }">
-                
-                <div class="icon" :class="{ current_menu_icon: current_page === option.name }">
-                    <i :class="option.icon"></i>
-                </div>
-                
-                <div class="option_name"
-                    :class="{ current_menu_name: current_page === option.name }">
-                    {{ option.name }}
+    <div class="nav_bar_main_container">
+        <div class="big_screen">
+            <div class="my_nav_bar_wrapper">
+                <div class="main_menu_options">
+                    <router-link class="single_option" :to="option.path"
+                        v-for="option in main_menu_options_list" :key="option.name"
+                        :class="{ current_menu_option: current_page === option.name }">
+                        
+                        <div class="icon" :class="{ current_menu_icon: current_page === option.name }">
+                            <i :class="option.icon"></i>
+                        </div>
+                        
+                        <div class="option_name"
+                            :class="{ current_menu_name: current_page === option.name }">
+                            {{ option.name }}
+                        </div>
+
+                    </router-link>
                 </div>
 
-            </router-link>
+                <div class="logout_wrapper">
+                    <div class="single_option logout_option">
+                        <div class="icon">
+                            <i class="las la-sign-out-alt"></i>
+                        </div>
+                        <div class="option_name">Logout</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="log_out_wrapper">
-            <div class="single_option logout_option">
-                <div class="icon">
-                    <i class="las la-sign-out-alt"></i>
+        <div class="small_screen">
+            <div class="my_nav_bar_wrapper">
+                <div class="main_menu_options">
+                    <router-link class="single_option" :to="option.path"
+                        v-for="option in main_menu_options_list" :key="option.name">
+                        
+                        <div class="icon" :class="{ current_menu_icon_small: current_page === option.name }">
+                            <i :class="option.icon"></i>
+                        </div>
+
+                        <div class="option_name"  
+                            :class="{ current_menu_name_small: current_page === option.name }">
+                            {{ option.name }}
+                        </div>
+                    </router-link>
                 </div>
-                <div class="option_name">Logout</div>
+
+                <div class="logout_wrapper">
+                    <div class="single_option logout_option">
+                        <div class="icon">
+                            <i class="las la-sign-out-alt"></i>
+                        </div>
+                        <div class="option_name">Logout</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -131,5 +163,59 @@ export default {
 
 .logout_option {
     margin-bottom: 0;
+}
+
+.small_screen {
+    display: none;
+}
+
+.small_screen > .my_nav_bar_wrapper {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    position: fixed;
+    width: 8%;
+}
+
+.small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option,
+.small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: none;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.small_screen > .my_nav_bar_wrapper > .main_menu_options,
+.small_screen > .my_nav_bar_wrapper > .logout_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .icon,
+.small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option > .icon {
+    border: 1px solid var(--red-dark);
+    background-color: var(--red-dark);
+}
+
+.small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .option_name,
+.small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option > .option_name {
+    margin-top: 10px;
+}
+
+.current_menu_icon_small {
+    border: 1px solid var(--navy) !important;
+    background-color: var(--navy) !important;
+    color: white;
+}
+
+.current_menu_name_small {
+    color: var(--navy) !important;
 }
 </style>

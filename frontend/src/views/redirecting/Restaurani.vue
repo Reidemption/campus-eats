@@ -1,11 +1,11 @@
 <template>  
-    <div class="whole_page_wrapper" v-if="page_onload">
+    <div class="whole_page_wrapper">
         <div class="navigation_bar">
             <MyNavBar current_page="Home"></MyNavBar>
         </div>
 
         <div class="restaurant_page_wrapper">
-            <MyHeader></MyHeader>
+            <MyHeader v-if="current_restaurant.length !== 0 || my_error"></MyHeader>
             
             <div class="restaurant_page_main_content" v-if="current_restaurant.length !== 0 && !my_error">
                 <MyBackground 
@@ -43,9 +43,9 @@
                 <MyComingSoon></MyComingSoon>
             </div>
 
-            <MyRestaurants>Other Restaurants</MyRestaurants>
+            <MyRestaurants v-if="current_restaurant.length !== 0 || my_error">Other Restaurants</MyRestaurants>
 
-            <MyFooter></MyFooter>
+            <MyFooter v-if="current_restaurant.length !== 0 || my_error"></MyFooter>
         </div>
     </div>
 </template>
@@ -72,11 +72,6 @@ export default {
         MyRestaurants,
         MyFooter,
         MyComingSoon
-    }, 
-    data() {
-        return {
-            page_onload: true
-        }
     },
     created() {
         this.$router.push({
