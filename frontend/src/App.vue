@@ -53,11 +53,13 @@
     .my_button_wrapper {
       padding: 11px 35px !important;
     }
-    .main_menu_options > .single_option > .icon {
+    .main_menu_options > .single_option > .icon, 
+    .log_out_wrapper > .logout_option > .icon{
       font-size: 25px !important;
       padding: 25px !important;
     }
-    .main_menu_options > .single_option > .option_name {
+    .main_menu_options > .single_option > .option_name,
+    .log_out_wrapper > .logout_option > .option_name {
         font-size: 17px !important;
     }
     .location_text_input {
@@ -82,11 +84,13 @@
     .main_message, .additional_message {
         font-size: 18px !important;
     }
-    .main_menu_options > .single_option > .icon {
+    .main_menu_options > .single_option > .icon,
+    .log_out_wrapper > .logout_option > .icon {
         font-size: 20px !important;
         padding: 20px !important;
     }
-    .main_menu_options > .single_option > .option_name {
+    .main_menu_options > .single_option > .option_name,
+    .log_out_wrapper > .logout_option > .option_name {
         font-size: 15px !important;
     }
 }

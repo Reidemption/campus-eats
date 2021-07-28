@@ -2,8 +2,7 @@
     <div class="overlay_section" @click.self="close_button_clicked">
         <div class="meal_item_detail_popup_modal">
             <div class="backrground_image_and_close_button">
-                <!-- <img class="popup_background" :src="require(`../../assets_main/${popup_meal_background_image}`)" 
-                    :alt="popup_meal_name" @error="imageUrl='../../assets_others/image_not_found.png'"> -->
+                <img class="popup_background" :src="require(`../../assets_main/${popup_meal_background_image}`)">
                 
                 <div class="close_button" @click="close_button_clicked">
                     <span class="material-icons">close</span>

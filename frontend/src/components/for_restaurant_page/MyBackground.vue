@@ -1,6 +1,7 @@
 <template>
     <div class="my_back_ground_wrapper">
-        <img :src="require(`../../assets_main/${background_image}`)" :alt="name">
+        <img :src="require(`../../assets_main/${background_image}`)" :alt="name"
+            :class="{reset_position: background_image === 'DixieMarket/Subway/background.jpg'}">
 
         <div class="overlay_section">
             <div class="background_content">
@@ -32,10 +33,10 @@
 
 <script>
 export default {
-  props: {
-    name: String,
-    background_image: String
-  }
+    props: {
+        name: String,
+        background_image: String
+    }
 }
 </script>
 
@@ -49,6 +50,10 @@ img {
     object-fit: cover;
     height: 300px;
     object-position: bottom;
+}
+
+.reset_position {
+    object-position: center;
 }
 
 .overlay_section {
@@ -68,6 +73,7 @@ img {
 .background_content > a {
     text-decoration: none;
     color: var(--gray-dark);
+    width: fit-content;
 }
 
 .back_button {
