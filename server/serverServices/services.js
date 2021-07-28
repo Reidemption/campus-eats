@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+var bcrypt = require("bcryptjs");
 const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
+const SubOrder = require("./businessLogic/models/suborder_item.js");
 const services = express();
 
 // ========== Middlewares ===========
@@ -600,39 +602,52 @@ services.get("/users/:id", (req, res) => {
   });
 });
 
-// POST/create a user
-services.post("/users", function (req, res) {
-  let userInfoObj = new BLOModels.UserInfoModel({});
-  userInfoObj.dnumber = req.body.dnumber;
-  userInfoObj.firstname = req.body.firstname;
-  userInfoObj.lastname = req.body.lastname;
-  userInfoObj.contacts = {
-    address: req.body.address,
-    phone: req.body.phone,
-    email: req.body.email,
-  };
-  let userObj = new BLOModels.UserModel({});
-  userObj.email = req.body.email;
-  userObj.hashed_password = req.body.password;
-  userObj.location = req.body.location;
-  userObj.user_info = userInfoObj;
-  let isValid = userObj.validateSync();
-  if (isValid !== undefined) {
-    console.log(isValid);
-    res.status(400).json({
-      message: "Fields are invalid",
-      isValid,
-    });
-  } else {
-    BLOModules.UserBLO.createUser(userObj, (err, user) => {
-      if (err !== null) {
-        res.status(500).json({
-          message: "=> Unable to create user",
-          error: err,
-        });
-      } else {
-        res.status(200).json(user);
-      }
+// POST/create a user //  register new user
+services.post("/users", async (req, res) =>{
+  try{
+    let salt = await bcrypt.genSalt()
+    let hashpassword=await bcrypt.hash(req.body.password, salt);
+
+    let userInfoObj = new BLOModels.UserInfoModel({});
+    userInfoObj.dnumber = req.body.dnumber;
+    userInfoObj.dnumber = req.body.dnumber;
+    userInfoObj.firstname = req.body.firstname;
+    userInfoObj.lastname = req.body.lastname;
+    userInfoObj.contacts = {
+      address: req.body.address,
+      phone: req.body.phone,
+      email: req.body.email,
+    };
+
+    let userObj = new BLOModels.UserModel({});
+    userObj.username = req.body.username;
+    userObj.email = req.body.email;
+    userObj.hashed_password = hashpassword;
+    userObj.location = req.body.location;
+    userObj.user_info = userInfoObj;
+    let isValid = userObj.validateSync();
+    if (isValid !== undefined) {
+      console.log(isValid);
+      res.status(400).json({
+        message: "Fields are invalid",
+        isValid,
+      });
+    } else {
+      BLOModules.UserBLO.createUser(userObj, (err, user) => {
+        if (err !== null) {
+          res.status(500).json({
+            message: "=> Unable to create user",
+            error: err,
+          });
+        } else {
+          res.status(200).json(user);
+        }
+      });
+    }
+  }catch{
+    res.status(500).json({
+      message: "=> Unable to create user",
+      error: err,
     });
   }
 });
@@ -686,7 +701,6 @@ services.delete("/users/:id", function (req, res) {
 });
 
 //-------- ORDERS -------------------
-
 // Get every orders
 services.get("/orders", (req, res) => {
   console.log(`Getting all Orders`);
@@ -701,7 +715,6 @@ services.get("/orders", (req, res) => {
     }
   });
 });
-
 // Get info for a order with specific ID
 services.get("/orders/:id", (req, res) => {
   console.log(`Getting specific order with id:${req.params.id}`);
@@ -720,48 +733,62 @@ services.get("/orders/:id", (req, res) => {
     }
   });
 });
-
 // POST/create a order
 services.post("/orders", function (req, res) {
 
-  console.log(req.body);
-  res.status(200).json(req.body);
+  // console.log(req.body.final_cart);
+  // res.status(200).json(req.body);
 
-  // let orderObj = new BLOModels.OrderModel({})
-  // orderObj.customer_id = order.user_id
+  let orderObj = BLOModules.OrderBLO.createOrder(
+    new BLOModels.OrderModel({}),(err, order) => {
+    if (err !== null) {
+      res.status(500).json({
+        message: "=> Unable to create order",
+        error: err,
+      });
+      return;
+    } else {
+      return order;
+    }
+  });
 
-  // req.body.forEach(order => {    
-  //   let orderItemObj = new BLOModels.OrderItemModel({})
-  //   orderItemObj.customer_id = order.user_id   
-  // }); 
-
-
-  // let orderObj = new BLOModels.UserModel({});
-  // orderObj.email = req.body.email;
-  // orderObj.hashed_password = req.body.password;S
-  // orderObj.location = req.body.location;
-  // orderObj.order_info = orderInfoObj;
-  // let isValid = orderObj.validateSync();
-  // if (isValid !== undefined) {
-  //   console.log(isValid);
-  //   res.status(400).json({
-  //     message: "Fields are invalid",
-  //     isValid,
-  //   });
-  // } else {
-  //   BLOModules.UserBLO.createUser(orderObj, (err, order) => {
-  //     if (err !== null) {
-  //       res.status(500).json({
-  //         message: "=> Unable to create order",
-  //         error: err,
-  //       });
-  //     } else {
-  //       res.status(200).json(order);
-  //     }
-  //   });
-  // }
+  req.body.forEach(order => {    
+    let subOrderObj = new SubOrder.SubOrderItemModel({
+      customer_id: order.user_id,
+      super_order_id: orderObj._id,
+      restaurant_id: order.meal.meal_infos.restaurant_id,
+      items:[]
+    })
+  });
 });
 
+// -------------- LOGIN ----------------------
+services.post("/login",(req,res)=>{
+  BLOModules.UserBLO.findUserByEmail(req.body.email,async (err,user)=>{
+    if(err){
+      res.status(500).send("Please try login later.");
+      return;
+    }
+    if(user == null){
+      res.status(400).send("Wrong Username or Password");
+      return;
+    }else {
+      console.log(user)
+      try {
+        console.log("user hashed password:"+user[0].hashed_password)
+        if(await bcrypt.compare(req.body.password,user[0].hashed_password)){
+          res.status(200).send("success")
+        }else{
+          res.status(400).send("Wrong Username or Password")
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Please try login later.");
+      }
+    }
+  })
+})
+// -------------- LOGOUT ---------------------
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {

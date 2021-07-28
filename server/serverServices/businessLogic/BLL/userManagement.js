@@ -23,8 +23,37 @@ function findUserById(user_id, callback) {
   });
 }
 
-function findUsersByName(name, callback) {
-  Users.UserModel.find(
+// function findUserByEmail(user_email) {
+//   User.UserModel.find({email: user_email}, (err, user) => {
+//       if (err) {
+//         console.log(`Couldn't find a user with email: ${user_email}`);
+//         return null
+//       } else {
+//         console.log(`Successfully found user with email: ${user_email}`);
+//         return user
+//       }
+//     }
+//   );
+// }
+
+function findUserByEmail(user_email, callback) {
+  User.UserModel.find(
+    {
+      email:user_email,
+    },
+    (err, user) => {
+      if (err) {
+        console.log(`Couldn't find a user with email ${user_email}`);
+      } else {
+        console.log(`Successfully found user with email ${user_email}`);
+      }
+      callback(err, user);
+    }
+  );
+}
+
+function findUsersByUsername(name, callback) {
+  User.UserModel.find(
     {
       name: { $regex: `(?i)${name}` },
     },
@@ -39,8 +68,8 @@ function findUsersByName(name, callback) {
   );
 }
 
-function findAUserByName(name, callback) {
-  Users.UserModel.findOne(
+function findAUserByUsername(name, callback) {
+  User.UserModel.findOne(
     {
       name: `${name}`,
     },
@@ -52,7 +81,7 @@ function findAUserByName(name, callback) {
 
 function createUser(user_obj, callback) {
   //TODO: check if that user name is existed?!?
-  if(!isDuplicatedEmail(user_obj.email)&&!isDuplicatedUsername(user_obj.username)){
+  if(!isExistedEmail(user_obj.email)&&!isExistedUsername(user_obj.username)){
     User.UserModel.create(user_obj, (err, user) => {
       if (err) {
         console.log(`Couldn't create a user with body ${user_obj}`);
@@ -145,8 +174,9 @@ module.exports = {
   verifySignUp,
   getAllUsers,
   findUserById,
-  findAUserByName,
-  findUsersByName,
+  findUserByEmail,
+  findAUserByUsername,
+  findUsersByUsername,
   createUser,
   updateUser,
   deleteUser,

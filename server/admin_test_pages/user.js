@@ -13,7 +13,7 @@ var app = new Vue({
         new_post_name:"",
         new_post_body:"",
         threads: [],
-        server_url: "https://code-school-forum-2021.herokuapp.com",
+        server_url: "http://localhost:7777",
         search_string: "",
         posts: []
     },
