@@ -66,7 +66,29 @@
                 <h3>Open: {{hour.open}}</h3>
                 <h3>Close: {{hour.close}}</h3>
                 <button>Remove Hours</button>
-                <button>Create Hours(If no hours are present)</button>
+                <span>
+                  <label>Days Open</label>
+                  <input
+                    type="text"
+                    v-model="new_hour_date"
+                    placeholder="Enter a days open"
+                  />
+                  <label>Open</label>
+                  <input
+                    type="text"
+                    v-model="new_hour_open"
+                    placeholder="Enter an opening time"
+                  />
+                  <label>Open</label>
+                  <input
+                    type="text"
+                    v-model="new_hour_close"
+                    placeholder="Enter a closing time"
+                  />
+                </span>
+                <button v-on:click="">
+                  Create Hours(If no hours are present)
+                </button>
               </li>
             </ul>
           </h3>
@@ -85,7 +107,11 @@
             </span>
             <li v-for="category in restaurant.categories">
               <p>{{category.name}}</p>
-              <button>Remove Category</button>
+              <p>{{category._id}}</p>
+              <p>{{category.restaurant_id}}</p>
+              <button v-on:click="deleteCategory(restaurant._id, _id)">
+                Remove Category
+              </button>
               <span>
                 <ul>
                   <h3>Menus:</h3>

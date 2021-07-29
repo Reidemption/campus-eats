@@ -127,5 +127,42 @@ var app = new Vue({
         }
       });
     },
+
+    deleteCategory: function (restaurant_id, id) {
+      fetch(`${url}/restaurant/${restaurant_id}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(function () {
+        app.getRestaurantServer();
+      });
+    },
+    createHours: function (restaurant_id) {
+      console.log(restaurant_id);
+      var newHourVar = {
+        restaurant_id: restaurant_id,
+        date: this.new_hour_date,
+        open: this.new_hour_open,
+        close: this.new_hour_close,
+      };
+      fetch(`${url}/hours`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newHourVar),
+      }).then(function (response) {
+        console.log(newHourVar);
+        if (response.status === 400) {
+          response.json().then(function (data) {
+            alert(data.message);
+          });
+        } else if (response.status === 201) {
+          app.getRestaurantServer();
+          app.new_hour_date = "";
+          app.new_hour_open = "";
+          app.new_hour_close = "";
+        }
+      });
+    },
   },
 });

@@ -386,7 +386,7 @@ services.delete("/restaurant/:id", (req, res) => {
   });
 });
 
-// delete a category with a specific id
+// delete hours with a specific id
 services.delete("/category/:restaurant_id/:hour_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
@@ -433,7 +433,7 @@ services.delete("/category/:restaurant_id/:hour_id", function (req, res) {
   );
 });
 
-// Delete hours from a restaurant
+// Delete a category from a restaurant
 services.delete("/restaurant/:restaurant_id/:category_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
