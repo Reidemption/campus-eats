@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.nopad {
+  padding: 1px;
+  margin: 0;
+}
