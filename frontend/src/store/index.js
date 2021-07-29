@@ -8,8 +8,8 @@ const state = {
     customer_cart_by_orders: [],
 
     //! Server
-    //server_url: "https://campus-eats.herokuapp.com",
-    server_url: "http://localhost:7777",
+    server_url: "https://campus-eats.herokuapp.com",
+    //server_url: "http://localhost:7777",
     current_restaurant: [],
     my_error: "",
 
