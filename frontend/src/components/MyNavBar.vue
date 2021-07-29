@@ -19,7 +19,17 @@
                     </router-link>
                 </div>
 
-                <div class="logout_wrapper">
+                <router-link to="/Login"
+                    class="login_wrapper" v-if="!user_logged_in">
+                    <div class="single_option login_option">
+                        <div class="icon">
+                            <i class="las la-sign-in-alt"></i>
+                        </div>
+                        <div class="option_name">Login</div>
+                    </div>
+                </router-link>
+
+                <div class="logout_wrapper" v-else>
                     <div class="single_option logout_option">
                         <div class="icon">
                             <i class="las la-sign-out-alt"></i>
@@ -47,7 +57,17 @@
                     </router-link>
                 </div>
 
-                <div class="logout_wrapper">
+                <router-link to="/Login"
+                    class="login_wrapper" v-if="!user_logged_in">
+                    <div class="single_option login_option">
+                        <div class="icon">
+                            <i class="las la-sign-in-alt"></i>
+                        </div>
+                        <div class="option_name">Login</div>
+                    </div>
+                </router-link>
+
+                <div class="logout_wrapper" v-else>
                     <div class="single_option logout_option">
                         <div class="icon">
                             <i class="las la-sign-out-alt"></i>
@@ -68,6 +88,7 @@ export default {
     },
     data() {
         return {
+            user_logged_in: false,
             main_menu_options_list: [
                 {
                     icon: "las la-home",
@@ -162,7 +183,7 @@ export default {
     justify-content: center;
 }
 
-.logout_option {
+.logout_option, .login_option {
     margin-bottom: 0;
 }
 
@@ -181,6 +202,7 @@ export default {
 }
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option,
+.small_screen > .my_nav_bar_wrapper > .login_wrapper > .single_option,
 .small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option {
     display: flex;
     flex-direction: column;
@@ -193,6 +215,7 @@ export default {
 }
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options,
+.small_screen > .my_nav_bar_wrapper > .login_wrapper,
 .small_screen > .my_nav_bar_wrapper > .logout_wrapper {
     display: flex;
     flex-direction: column;
@@ -200,12 +223,14 @@ export default {
 }
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .icon,
+.small_screen > .my_nav_bar_wrapper > .login_wrapper > .single_option > .icon,
 .small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option > .icon {
     border: 1px solid var(--navy);
     background-color: var(--navy);
 }
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .option_name,
+.small_screen > .my_nav_bar_wrapper > .login_wrapper > .single_option > .option_name,
 .small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option > .option_name {
     margin-top: 10px;
 }
@@ -218,5 +243,9 @@ export default {
 
 .current_menu_name_small {
     color: var(--red-dark) !important;
+}
+
+.login_wrapper {
+    text-decoration: none;
 }
 </style>

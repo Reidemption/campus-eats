@@ -4,6 +4,7 @@ import Orders from '../views/Orders.vue'
 import Tasks from '../views/Tasks.vue'
 import Admin from '../views/Admin.vue'
 import Account from '../views/Account.vue'
+import Login from '../views/Login.vue'
 
 import Restaurant from '../views/Restaurant.vue'
 import Checkout from '../views/Checkout.vue'
@@ -32,6 +33,10 @@ const routes = [
   {
     path: '/Account',
     component: Account
+  },
+  {
+    path: '/Login',
+    component: Login
   },
   {
     path: '/Restaurant',
