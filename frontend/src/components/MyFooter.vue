@@ -17,13 +17,13 @@
             </div>
 
             <div class="infos">
-                <div class="info_column">
+                <div class="info_column column_1">
                     <div class="single_info" v-for="information in information_list_1" :key="information.name">
                         <div class="name">{{ information.name }}</div>
                     </div>
                 </div>
 
-                <div class="info_column">
+                <div class="info_column column_2">
                     <div class="single_info" v-for="information in information_list_2" :key="information.name">
                         <div class="name">{{ information.name }}</div>
                     </div>

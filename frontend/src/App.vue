@@ -3,6 +3,7 @@
 </template>
 
 <style>
+    /* Reset CSS */
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +11,7 @@
     font-family: 'Varela Round', sans-serif;
 }
 
+    /* Color Palette */
 :root {
     --yellow   : hsl(60, 83%, 62%);
     --red      : hsl(358, 90%, 42%);
@@ -20,7 +22,7 @@
     --navy     : hsl(213, 68%, 15%);
 }
 
-  /* Custom Scrollbar */
+    /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -39,6 +41,7 @@
     background: var(--gray-dark); 
 }
 
+    /* Responsive Design */
 @media only screen and (max-width: 1650px) {
     .greeting {
         font-size: 33px !important;
@@ -54,11 +57,13 @@
       padding: 11px 35px !important;
     }
     .main_menu_options > .single_option > .icon, 
+    .login_wrapper > .login_option > .icon,
     .logout_wrapper > .logout_option > .icon{
       font-size: 25px !important;
       padding: 25px !important;
     }
     .main_menu_options > .single_option > .option_name,
+    .login_wrapper > .login_option > .option_name,
     .logout_wrapper > .logout_option > .option_name {
         font-size: 17px !important;
     }
@@ -85,6 +90,7 @@
         width: 60px !important;
     }
     .main_menu_options > .single_option > .icon, 
+    .login_wrapper > .login_option > .icon,
     .logout_wrapper > .logout_option > .icon{
         padding: 24px !important;
     }
@@ -98,11 +104,13 @@
         font-size: 18px !important;
     }
     .main_menu_options > .single_option > .icon,
+    .login_wrapper > .login_option > .icon,
     .logout_wrapper > .logout_option > .icon {
-        font-size: 20px !important;
+        font-size: 24px !important;
         padding: 20px !important;
     }
     .main_menu_options > .single_option > .option_name,
+    .login_wrapper > .login_option > .option_name,
     .logout_wrapper > .logout_option > .option_name {
         font-size: 15px !important;
     }
@@ -166,6 +174,7 @@
         display: block !important;
     }
     .main_menu_options > .single_option > .icon,
+    .login_wrapper > .login_option > .icon,
     .logout_wrapper > .logout_option > .icon {
         font-size: 25px !important;
         padding: 25px !important;
@@ -241,6 +250,138 @@
         height: fit-content !important;
         width: 222px !important;
         margin-left: -8px !important;
+    }
+    .single_best_seller > .infos > .ingredients {
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 3 !important;
+        -webkit-box-orient: vertical !important;
+    }
+    .my_footer_wrapper {
+        padding: 25px 40px !important;
+    }
+    .my_footer_wrapper > .main_footer > .infos > .info_column > .single_info > .name {
+        font-size: 13px !important;
+    }
+    .app_name_and_social_medias > .socila_media_links {
+        width: 135px !important;
+    }
+    .app_name_and_social_medias > .socila_media_links > .single_link {
+        font-size: 30px !important;
+    }
+    .additional_footer > .license, .additional_footer > .protection {
+        font-size: 13px !important;
+    }
+    .app_name {
+        font-size: 30px !important;
+    }
+    .my_restaurants_wrapper > .title_and_arrow_buttons > .title, .my_best_sellers_wrapper > .title {
+        font-size: 22px !important;
+    }
+    .single_restaurant > img {
+        width: 90% !important;
+    }
+    .main_message, .additional_message {
+        font-size: 14px !important;
+    }
+    .my_restaurants_wrapper > .title_and_arrow_buttons > .arrow_buttons > .button > .material-icons {
+        font-size: 20px !important;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .single_best_seller > .image > img {
+        width: 145px !important;
+    }
+    .single_best_seller > .infos {
+        margin-top: -10px !important;
+    }
+    .my_restaurants_wrapper > .restaurant_options > .single_restaurant {
+        height: 91px !important;
+    }
+    .buttons_and_icon > .burger > img, .drink > img, .pizza > img {
+        width: 30px !important;
+    }
+    .food_icons > .single_food_icon.phone > img {
+        width: 40px !important;
+    }
+    .my_button_wrapper {
+        padding: 7px 17px !important;
+        font-size: 12px !important;
+    }
+    .my_banner_wrapper > .banner_section > .image > img {
+        width: 275px !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .my_banner_wrapper > .banner_section > .image > img {
+        width: 240px !important;
+        margin-left: -15px !important;
+    }
+    .location_text_input {
+        font-size: 13px !important;
+    }
+    .location_input_and_cart_button > .location_input {
+        padding: 10px 20px !important;
+    }
+    .location_input_and_cart_button > .cart_button > .cart_icon > i {
+        font-size: 40px !important; 
+        margin-left: 15px !important;
+    }
+    .salad > img {
+        width: 50px !important;
+    }
+    .my_restaurants_wrapper > .title_and_arrow_buttons > .arrow_buttons > .button > .material-icons {
+        font-size: 15px !important;
+    }
+    .my_restaurants_wrapper > .title_and_arrow_buttons > .arrow_buttons {
+        width: 85px !important;
+    }
+    .my_best_sellers_wrapper > .best_sellers_option {
+        grid-template-columns: repeat(2, 1fr) !important;
+        row-gap: 30px !important;
+    }
+    .single_best_seller > .infos{
+        height: 200px !important;
+        margin-top: -5px !important;
+    }
+    .single_best_seller > .infos > .ingredients {
+        -webkit-line-clamp: 2 !important;
+    }
+    .single_best_seller > .image > img {
+        width: 145px !important;
+    }
+    .single_best_seller > .infos > .name {
+        font-size: 19px !important;
+    }
+    .single_best_seller > .infos > .price_and_add_button > .price {
+        font-size: 17px !important;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .my_banner_wrapper > .banner_section {
+        grid-template-columns: 7fr 3fr !important;
+    }
+    .my_banner_wrapper > .banner_section > .image {
+        display: none !important;
+    }
+    .my_banner_wrapper > .banner_section > .greeting_and_news {
+        margin-left: 30px !important;
+    }
+    .my_footer_wrapper > .main_footer > .infos > .column_2 {
+        margin-left: 30px !important;
+    }
+    .single_restaurant > img {
+        width: 115% !important;
+    }
+    .my_restaurants_wrapper > .restaurant_options {
+        grid-template-columns: repeat(2, 1fr) !important;
+        row-gap: 30px !important;
+    }
+    .my_restaurants_wrapper > .restaurant_options > .single_restaurant > img {
+        width: 60% !important;
     }
 }
 
