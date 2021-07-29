@@ -283,4 +283,8 @@ input {
 .container.right_panel_active .overlay_right {
 	transform: translateX(20%);
 }
+
+.sign_up_container > button {
+    margin-top: 20px;
+}
 </style>
