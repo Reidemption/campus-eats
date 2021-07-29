@@ -27,7 +27,7 @@
             </div>
 
             <div class="place_order_section">
-                <MyTotalFees></MyTotalFees>
+                <MyTotalFees @place_order_button_clicked="add_final_cart_to_server"></MyTotalFees>
             </div>
         </div>
 
@@ -129,6 +129,10 @@ export default {
             this.view_edit_instructions_modal = true;
 
             this.view_edit_destination_modal = false;
+        },
+        add_final_cart_to_server() {
+            let final_customer_cart = this.$store.state.customer_cart_by_orders;
+            this.$store.dispatch("add_final_cart_to_server", final_customer_cart);
         }
     }
 }

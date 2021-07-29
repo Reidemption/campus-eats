@@ -1,10 +1,13 @@
+// require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const bcrypt = require("bcryptjs");
+const authentication = require("./authLogic/authentication");
 const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
 const services = express();
-const main_path = "/campuseats";
+const refreshTokens = [];
 
 // ========== Middlewares ===========
 services.use(cors());
@@ -385,8 +388,55 @@ services.delete("/restaurant/:id", (req, res) => {
   });
 });
 
-// delete a category with a specific id
-services.delete("/category/:restaurant_id/:category_id", function (req, res) {
+// delete hours with a specific id
+services.delete("/hour/:restaurant_id/:hour_id", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  console.log(
+    `Deleting a hour with restaurant id: ${req.params.restaurant_id} and hour id: ${req.params.hour_id}`,
+    req.body
+  );
+  Restaurants.findByIdAndUpdate(
+    req.params.restaurant_id,
+    {
+      $pull: {
+        categories: {
+          _id: req.params.hour_id,
+        },
+      },
+    },
+    (err, restaurant) => {
+      if (err != null) {
+        res.status(500).json({
+          err: error,
+          message: "Unable to find hour with that id",
+        });
+        return;
+      } else if (restaurant === null) {
+        res
+          .status(404)
+          .json({ message: `unable to find hour to delete`, error: err });
+        return;
+      }
+      let hour;
+      restaurant.categories.forEach((e) => {
+        if (e._id == req.params.hour_id) {
+          hour = e;
+        }
+      });
+      if (restaurant == undefined) {
+        res.status(404).json({
+          error: err,
+          message: "could not find restaurant",
+        });
+        return;
+      }
+      res.status(200).json(restaurant);
+    }
+  );
+});
+
+// Delete a category from a restaurant
+services.delete("/restaurant/:restaurant_id/:category_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
     `Deleting a category with restaurant id: ${req.params.restaurant_id} and category id: ${req.params.category_id}`,
@@ -567,23 +617,25 @@ services.patch("/customization/:custom_id", function (req, res) {
 
 // -------------- Duy's Section ------------------
 
-// Get every users
-services.get("/users", (req, res) => {
-  console.log(`Getting all User`);
-  BLOModules.UserBLO.getAllUsers((err, users) => {
-    if (err != null) {
-      res.status(500).json({
-        Error: err,
-        message: "unable to list all users",
-      });
-    } else {
-      res.status(200).json(users);
-    }
-  });
+// Get every user
+services.get("/users", [authentication.verifyToken], (req, res) => {
+  if (req.currentuser) {
+    console.log(`Getting all Users`);
+    BLOModules.UserBLO.getAllUsers((err, users) => {
+      if (err != null) {
+        res.status(500).json({
+          Error: err,
+          message: "unable to list all users",
+        });
+      } else {
+        res.status(200).json(users);
+      }
+    });
+  }
 });
 
 // Get info for a user with specific ID
-services.get("/users/:id", (req, res) => {
+services.get("/users/:id", [authentication.verifyToken], (req, res) => {
   console.log(`Getting specific user with id:${req.params.id}`);
   BLOModules.UserBLO.findUserById(req.params.id, (err, user) => {
     if (err != null) {
@@ -601,45 +653,58 @@ services.get("/users/:id", (req, res) => {
   });
 });
 
-// POST/create a user
-services.post("/users", function (req, res) {
-  let userInfoObj = new BLOModels.UserInfoModel({});
-  userInfoObj.dnumber = req.body.dnumber;
-  userInfoObj.firstname = req.body.firstname;
-  userInfoObj.lastname = req.body.lastname;
-  userInfoObj.contacts = {
-    address: req.body.address,
-    phone: req.body.phone,
-    email: req.body.email,
-  };
-  let userObj = new BLOModels.UserModel({});
-  userObj.email = req.body.email;
-  userObj.hashed_password = req.body.password;
-  userObj.location = req.body.location;
-  userObj.user_info = userInfoObj;
-  let isValid = userObj.validateSync();
-  if (isValid !== undefined) {
-    console.log(isValid);
-    res.status(400).json({
-      message: "Fields are invalid",
-      isValid,
-    });
-  } else {
-    BLOModules.UserBLO.createUser(userObj, (err, user) => {
-      if (err !== null) {
-        res.status(500).json({
-          message: "=> Unable to create user",
-          error: err,
-        });
-      } else {
-        res.status(200).json(user);
-      }
+// POST/create a user //  register new user
+services.post("/users", async (req, res) => {
+  try {
+    let salt = await bcrypt.genSalt();
+    let hashpassword = await bcrypt.hash(req.body.password, salt);
+
+    let userInfoObj = new BLOModels.UserInfoModel({});
+    userInfoObj.dnumber = req.body.dnumber;
+    userInfoObj.dnumber = req.body.dnumber;
+    userInfoObj.firstname = req.body.firstname;
+    userInfoObj.lastname = req.body.lastname;
+    userInfoObj.contacts = {
+      address: req.body.address,
+      phone: req.body.phone,
+      email: req.body.email,
+    };
+
+    let userObj = new BLOModels.UserModel({});
+    userObj.username = req.body.username;
+    userObj.email = req.body.email;
+    userObj.hashed_password = hashpassword;
+    userObj.location = req.body.location;
+    userObj.user_info = userInfoObj;
+    let isValid = userObj.validateSync();
+    if (isValid !== undefined) {
+      console.log(isValid);
+      res.status(400).json({
+        message: "Fields are invalid",
+        isValid,
+      });
+    } else {
+      BLOModules.UserBLO.createUser(userObj, (err, user) => {
+        if (err !== null) {
+          res.status(500).json({
+            message: "=> Unable to create user",
+            error: err,
+          });
+        } else {
+          res.status(200).json(user);
+        }
+      });
+    }
+  } catch {
+    res.status(500).json({
+      message: "=> Unable to create user",
+      error: err,
     });
   }
 });
 
 // PUT/update a user
-services.put("/users", function (req, res) {
+services.put("/users", [authentication.verifyToken], function (req, res) {
   console.log(req.body);
   if (
     !req.body.username ||
@@ -686,6 +751,152 @@ services.delete("/users/:id", function (req, res) {
   });
 });
 
+//-------- ORDERS -------------------
+// Get every orders
+services.get("/orders", (req, res) => {
+  console.log(`Getting all Orders`);
+  BLOModules.OrderBLO.getAllOrders((err, orders) => {
+    if (err != null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all orders",
+      });
+    } else {
+      res.status(200).json(orders);
+    }
+  });
+});
+// Get info for a order with specific ID
+services.get("/orders/:id", (req, res) => {
+  console.log(`Getting specific order with id:${req.params.id}`);
+  BLOModules.OrderBLO.findOrderById(req.params.id, (err, order) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find order with that id",
+      });
+    } else if (order === null) {
+      res.status(404).json({
+        message: `Cannot find order with id: ${req.params.id}`,
+      });
+    } else {
+      res.status(200).json(order);
+    }
+  });
+});
+// POST/create a order
+services.post("/orders", function (req, res) {
+  //read Order Object
+  let cart_suborders = req.body.final_cart;
+  //create Order
+  BLOModules.OrderBLO.createOrder(cart_suborders, (err, order) => {
+    if (err !== null) {
+      res.status(500).json({
+        message: "=> Unable to create order",
+        error: err,
+      });
+      return;
+    } else {
+      //seperated orderObject into suborders by restaurants
+      cart_suborders.forEach((suborder) => {
+        new BLOModels.SubOrderModel.create(
+          {
+            customer_id: req.currentuser.id,
+            super_order_id: order._id,
+            restaurant_id: meal.meal_infos.restaurant_id,
+          },
+          (err, order) => {
+            if (err !== null) {
+              res.status(500).json({
+                message: "=> Unable to create order",
+                error: err,
+              });
+              return;
+            } else {
+              //create SubOrders
+              cart.meals.forEach((meal) => {
+                let subOrderItemObj = new BLOModels.SubOrderItemModel.create({
+                  sub_order_id: suborder._id,
+                  quantity: meal.meal_infos.quantity,
+                  meal_id: meal.meal_infos.meal_id,
+                  meal_name: meal.meal_infos.meal_name,
+                  note: meal.meal_infos.note,
+                });
+              });
+              return order;
+            }
+          }
+        );
+      });
+      // push subOrders to Order
+    }
+  });
+});
+
+// -------------- LOGIN ----------------------
+services.post("/login", (req, res) => {
+  BLOModules.UserBLO.findUserByEmail(req.body.email, async (err, user) => {
+    if (err) {
+      res.status(500).send("Please try login later.");
+      return;
+    }
+    if (user == null) {
+      res.status(400).send("Wrong Username or Password");
+      return;
+    } else {
+      try {
+        let currentUser = {
+          id: user[0]._id,
+          username: user[0].username,
+          password: user[0].hashed_password,
+        };
+        if (await bcrypt.compare(req.body.password, currentUser.password)) {
+          let accessToken = authentication.generateAccessToken(currentUser);
+          let refreshToken = authentication.generateRefreshToken(currentUser);
+          //TODO:later move this refresh token list to database
+          refreshTokens.push(refreshToken);
+
+          res.status(200).json({ at: accessToken, rt: refreshToken });
+        } else {
+          res.status(400).send("Wrong Username or Password");
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Please try login later.");
+      }
+    }
+  });
+});
+// -------------- LOGOUT ---------------------
+services.delete("/logout", (req, res) => {
+  //in the logout button, set the body with prop call "token" saving refreshtoken
+  refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
+  res.sendStatus(204);
+});
+
+services.post("/token", (req, res) => {
+  const refreshToken = req.body.rt;
+  if (refreshToken == null) {
+    return res.status(401).send({ message: "Unauthorized!" });
+  }
+  if (!authentication.refreshTokens.includes(refreshToken)) {
+    return res.status(403).send({ message: "Please log in again" });
+  }
+  webtoken.verify(
+    refreshToken,
+    `${process.env.SERVER_ACCESS_TOKEN}`,
+    (err, user) => {
+      if (err) {
+        return res.status(403).send({ message: "Please log in again!" });
+      }
+      let accessToken = authentication.generateAccessToken(user);
+      // let refreshToken = authentication.generateRefreshToken(user)
+      res.status(200).json({
+        at: accessToken,
+      });
+    }
+  );
+});
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {

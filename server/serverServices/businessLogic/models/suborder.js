@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
-const Meal = require("./meal");
-const Order = require("./order");
-const Restaurant = require("./restaurant")
+const SubOrderItem = require("./suborder_item");
 
-const OrderItemSchema = mongoose.Schema({
-    order_id: {
+const SubOrderSchema = mongoose.Schema({
+    super_order_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order"
     },
@@ -15,10 +13,6 @@ const OrderItemSchema = mongoose.Schema({
     restaurant_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Restaurant"
-    },
-    orderTime: {
-        type:Date,
-        require: true
     },
     staff_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,12 +34,19 @@ const OrderItemSchema = mongoose.Schema({
         type:Boolean,
         default:false
     },
-    items:[Meal.MealSchema],
+    items:[   SubOrderItem.SubOrderItemSchema ],
     total_price:{
-        type:Number
+        type: Number,
+        default:function(){
+            let suborderPrice = 0;
+            this.items.forEach(subOrderItem => {
+                suborderPrice = suborderPrice+ subOrderItem.price
+            });
+            return suborderPrice
+        }
     }
 },{timestamps:true});
 
-const OrderItemModel = mongoose.model("OrderItem", OrderItemSchema);
-module.exports = {OrderItemModel,OrderItemSchema}
+const SubOrderModel = mongoose.model("SubOrder", SubOrderSchema);
+module.exports = {SubOrderModel,SubOrderSchema}
 

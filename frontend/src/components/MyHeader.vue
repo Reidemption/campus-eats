@@ -1,8 +1,13 @@
 <template>
     <div class="my_header_wrapper">
-        <router-link to="/">
-            <div class="app_name">Campus Eats</div>
-        </router-link>
+        
+        <div class="app_name_and_hamburger_menu">
+            <MyMobileNavBar></MyMobileNavBar>
+
+            <router-link to="/">
+                <div class="app_name">Campus Eats</div>
+            </router-link>
+        </div>
 
         <div class="location_input_and_cart_button">
             <div class="location_input">
@@ -20,17 +25,20 @@
 
         <div class="overlay_section" v-if="show_mini_cart"
             @click.self="close_mini_cart">
-            <MyMiniCart @close_button_clicked="close_mini_cart"></MyMiniCart>
+            <MyMiniCart v-if="show_mini_cart"
+             @close_button_clicked="close_mini_cart"></MyMiniCart>
         </div>
     </div>
 </template>
 
 <script>
 import MyMiniCart from "../components/MyMiniCart.vue"
+import MyMobileNavBar from "../components/MyMobileNavbar.vue"
 
 export default {
     components: {
-        MyMiniCart
+        MyMiniCart,
+        MyMobileNavBar
     },
     data() {
         return {
@@ -72,7 +80,12 @@ export default {
     padding: 30px 40px;
 }
 
-.my_header_wrapper > a {
+.app_name_and_hamburger_menu {
+    display: flex;
+    align-items: center;
+}
+
+.app_name_and_hamburger_menu > a {
     text-decoration: none;
 }
 

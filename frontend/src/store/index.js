@@ -5,9 +5,13 @@ const state = {
     //! LocalStorage
     customer_cart_by_meals: JSON.parse(localStorage.getItem("customer_cart_by_meals") || "[]"),
     meal_id: 0,
+    customer_cart_by_orders: [],
 
     //! Server
+    //server_url: "https://campus-eats.herokuapp.com",
+    server_url: "http://localhost:7777",
     current_restaurant: [],
+    my_error: "",
 
     //! Local Vuex Store
     current_restaurant_map: "",
@@ -25,12 +29,12 @@ const state = {
         {
             path: "Subway",
             location: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1591.0340294794805!2d-113.56580190145505!3d37.103497381427076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b2910544dc5%3A0xcbec3414e232a5f6!2sSubway!5e0!3m2!1sen!2sus!4v1627171111205!5m2!1sen!2sus",
-            deliver_to: [
-                {
-                    name: "Smith Computer Center",
-                    location: "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d3182.115087344501!2d-113.56902643442095!3d37.10237785833036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x80ca5b9f9be09795%3A0x757b98363308137f!2sChick-fil-A%2C%20Gardner%20Center%2C%20South%20700%20East%2C%20St.%20George%2C%20UT!3m2!1d37.1036205!2d-113.5660187!4m5!1s0x80ca5b2a08264067%3A0x89cd12e393b7cb19!2sSmith%20Computer%20Center%2C%20225%20S%20700%20E%2C%20St.%20George%2C%20UT%2084770!3m2!1d37.1011267!2d-113.56777539999999!5e0!3m2!1sen!2sus!4v1626751512455!5m2!1sen!2sus"
-                }
-            ]
+            deliver_to: []
+        },
+        {
+            path: "PizzaHut",
+            location: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d490.4041430332182!2d-113.56622633833774!3d37.103754868540015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b299c5b5a1d%3A0xfd975c8601b3cc6b!2sKenneth%20N.%20Gardner%20Student%20Center!5e0!3m2!1sen!2sus!4v1627422708704!5m2!1sen!2sus",
+            deliver_to: []
         }
     ]
 }
@@ -40,7 +44,8 @@ const mutations = {
     add_one_meal_to_cart(state, meal_to_add) {
         let customer_cart_by_meals = state.customer_cart_by_meals;
         customer_cart_by_meals.push({
-            meal_id   : state.meal_id++,
+            user_id   : "user_id",
+            meal_index: state.meal_id++,
             meal_infos: meal_to_add
         });
         localStorage.setItem("customer_cart_by_meals", JSON.stringify(customer_cart_by_meals));
@@ -78,9 +83,41 @@ const mutations = {
         state.customer_cart_by_meals = JSON.parse(localStorage.getItem("customer_cart_by_meals"));
     },
 
+    //! Redesign Customer Cart
+    create_customer_cart_by_orders(state) {
+        let customer_cart_by_meals = state.customer_cart_by_meals;
+        let customer_cart_by_orders = state.customer_cart_by_orders;
+        let main_restaurant_names = [];
+
+        customer_cart_by_meals.forEach(meal => {
+            if(!main_restaurant_names.includes(meal.meal_infos.restaurant_name)) {
+                main_restaurant_names.push(meal.meal_infos.restaurant_name);
+            }
+        })
+
+        main_restaurant_names.forEach(name => {
+            customer_cart_by_orders.push({
+                restaurant_name: name,
+                meals: []
+            })
+        })
+
+        customer_cart_by_meals.forEach(meal => {
+            customer_cart_by_orders.forEach(order => {   
+                if(meal.meal_infos.restaurant_name === order.restaurant_name) {
+                    order.meals.push(meal);
+                }
+            })
+        })
+    },
+
     //! Server
     get_one_restaurant_from_the_server(state, restaurant) {
         state.current_restaurant = restaurant;
+    },
+    handle_restaurant_not_found(state) {
+        state.current_restaurant = [];
+        state.my_error = "Restaurant Not Found";
     },
 
     //! Local Vuex Store
@@ -97,17 +134,36 @@ const mutations = {
 }
 
 const actions = {
-    get_one_restaurant_from_the_server({commit}, path) {
-        axios.get("http://localhost:7777/feed")
+    get_one_restaurant_from_the_server({commit, state}, path) {
+        state.my_error = "";
+        
+        axios.get(`${state.server_url}/feed`)
             .then(response => {
                 let restaurants_list = response.data;
                 
+                let restaurant_found = false;
                 restaurants_list.forEach(restaurant => {
                     if (restaurant.path === path) {
                         commit("get_one_restaurant_from_the_server", restaurant);
+                        restaurant_found = true;
                     }
                 })
+
+                if (!restaurant_found) {
+                    commit("handle_restaurant_not_found");
+                }
             })
+    },
+    add_final_cart_to_server({commit}, final_customer_cart) {
+        axios.post(`${state.server_url}/orders`, {
+            final_cart: final_customer_cart
+        })
+    },
+    user_signed_up({commit} , user_sign_up_infos) {
+        axios.post(`${state.server_url}/users`, user_sign_up_infos);
+    },
+    user_signed_in({commit} , user_sign_in_infos) {
+        axios.post(`${state.server_url}/login`, user_sign_in_infos);
     }
 }
 

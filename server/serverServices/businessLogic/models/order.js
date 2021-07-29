@@ -1,27 +1,10 @@
 const mongoose = require("mongoose");
-const User = require("./user")
-const OrderItem = require("./order_item")
+const SubOrder = require("./suborder")
 
 const OrderSchema = new mongoose.Schema({
     customer_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    },
-    order_time: {
-        type:Date,
-        require:true
-    },
-    lastPickup: {
-        type:Date,
-        require:true
-    },
-    lastPickup: {
-        type:Date,
-        require:true
-    },
-    DeliveryTime: {
-        type:Date,
-        require:true
     },
     isCompletelyDelivered:{
         type:Boolean,
@@ -29,30 +12,42 @@ const OrderSchema = new mongoose.Schema({
     },
     destination:{
         type:String,
-        require:true
+        // require:true
     },
-    order_items:[OrderItem.OrderItemSchema],
+    suborders:[SubOrder.SubOrderSchema],
     paid_by_meal_plan:{
         type:Boolean,
         default:true
     },
     total_Price:{
         type:Number,
-        require:true
+        required:true
     },
     is_paid_by_meal_plan:{
         type:Boolean,
-        require:true,
+        required:true,
         default:true
     },
     tax:{
         type:Number,
-        require:function(){
-            return this.is_paid_by_meal_plan;
-        }
+        required:true,
+        default:0
+    },
+    fee:{
+        type:Number,
+        required:true,
+        default:0
     },
     final_Price:{
-        type:Number
+        type:Number,
+        default:function(){
+            return (this.total_Price+this.total_Price*tax+fee)
+        }
+    },
+    isVoided:{
+        type:Boolean,
+        required:true,
+        default:false
     }
 },{timestamps:true});
 const OrderModel = mongoose.model("Order", OrderSchema);

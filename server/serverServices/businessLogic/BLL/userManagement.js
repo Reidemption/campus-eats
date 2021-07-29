@@ -23,8 +23,24 @@ function findUserById(user_id, callback) {
   });
 }
 
-function findUsersByName(name, callback) {
-  Users.UserModel.find(
+function findUserByEmail(user_email, callback) {
+  User.UserModel.find(
+    {
+      email:user_email,
+    },
+    (err, user) => {
+      if (err) {
+        console.log(`Couldn't find a user with email ${user_email}`);
+      } else {
+        console.log(`Successfully found user with email ${user_email}`);
+      }
+      callback(err, user);
+    }
+  );
+}
+
+function findUsersByUsername(name, callback) {
+  User.UserModel.find(
     {
       name: { $regex: `(?i)${name}` },
     },
@@ -39,8 +55,8 @@ function findUsersByName(name, callback) {
   );
 }
 
-function findAUserByName(name, callback) {
-  Users.UserModel.findOne(
+function findAUserByUsername(name, callback) {
+  User.UserModel.findOne(
     {
       name: `${name}`,
     },
@@ -52,14 +68,16 @@ function findAUserByName(name, callback) {
 
 function createUser(user_obj, callback) {
   //TODO: check if that user name is existed?!?
-  User.UserModel.create(user_obj, (err, user) => {
-    if (err) {
-      console.log(`Couldn't create a user with body ${user_obj}`);
-    } else {
-      console.log(`Successfully create user with body ${user_obj}`);
-    }
-    callback(err, user);
-  });
+  if(!isExistedEmail(user_obj.email)&&!isExistedUsername(user_obj.username)){
+    User.UserModel.create(user_obj, (err, user) => {
+      if (err) {
+        console.log(`Couldn't create a user with body ${user_obj}`);
+      } else {
+        console.log(`Successfully create user with body ${user_obj}`);
+      }
+      callback(err, user);
+    });
+  }
 }
 
 function updateUser(user_obj, callback) {
@@ -84,11 +102,68 @@ function deleteUser(id, callback) {
   });
 }
 
+//========== HELPERS ==============
+
+function isExistedUsername(username){
+  // Username
+  User.UserModel.findOne({
+    username: username
+  }).exec((err, user) => {
+    if (err) {
+        return {
+          err,
+          result: true
+        };
+    }
+    if (user) {
+        return{
+          err: {message: "Failed! Username is already in use!"},
+          result:true
+        };
+    }
+    return false;
+  });
+};
+
+function isExistedEmail(email){
+    // Email
+    User.UserModel.findOne({
+      "contacts.email": email
+    }).exec((err, user) => {
+      if (err) {
+          return {
+            err,
+            result:true
+          };
+      }
+      if (user) {
+          return{
+            err: {message: "Failed! Email is already in use!"},
+            result:true
+          };
+      }
+    return false;
+  });
+};
+
+function verifySignUp(username, email){
+  if(isExistedUsername(username)){
+    return false;
+  }else{
+    if(isExistedEmail(email)){
+      return false;
+    }
+  }
+  return true;
+}
+
 module.exports = {
+  verifySignUp,
   getAllUsers,
   findUserById,
-  findAUserByName,
-  findUsersByName,
+  findUserByEmail,
+  findAUserByUsername,
+  findUsersByUsername,
   createUser,
   updateUser,
   deleteUser,

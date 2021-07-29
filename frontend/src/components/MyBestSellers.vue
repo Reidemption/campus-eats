@@ -102,6 +102,7 @@ img {
     border-radius: 35px;
     padding: 100px 25px 20px;
     width: 85%;
+    height: 100%;
     margin-top: 5px;
     color: var(--red-dark);
     box-shadow: 5px 5px;

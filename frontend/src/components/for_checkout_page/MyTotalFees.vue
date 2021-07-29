@@ -69,7 +69,7 @@
         </div>
 
         <div class="place_order_button_and_agreement">
-            <div class="place_order_button">
+            <div class="place_order_button" @click="place_order_button_clicked">
                 Place order
             </div>
 
@@ -179,6 +179,9 @@ export default {
             //* Cart total price
             this.final_total_price = this.subtotal + this.taxes_and_fees + this.delivery_fee;
         },
+        place_order_button_clicked() {
+            this.$emit("place_order_button_clicked");
+        }
     }
 }
 </script>

@@ -2,8 +2,7 @@
     <div class="overlay_section" @click.self="close_button_clicked">
         <div class="meal_item_detail_popup_modal">
             <div class="backrground_image_and_close_button">
-                <img class="popup_background" :src="require(`../../assets_main/${popup_meal_background_image}`)" 
-                    :alt="popup_meal_name">
+                <img class="popup_background" :src="require(`../../assets_main/${popup_meal_background_image}`)">
                 
                 <div class="close_button" @click="close_button_clicked">
                     <span class="material-icons">close</span>
@@ -135,9 +134,12 @@
 <script>
 export default {
     props: {
+        popup_meal_restaurant_id: String,
         popup_meal_restaurant_path: String,
         popup_meal_restaurant_name: String,
         popup_meal_background_image: String,
+
+        popup_meal_id: String,
         popup_meal_name: String,
         popup_meal_description: String,
         popup_meal_calories: String,
@@ -265,8 +267,11 @@ export default {
         },
         add_one_meal_to_cart() {
             let meal_to_add = {
+                restaurant_id: this.popup_meal_restaurant_id,
                 restaurant_path: this.popup_meal_restaurant_path,
                 restaurant_name: this.popup_meal_restaurant_name,
+
+                meal_id: this.popup_meal_id,
                 name: this.popup_meal_name,
                 image_url: this.popup_meal_background_image,
                 description: this.popup_meal_description,
