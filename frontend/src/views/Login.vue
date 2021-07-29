@@ -6,11 +6,12 @@
                 <div class="form">
                     <h1>Create Account</h1>
 
-                    <input type="text" placeholder="Name" />
-                    <input type="email" placeholder="Dmail" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" placeholder="Username" v-model="sign_up_user_name"/>
+                    <input type="password" placeholder="Password" v-model="sign_up_password"/>
+                    <input type="email" placeholder="Dnumber" v-model="sign_up_dnumber"/>
+                    <input type="text" placeholder="Phone Number" v-model="sign_up_phone_number"/>
 
-                    <button>Sign Up</button>
+                    <button @click="user_signed_up">Sign Up</button>
                 </div>
             </div>
 
@@ -18,11 +19,11 @@
                 <div class="form">
                     <h1>Sign in</h1>
                     
-                    <input type="email" placeholder="Dmail" />
-                    <input type="password" placeholder="Password" />
+                    <input type="email" placeholder="Dmail" v-model="sign_in_dmail"/>
+                    <input type="password" placeholder="Password" v-model="sign_in_password"/>
                     <div class="forgot_password">Forgot your password?</div>
 
-                    <button>Sign In</button>
+                    <button  @click="user_signed_in">Sign In</button>
                 </div>
             </div>
 
@@ -49,6 +50,14 @@
 export default {
     data() {
         return {
+            sign_up_user_name: "",
+            sign_up_password: "",
+            sign_up_dmail: "",
+            sign_up_phone_number: "",
+
+            sign_in_dmail: "",
+            sign_in_password: "",
+
             show_sign_up_form: false
         }
     },
@@ -58,7 +67,38 @@ export default {
         },
         sign_in_option_selected() {
             this.show_sign_up_form = false;
-        }  
+        },
+        user_signed_up() {
+            let user_sign_up_infos = {
+                firstname: this.sign_up_first_name,
+                lastname: this.sign_up_last_name,
+                email: this.sign_up_dmail,
+                dnumber: this.show_sign_up_dnumber,
+                phone: this.sign_up_phone_number,
+                username: this.sign_up_user_name,
+                password: this.sign_up_password
+            }
+
+            this.$store.dispatch("user_signed_up", user_sign_up_infos);
+
+            this.sign_up_first_name = "",
+            this.sign_up_last_name = "",
+            this.sign_up_dmail = "",
+            this.sign_up_phone_number = "",
+            this.sign_up_user_name = "",
+            this.sign_up_password = ""
+        },
+        user_signed_in() {
+            let user_sign_in_infos = {
+                email: this.sign_in_dmail,
+                password: this.sign_in_password
+            }
+
+            this.$store.dispatch("user_signed_in", user_sign_in_infos);
+
+            this.sign_in_dmail = "",
+            this.sign_in_password = ""
+        }
     }
 }
 </script>
@@ -166,14 +206,13 @@ input {
 
 .container {
 	background-color: #fff;
-	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
-	position: relative;
-	overflow: hidden;
-	width: 768px;
-	max-width: 100%;
-	min-height: 480px;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+    position: relative;
+    overflow: hidden;
+    width: 55%;
+    max-width: 100%;
+    min-height: 550px;
 }
 
 .form_container {
@@ -284,7 +323,11 @@ input {
 	transform: translateX(20%);
 }
 
-.sign_up_container > button {
-    margin-top: 20px;
+.sign_up_container > .form > button {
+    margin-top: 15px;
+}
+
+.sign_up_container > .form > h1 {
+    margin-bottom: 10px;
 }
 </style>
