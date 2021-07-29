@@ -911,7 +911,7 @@ services.use((req, res, next) => {
 //! Handle production
 if (process.env.NODE_ENV === "production") {
   //* Static folder
-  services.use(express.static("public"));
+  services.use(express.static("../../public"));
 
   //* Handle SPA
   services.get(/.*/, (req, res) => res.sendFile("public/index.html"));
