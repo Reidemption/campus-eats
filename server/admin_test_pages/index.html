@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Campus Eats | Admin Page | Code School '21</title>
+  </head>
+  <body>
+    <div id="app">
+      <span>
+        <h2>Create Restaurant</h2>
+        <label>Path</label>
+        <input
+          type="text"
+          v-model="new_res_path"
+          placeholder="Enter a pathname"
+        />
+        <label>Name</label>
+        <input
+          type="text"
+          v-model="new_res_name"
+          placeholder="Enter a restaurant name"
+        />
+        <label>location</label>
+        <input
+          type="text"
+          v-model="new_res_location"
+          placeholder="Enter a location"
+        />
+        <label>Logo</label>
+        <input
+          type="text"
+          v-model="new_res_logo"
+          placeholder="Enter a logo path"
+        />
+        <label>Background Image</label>
+        <input
+          type="text"
+          v-model="new_res_background_image"
+          placeholder="Enter a background image path"
+        />
+        <label>Description</label>
+        <input
+          type="text"
+          v-model="new_res_description"
+          placeholder="Enter a description"
+        />
+      </span>
+      <button v-on:click="newRestaurantServer()">Create New Restaurant</button>
+      <ul>
+        <li v-for="restaurant in Restaurants">
+          <!-- <div v-on:click="getSpecificRestaurant(restaurant._id)"> -->
+          <h1>{{restaurant.name}}</h1>
+          <h2>{{restaurant.path}}</h2>
+          <p>{{restaurant.description}}</p>
+          <p>{{restaurant.location}}</p>
+          <!-- <button v-on:click="deleteRestaurantServer(restaurant._id)">
+            Remove Restaurant
+          </button> -->
+          <h3>
+            <ul>
+              <li v-for="hour in restaurant.hours">
+                <h3>Days Open: {{hour.date}}</h3>
+                <h3>Open: {{hour.open}}</h3>
+                <h3>Close: {{hour.close}}</h3>
+                <button>Remove Hours</button>
+                <button>Create Hours(If no hours are present)</button>
+              </li>
+            </ul>
+          </h3>
+          <ol>
+            <h2>Categories:</h2>
+            <span>
+              <label>Name</label>
+              <input
+                type="text"
+                v-model="new_cat_name"
+                placeholder="Enter a category name"
+              />
+              <button v-on:click="newCategory(restaurant._id)">
+                Create Category
+              </button>
+            </span>
+            <li v-for="category in restaurant.categories">
+              <p>{{category.name}}</p>
+              <button>Remove Category</button>
+              <span>
+                <ul>
+                  <h3>Menus:</h3>
+                  <button>Create Menu</button>
+                  <li v-for="menu in category.menus">
+                    <p>{{menu.name}}</p>
+                    <p>{{menu.description}}</p>
+                    <p>Calories: {{menu.calories}}</p>
+                    <p>Price: {{menu.price}}</p>
+                    <button>Remove Meal</button>
+                    <span>
+                      <ul>
+                        <h4>Custom Options:</h4>
+                        <button>Create Customization</button>
+                        <li v-for="option in menu.custom_options">
+                          <p class="nopad">{{option.type}}</p>
+                          <p class="nopad">{{option.name}}</p>
+                          <p class="nopad">{{option.calories}}</p>
+                          <p class="nopad">{{option.price}}</p>
+                          <p class="nopad">{{option.selected}}</p>
+                          <button>Remove Customization</button>
+                          <br />
+                        </li>
+                      </ul>
+                    </span>
+                  </li>
+                </ul>
+              </span>
+            </li>
+          </ol>
+          <!-- </div> -->
+        </li>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
