@@ -5,14 +5,14 @@
                 <div class="main_menu_options">
                     <router-link class="single_option" :to="option.path"
                         v-for="option in main_menu_options_list" :key="option.name"
-                        :class="{ current_menu_option: current_page === option.name }">
+                        :class="{ current_menu_option: current_page === option.name || current_page_path === option.path }">
                         
-                        <div class="icon" :class="{ current_menu_icon: current_page === option.name }">
+                        <div class="icon" :class="{ current_menu_icon: current_page === option.name || current_page_path === option.path }">
                             <i :class="option.icon"></i>
                         </div>
                         
                         <div class="option_name"
-                            :class="{ current_menu_name: current_page === option.name }">
+                            :class="{ current_menu_name: current_page === option.name || current_page_path === option.path }">
                             {{ option.name }}
                         </div>
 
@@ -63,7 +63,8 @@
 <script>
 export default {
     props: {
-        current_page: String
+        current_page: String,
+        current_page_path: String
     },
     data() {
         return {
@@ -200,8 +201,8 @@ export default {
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .icon,
 .small_screen > .my_nav_bar_wrapper > .logout_wrapper > .single_option > .icon {
-    border: 1px solid var(--red-dark);
-    background-color: var(--red-dark);
+    border: 1px solid var(--navy);
+    background-color: var(--navy);
 }
 
 .small_screen > .my_nav_bar_wrapper > .main_menu_options > .single_option > .option_name,
@@ -210,12 +211,12 @@ export default {
 }
 
 .current_menu_icon_small {
-    border: 1px solid var(--navy) !important;
-    background-color: var(--navy) !important;
+    border: 1px solid var(--red-dark) !important;
+    background-color: var(--red-dark) !important;
     color: white;
 }
 
 .current_menu_name_small {
-    color: var(--navy) !important;
+    color: var(--red-dark) !important;
 }
 </style>

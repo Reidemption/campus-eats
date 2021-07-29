@@ -71,6 +71,9 @@
     .single_best_seller > .infos {
         padding-top: 80px !important;
     }
+    .my_mini_cart_wrapper > .empty_cart > .cart_icon > i {
+        font-size: 70px !important;
+    }
 }
 
 @media only screen and (max-width: 1485px) {
@@ -103,6 +106,9 @@
     .logout_wrapper > .logout_option > .option_name {
         font-size: 15px !important;
     }
+    .my_restaurants_wrapper > .restaurant_options > .single_restaurant {
+        height: 110px !important;
+    }
 }
 
 @media only screen and (max-width: 1360px) {
@@ -124,9 +130,6 @@
     .single_best_seller > .infos > .name {
         font-size: 20px !important;
     }
-    .my_restaurants_wrapper > .restaurant_options > .single_restaurant {
-        height: 110px !important;
-    }
     .my_footer_wrapper {
         padding: 30px 40px;
     }
@@ -137,9 +140,6 @@
     .my_best_sellers_wrapper > .title {
         font-size: 25px !important;
     }
-}
-
-@media only screen and (max-width: 1360px) {
     .single_best_seller > .infos > .name {
         font-size: 19px !important;
     }
@@ -165,12 +165,88 @@
     .nav_bar_main_container > .small_screen {
         display: block !important;
     }
-    .main_menu_options > .single_option > .icon, .logout_wrapper > .logout_option > .icon {
+    .main_menu_options > .single_option > .icon,
+    .logout_wrapper > .logout_option > .icon {
         font-size: 25px !important;
         padding: 25px !important;
     }
     .whole_page_wrapper {
         grid-template-columns: 8% 92% !important;
+    }
+    .single_best_seller > .infos {
+        grid-template-rows: repeat(3, 1fr) !important;
+    }
+}
+
+@media only screen and (max-width: 1190px) {
+    .single_best_seller > .image > img {
+        width: 160px !important;
+    }
+    .single_best_seller > .infos > .name {
+        font-size: 18px !important;
+    }
+    .single_best_seller > .image {
+        max-height: 75px !important;
+    }
+    .single_best_seller > .infos {
+        height: 250px !important;
+    }
+    .single_best_seller > .infos > .ingredients {
+        font-size: 13px !important;
+    }
+    .single_best_seller > .infos > .price_and_add_button > .price {
+        font-size: 19px !important;
+    }
+    .single_best_seller > .infos > .price_and_add_button > .price > .dollar_sign {
+        font-size: 15px !important;
+    }
+    .single_best_seller > .infos > .price_and_add_button > .add_to_cart_button {
+        font-size: 15px !important;
+    }
+    .single_restaurant > img {
+        width: 85% !important;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .whole_page_wrapper {
+        display: block !important;
+    }
+    .nav_bar_main_container > .small_screen {
+        display: none !important;
+    }
+    .location_text_input {
+        font-size: 15px !important;
+    }
+    .location_input_and_cart_button > .cart_button > .cart_button > i {
+        font-size: 38px !important;
+    }
+    .cart_items_tracker {
+        margin-top: -33px !important;
+        font-size: 10px !important;
+    }
+    .greeting {
+        font-size: 25px !important;
+    }
+    .nav_bar_main_container > .big_screen {
+        display: block !important;
+    }
+    .whole_page_wrapper > .navigation_bar {
+        display: none !important;
+    }
+    .app_name_and_hamburger_menu > .my_mobile_nav_bar_wrapper > nav {
+        display: block !important;
+    }
+    .nav_bar_main_container > .big_screen > .my_nav_bar_wrapper {
+        height: fit-content !important;
+        width: 222px !important;
+        margin-left: -8px !important;
+    }
+}
+
+@media only screen and (max-height: 634px) {
+    .small_screen > .my_nav_bar_wrapper {
+        position: absolute !important;;
     }
 }
 </style>
