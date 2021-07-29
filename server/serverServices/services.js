@@ -9,6 +9,8 @@ const BLOModels = require("../serverServices/businessLogic/models/data_models");
 const services = express();
 const refreshTokens = [];
 
+const path = require("path");
+
 // ========== Middlewares ===========
 services.use(cors());
 services.use(express.json({}));
@@ -16,7 +18,7 @@ services.use(express.json({}));
 // ======== Request handlers =========
 // --- LOG ---
 services.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json");
+  // res.setHeader("Content-Type", "application/json");
   console.log("======================== REQUEST ==========================");
   console.log(
     "- Time:",
@@ -905,16 +907,15 @@ services.use((req, res, next) => {
     console.log(`------------------------------------------------`);
   }
   // res.status(req.headers.status).json(req.headers.message);
+  next();
 });
 // ========= EXPORT MODULE ==========
 
 //! Handle production
-if (process.env.NODE_ENV === "production") {
-  //* Static folder
-  services.use(express.static("public"));
+    //* Static folder
+   services.use(express.static("public"));
 
-  //* Handle SPA
-  services.get(/.*/, (req, res) => res.sendFile("public/index.html"));
-}
+    // //* Handle SPA
+    services.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, "../../public/index.html")));
 
 module.exports = services;
