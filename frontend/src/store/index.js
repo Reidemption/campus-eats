@@ -163,7 +163,10 @@ const actions = {
         axios.post(`${state.server_url}/users`, user_sign_up_infos);
     },
     user_signed_in({commit} , user_sign_in_infos) {
-        axios.post(`${state.server_url}/login`, user_sign_in_infos);
+        axios.post(`${state.server_url}/login`, user_sign_in_infos)
+            .then(response => {
+                console.log(response.data.at)
+            });
     }
 }
 
