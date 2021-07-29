@@ -387,7 +387,7 @@ services.delete("/restaurant/:id", (req, res) => {
 });
 
 // delete hours with a specific id
-services.delete("/category/:restaurant_id/:hour_id", function (req, res) {
+services.delete("/hour/:restaurant_id/:hour_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
     `Deleting a hour with restaurant id: ${req.params.restaurant_id} and hour id: ${req.params.hour_id}`,
