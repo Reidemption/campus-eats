@@ -1,11 +1,13 @@
+// require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-var bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
+const authentication = require("./authLogic/authentication");
 const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
-const SubOrder = require("./businessLogic/models/suborder_item.js");
 const services = express();
+const refreshTokens = [];
 
 // ========== Middlewares ===========
 services.use(cors());
@@ -616,22 +618,24 @@ services.patch("/customization/:custom_id", function (req, res) {
 // -------------- Duy's Section ------------------
 
 // Get every user
-services.get("/users", (req, res) => {
-  console.log(`Getting all Users`);
-  BLOModules.UserBLO.getAllUsers((err, users) => {
-    if (err != null) {
-      res.status(500).json({
-        Error: err,
-        message: "unable to list all users",
-      });
-    } else {
-      res.status(200).json(users);
-    }
-  });
+services.get("/users", [authentication.verifyToken], (req, res) => {
+  if (req.currentuser) {
+    console.log(`Getting all Users`);
+    BLOModules.UserBLO.getAllUsers((err, users) => {
+      if (err != null) {
+        res.status(500).json({
+          Error: err,
+          message: "unable to list all users",
+        });
+      } else {
+        res.status(200).json(users);
+      }
+    });
+  }
 });
 
 // Get info for a user with specific ID
-services.get("/users/:id", (req, res) => {
+services.get("/users/:id", [authentication.verifyToken], (req, res) => {
   console.log(`Getting specific user with id:${req.params.id}`);
   BLOModules.UserBLO.findUserById(req.params.id, (err, user) => {
     if (err != null) {
@@ -700,7 +704,7 @@ services.post("/users", async (req, res) => {
 });
 
 // PUT/update a user
-services.put("/users", function (req, res) {
+services.put("/users", [authentication.verifyToken], function (req, res) {
   console.log(req.body);
   if (
     !req.body.username ||
@@ -782,31 +786,50 @@ services.get("/orders/:id", (req, res) => {
 });
 // POST/create a order
 services.post("/orders", function (req, res) {
-  // console.log(req.body.final_cart);
-  // res.status(200).json(req.body);
-
-  let orderObj = BLOModules.OrderBLO.createOrder(
-    new BLOModels.OrderModel({}),
-    (err, order) => {
-      if (err !== null) {
-        res.status(500).json({
-          message: "=> Unable to create order",
-          error: err,
-        });
-        return;
-      } else {
-        return order;
-      }
+  //read Order Object
+  let cart_suborders = req.body.final_cart;
+  //create Order
+  BLOModules.OrderBLO.createOrder(cart_suborders, (err, order) => {
+    if (err !== null) {
+      res.status(500).json({
+        message: "=> Unable to create order",
+        error: err,
+      });
+      return;
+    } else {
+      //seperated orderObject into suborders by restaurants
+      cart_suborders.forEach((suborder) => {
+        new BLOModels.SubOrderModel.create(
+          {
+            customer_id: req.currentuser.id,
+            super_order_id: order._id,
+            restaurant_id: meal.meal_infos.restaurant_id,
+          },
+          (err, order) => {
+            if (err !== null) {
+              res.status(500).json({
+                message: "=> Unable to create order",
+                error: err,
+              });
+              return;
+            } else {
+              //create SubOrders
+              cart.meals.forEach((meal) => {
+                let subOrderItemObj = new BLOModels.SubOrderItemModel.create({
+                  sub_order_id: suborder._id,
+                  quantity: meal.meal_infos.quantity,
+                  meal_id: meal.meal_infos.meal_id,
+                  meal_name: meal.meal_infos.meal_name,
+                  note: meal.meal_infos.note,
+                });
+              });
+              return order;
+            }
+          }
+        );
+      });
+      // push subOrders to Order
     }
-  );
-
-  req.body.forEach((order) => {
-    let subOrderObj = new SubOrder.SubOrderItemModel({
-      customer_id: order.user_id,
-      super_order_id: orderObj._id,
-      restaurant_id: order.meal.meal_infos.restaurant_id,
-      items: [],
-    });
   });
 });
 
@@ -821,11 +844,19 @@ services.post("/login", (req, res) => {
       res.status(400).send("Wrong Username or Password");
       return;
     } else {
-      console.log(user);
       try {
-        console.log("user hashed password:" + user[0].hashed_password);
-        if (await bcrypt.compare(req.body.password, user[0].hashed_password)) {
-          res.status(200).send("success");
+        let currentUser = {
+          id: user[0]._id,
+          username: user[0].username,
+          password: user[0].hashed_password,
+        };
+        if (await bcrypt.compare(req.body.password, currentUser.password)) {
+          let accessToken = authentication.generateAccessToken(currentUser);
+          let refreshToken = authentication.generateRefreshToken(currentUser);
+          //TODO:later move this refresh token list to database
+          refreshTokens.push(refreshToken);
+
+          res.status(200).json({ at: accessToken, rt: refreshToken });
         } else {
           res.status(400).send("Wrong Username or Password");
         }
@@ -837,6 +868,35 @@ services.post("/login", (req, res) => {
   });
 });
 // -------------- LOGOUT ---------------------
+services.delete("/logout", (req, res) => {
+  //in the logout button, set the body with prop call "token" saving refreshtoken
+  refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
+  res.sendStatus(204);
+});
+
+services.post("/token", (req, res) => {
+  const refreshToken = req.body.rt;
+  if (refreshToken == null) {
+    return res.status(401).send({ message: "Unauthorized!" });
+  }
+  if (!authentication.refreshTokens.includes(refreshToken)) {
+    return res.status(403).send({ message: "Please log in again" });
+  }
+  webtoken.verify(
+    refreshToken,
+    `${process.env.SERVER_ACCESS_TOKEN}`,
+    (err, user) => {
+      if (err) {
+        return res.status(403).send({ message: "Please log in again!" });
+      }
+      let accessToken = authentication.generateAccessToken(user);
+      // let refreshToken = authentication.generateRefreshToken(user)
+      res.status(200).json({
+        at: accessToken,
+      });
+    }
+  );
+});
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {

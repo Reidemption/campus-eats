@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const SubOrder = require("../models/suborder");
 const SubOrderItem = require("../models/suborder_item");
 
 function getAllOrders(userId=null,callback) {
@@ -49,18 +50,32 @@ function findSubOrderById(order_id, callback) {
   });
 }
 
-function createSubOrder(order_obj, callback) {
-  OrderItem.OrderItemModel.create(order_obj, (err, order) => {
+async function createSubOrderItem(suborder_item_obj, callback) {
+  SubOrderItem.SubOrderItemModel.create(suborder_item_obj, (err, order) => {
     if (err) {
-      console.log(`Couldn't create a order with body ${order_obj}`);
+      console.log(`Couldn't create a suborder item with body ${suborder_item_obj}`);
     } else {
-      console.log(`Successfully create order with body ${order_obj}`);
+      console.log(`Successfully create suborder item with body ${suborder_item_obj}`);
     }
     callback(err, order);
   });
 }
 
-function createOrder(order_obj, callback) {
+async function createSubOrder(suborder_obj, callback) {
+  SubOrder.SubOrderModel.create(suborder_obj, (err, order) => {
+    if (err) {
+      console.log(`Couldn't create a suborder with body ${suborder_obj}`);
+    } else {
+      console.log(`Successfully create suborder with body ${suborder_obj}`);
+    }
+    callback(err, order);
+  });
+}
+
+async function createOrder(order_obj, callback) {
+  //start Transaction:
+  let session = await Order.startSession();
+  session.startTransaction();
   Order.OrderModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
@@ -69,9 +84,12 @@ function createOrder(order_obj, callback) {
     }
     callback(err, order);
   });
+
+  await session.abortTransaction();
+  session.endSession();
 }
 
-function updateOrder(order_obj, callback) {
+function updateOrder(sub_order_obj, callback) {
   Order.OrderModel.findByIdAndUpdate(order_obj._id, order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't update a order with body ${order_obj}`);

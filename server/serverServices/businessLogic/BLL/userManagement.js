@@ -23,19 +23,6 @@ function findUserById(user_id, callback) {
   });
 }
 
-// function findUserByEmail(user_email) {
-//   User.UserModel.find({email: user_email}, (err, user) => {
-//       if (err) {
-//         console.log(`Couldn't find a user with email: ${user_email}`);
-//         return null
-//       } else {
-//         console.log(`Successfully found user with email: ${user_email}`);
-//         return user
-//       }
-//     }
-//   );
-// }
-
 function findUserByEmail(user_email, callback) {
   User.UserModel.find(
     {
