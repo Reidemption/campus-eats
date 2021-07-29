@@ -612,7 +612,7 @@ services.post("/users",[authentication.verifyToken], async (req, res) =>{
     let hashpassword=await bcrypt.hash(req.body.password, salt);
 
     let userInfoObj = new BLOModels.UserInfoModel({});
-    userInfoObj.dnumber = req.body.dnumber;
+    // userInfoObj.role = req.body.dnumber;
     userInfoObj.dnumber = req.body.dnumber;
     userInfoObj.firstname = req.body.firstname;
     userInfoObj.lastname = req.body.lastname;
