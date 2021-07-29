@@ -1,10 +1,11 @@
+// require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-var bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
+const authentication = require("./authLogic/authentication");
 const { Restaurants } = require("./FrontEnd_Object_Models/restaurant.js");
 const BLOModules = require("../serverServices/businessLogic/BLL/bllModules");
 const BLOModels = require("../serverServices/businessLogic/models/data_models");
-const SubOrder = require("./businessLogic/models/suborder_item.js");
 const services = express();
 
 // ========== Middlewares ===========
@@ -387,54 +388,7 @@ services.delete("/restaurant/:id", (req, res) => {
 });
 
 // delete a category with a specific id
-services.delete("/category/:restaurant_id/:hour_id", function (req, res) {
-  res.setHeader("Content-Type", "application/json");
-  console.log(
-    `Deleting a hour with restaurant id: ${req.params.restaurant_id} and hour id: ${req.params.hour_id}`,
-    req.body
-  );
-  Restaurants.findByIdAndUpdate(
-    req.params.restaurant_id,
-    {
-      $pull: {
-        categories: {
-          _id: req.params.hour_id,
-        },
-      },
-    },
-    (err, restaurant) => {
-      if (err != null) {
-        res.status(500).json({
-          err: error,
-          message: "Unable to find hour with that id",
-        });
-        return;
-      } else if (restaurant === null) {
-        res
-          .status(404)
-          .json({ message: `unable to find hour to delete`, error: err });
-        return;
-      }
-      let hour;
-      restaurant.categories.forEach((e) => {
-        if (e._id == req.params.hour_id) {
-          hour = e;
-        }
-      });
-      if (restaurant == undefined) {
-        res.status(404).json({
-          error: err,
-          message: "could not find restaurant",
-        });
-        return;
-      }
-      res.status(200).json(restaurant);
-    }
-  );
-});
-
-// Delete hours from a restaurant
-services.delete("/restaurant/:restaurant_id/:category_id", function (req, res) {
+services.delete("/category/:restaurant_id/:category_id", function (req, res) {
   res.setHeader("Content-Type", "application/json");
   console.log(
     `Deleting a category with restaurant id: ${req.params.restaurant_id} and category id: ${req.params.category_id}`,
@@ -616,22 +570,24 @@ services.patch("/customization/:custom_id", function (req, res) {
 // -------------- Duy's Section ------------------
 
 // Get every user
-services.get("/users", (req, res) => {
-  console.log(`Getting all Users`);
-  BLOModules.UserBLO.getAllUsers((err, users) => {
-    if (err != null) {
-      res.status(500).json({
-        Error: err,
-        message: "unable to list all users",
-      });
-    } else {
-      res.status(200).json(users);
-    }
-  });
+services.get("/users",[authentication.verifyToken],(req, res) => {
+  if(req.currentuser){
+    console.log(`Getting all Users`);
+    BLOModules.UserBLO.getAllUsers((err, users) => {
+      if (err != null) { 
+        res.status(500).json({
+          Error: err,
+          message: "unable to list all users",
+        });
+      } else {
+        res.status(200).json(users);
+      }
+    });
+  }
 });
 
 // Get info for a user with specific ID
-services.get("/users/:id", (req, res) => {
+services.get("/users/:id", [authentication.verifyToken],(req, res) => {
   console.log(`Getting specific user with id:${req.params.id}`);
   BLOModules.UserBLO.findUserById(req.params.id, (err, user) => {
     if (err != null) {
@@ -650,10 +606,10 @@ services.get("/users/:id", (req, res) => {
 });
 
 // POST/create a user //  register new user
-services.post("/users", async (req, res) => {
-  try {
-    let salt = await bcrypt.genSalt();
-    let hashpassword = await bcrypt.hash(req.body.password, salt);
+services.post("/users",[authentication.verifyToken], async (req, res) =>{
+  try{
+    let salt = await bcrypt.genSalt()
+    let hashpassword=await bcrypt.hash(req.body.password, salt);
 
     let userInfoObj = new BLOModels.UserInfoModel({});
     userInfoObj.dnumber = req.body.dnumber;
@@ -691,7 +647,7 @@ services.post("/users", async (req, res) => {
         }
       });
     }
-  } catch {
+  }catch{
     res.status(500).json({
       message: "=> Unable to create user",
       error: err,
@@ -700,7 +656,7 @@ services.post("/users", async (req, res) => {
 });
 
 // PUT/update a user
-services.put("/users", function (req, res) {
+services.put("/users",[authentication.verifyToken], function (req, res) {
   console.log(req.body);
   if (
     !req.body.username ||
@@ -782,12 +738,10 @@ services.get("/orders/:id", (req, res) => {
 });
 // POST/create a order
 services.post("/orders", function (req, res) {
-  // console.log(req.body.final_cart);
-  // res.status(200).json(req.body);
-
-  let orderObj = BLOModules.OrderBLO.createOrder(
-    new BLOModels.OrderModel({}),
-    (err, order) => {
+  //read Order Object
+  let cart_suborders= req.body.final_cart
+    //create Order
+    BLOModules.OrderBLO.createOrder(cart_suborders,(err, order) => {
       if (err !== null) {
         res.status(500).json({
           message: "=> Unable to create order",
@@ -795,48 +749,39 @@ services.post("/orders", function (req, res) {
         });
         return;
       } else {
-        return order;
+        //seperated orderObject into suborders by restaurants
+        cart_suborders.forEach(suborder => {
+          new BLOModels.SubOrderModel.create({        
+            customer_id: req.currentuser.id,
+            super_order_id: order._id,
+            restaurant_id: meal.meal_infos.restaurant_id,
+          },(err, order) => {
+            if (err !== null) {
+              res.status(500).json({
+                message: "=> Unable to create order",
+                error: err,
+              });
+              return;
+            } else {
+            //create SubOrders        
+              cart.meals.forEach(meal => {    
+                let subOrderItemObj = new BLOModels.SubOrderItemModel.create({
+                  sub_order_id: suborder._id,
+                  quantity: meal.meal_infos.quantity,
+                  meal_id: meal.meal_infos.meal_id,
+                  meal_name: meal.meal_infos.meal_name,
+                  note:meal.meal_infos.note
+                })
+              });
+              return order;
+            }
+          })      
+        });
+        // push subOrders to Order
       }
-    }
-  );
-
-  req.body.forEach((order) => {
-    let subOrderObj = new SubOrder.SubOrderItemModel({
-      customer_id: order.user_id,
-      super_order_id: orderObj._id,
-      restaurant_id: order.meal.meal_infos.restaurant_id,
-      items: [],
     });
-  });
-});
+  })
 
-// -------------- LOGIN ----------------------
-services.post("/login", (req, res) => {
-  BLOModules.UserBLO.findUserByEmail(req.body.email, async (err, user) => {
-    if (err) {
-      res.status(500).send("Please try login later.");
-      return;
-    }
-    if (user == null) {
-      res.status(400).send("Wrong Username or Password");
-      return;
-    } else {
-      console.log(user);
-      try {
-        console.log("user hashed password:" + user[0].hashed_password);
-        if (await bcrypt.compare(req.body.password, user[0].hashed_password)) {
-          res.status(200).send("success");
-        } else {
-          res.status(400).send("Wrong Username or Password");
-        }
-      } catch (error) {
-        console.log(error);
-        res.status(500).send("Please try login later.");
-      }
-    }
-  });
-});
-// -------------- LOGOUT ---------------------
 // ========= ERROR HANDLER ==========
 services.use((req, res, next) => {
   if (req.headers.error != undefined) {

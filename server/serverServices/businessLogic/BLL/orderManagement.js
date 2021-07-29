@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const SubOrder = require("../models/suborder");
 const SubOrderItem = require("../models/suborder_item");
 
 function getAllOrders(userId=null,callback) {
@@ -49,7 +50,7 @@ function findSubOrderById(order_id, callback) {
   });
 }
 
-function createSubOrder(order_obj, callback) {
+async function createSubOrderItem(order_obj, callback) {
   OrderItem.OrderItemModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
@@ -60,8 +61,8 @@ function createSubOrder(order_obj, callback) {
   });
 }
 
-function createOrder(order_obj, callback) {
-  Order.OrderModel.create(order_obj, (err, order) => {
+async function createSubOrder(order_obj, callback) {
+  OrderItem.OrderItemModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
     } else {
@@ -71,7 +72,24 @@ function createOrder(order_obj, callback) {
   });
 }
 
-function updateOrder(order_obj, callback) {
+async function createOrder(order_obj, callback) {
+  //start Transaction:
+  let session = await Order.startSession();
+  session.startTransaction();
+  await Order.OrderModel.create(order_obj, (err, order) => {
+    if (err) {
+      console.log(`Couldn't create a order with body ${order_obj}`);
+    } else {
+      console.log(`Successfully create order with body ${order_obj}`);
+    }
+    callback(err, order);
+  });
+
+  await session.abortTransaction();
+  session.endSession();
+}
+
+function updateOrder(sub_order_obj, callback) {
   Order.OrderModel.findByIdAndUpdate(order_obj._id, order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't update a order with body ${order_obj}`);
