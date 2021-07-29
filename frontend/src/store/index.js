@@ -8,8 +8,8 @@ const state = {
     customer_cart_by_orders: [],
 
     //! Server
-    server_url: "https://campus-eats.herokuapp.com",
-    //server_url: "http://localhost:7777",
+    //server_url: "https://campus-eats.herokuapp.com",
+    server_url: "http://localhost:7777",
     current_restaurant: [],
     my_error: "",
 
@@ -158,6 +158,12 @@ const actions = {
         axios.post(`${state.server_url}/orders`, {
             final_cart: final_customer_cart
         })
+    },
+    user_signed_up({commit} , user_sign_up_infos) {
+        axios.post(`${state.server_url}/users`, user_sign_up_infos);
+    },
+    user_signed_in({commit} , user_sign_in_infos) {
+        axios.post(`${state.server_url}/login`, user_sign_in_infos);
     }
 }
 
