@@ -50,23 +50,23 @@ function findSubOrderById(order_id, callback) {
   });
 }
 
-async function createSubOrderItem(order_obj, callback) {
-  OrderItem.OrderItemModel.create(order_obj, (err, order) => {
+async function createSubOrderItem(suborder_item_obj, callback) {
+  SubOrderItem.SubOrderItemModel.create(suborder_item_obj, (err, order) => {
     if (err) {
-      console.log(`Couldn't create a order with body ${order_obj}`);
+      console.log(`Couldn't create a suborder item with body ${suborder_item_obj}`);
     } else {
-      console.log(`Successfully create order with body ${order_obj}`);
+      console.log(`Successfully create suborder item with body ${suborder_item_obj}`);
     }
     callback(err, order);
   });
 }
 
-async function createSubOrder(order_obj, callback) {
-  OrderItem.OrderItemModel.create(order_obj, (err, order) => {
+async function createSubOrder(suborder_obj, callback) {
+  SubOrder.SubOrderModel.create(suborder_obj, (err, order) => {
     if (err) {
-      console.log(`Couldn't create a order with body ${order_obj}`);
+      console.log(`Couldn't create a suborder with body ${suborder_obj}`);
     } else {
-      console.log(`Successfully create order with body ${order_obj}`);
+      console.log(`Successfully create suborder with body ${suborder_obj}`);
     }
     callback(err, order);
   });
@@ -76,7 +76,7 @@ async function createOrder(order_obj, callback) {
   //start Transaction:
   let session = await Order.startSession();
   session.startTransaction();
-  await Order.OrderModel.create(order_obj, (err, order) => {
+  Order.OrderModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
     } else {
