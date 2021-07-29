@@ -8,15 +8,18 @@ const UserInfoSchema = new mongoose.Schema({
     },
     dnumber: {
         type:String,
-        required:[true,"Please enter your Dnumber"] 
+        required:false
+        // required:[true,"Please enter your Dnumber"] 
     },
     firstname: {
         type:String,
-        required:[true,"Please enter your first name"]
+        required:false
+        // required:[true,"Please enter your first name"]
     },
     lastname: {
         type:String,
-        required:[true,"Please enter your last name"]
+        required:false
+        // required:[true,"Please enter your last name"]
     },
     contacts:{
         address:{
