@@ -12,7 +12,6 @@ const refreshTokens = [];
 // ========== Middlewares ===========
 services.use(cors());
 services.use(express.json({}));
-services.use(express.static("server/admin_test_pages"));
 
 // ======== Request handlers =========
 // --- LOG ---
@@ -908,4 +907,14 @@ services.use((req, res, next) => {
   // res.status(req.headers.status).json(req.headers.message);
 });
 // ========= EXPORT MODULE ==========
+
+//! Handle production
+if (process.env.NODE_ENV === "production") {
+  //* Static folder
+  services.use(express.static("public"));
+
+  //* Handle SPA
+  services.get(/.*/, (req, res) => res.sendFile("public/index.html"));
+}
+
 module.exports = services;
