@@ -36,7 +36,14 @@ const SubOrderSchema = mongoose.Schema({
     },
     items:[   SubOrderItem.SubOrderItemSchema ],
     total_price:{
-        type:Number
+        type: Number,
+        default:function(){
+            let suborderPrice = 0;
+            this.items.forEach(subOrderItem => {
+                suborderPrice = suborderPrice+ subOrderItem.price
+            });
+            return suborderPrice
+        }
     }
 },{timestamps:true});
 

@@ -1,5 +1,6 @@
-const User = require("./businessLogic/models/user");
-const Role = require("./businessLogic/models/role");
+const User = require("../businessLogic/models/user");
+const Role = require("../businessLogic/models/role");
+
 isSuperAdmin = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
         if (err) {
@@ -62,39 +63,71 @@ User.findById(req.userId).exec((err, user) => {
 };
 
 isDeliverer = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
+    User.findById(req.userId).exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+  
+      Role.find(
+        {
+          _id: { $in: user.roles }
+        },
+        (err, roles) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+  
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === "deliverer") {
+              next();
+              return;
+            }
+          }
+  
+          res.status(403).send({ message: "Require Deliverer Role!" });
+          return;
+        }
+      );
+    });
+  };
+
+isUser = (req, res, next) => {
+User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+        res.status(500).send({ message: err });
+        return;
     }
 
     Role.find(
-      {
+    {
         _id: { $in: user.roles }
-      },
-      (err, roles) => {
+    },
+    (err, roles) => {
         if (err) {
-          res.status(500).send({ message: err });
-          return;
+        res.status(500).send({ message: err });
+        return;
         }
 
         for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "deliverer") {
+        if (roles[i].name === "deliverer") {
             next();
             return;
-          }
+        }
         }
 
         res.status(403).send({ message: "Require Deliverer Role!" });
         return;
-      }
+    }
     );
-  });
+});
 };
 
 
 module.exports = {
     isSuperAdmin,
     isAdmin,
-    isDeliverer
+    isDeliverer,
+    isUser
 };

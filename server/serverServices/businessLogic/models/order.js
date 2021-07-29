@@ -43,6 +43,11 @@ const OrderSchema = new mongoose.Schema({
         default:function(){
             return (this.total_Price+this.total_Price*tax+fee)
         }
+    },
+    isVoided:{
+        type:Boolean,
+        required:true,
+        default:false
     }
 },{timestamps:true});
 const OrderModel = mongoose.model("Order", OrderSchema);

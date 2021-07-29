@@ -8,13 +8,32 @@ const SubOrderItemSchema = mongoose.Schema({
         ref: "SubOrder"
     },
     quantity: Number,
-    meal:Meal.MealSchema,
+    meal_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Meal"
+    },
+    meal_name:String,
     sides:[MealSide.MealSideSchema],
     note: String,
     price: {
         type: Number,
         default:function(){
-            SubOrderItemModel
+            let subOrderItemPrice = 0
+            Meal.MealModel.findOne(this.meal_id,(err,meal)=>{
+                if(!err){
+                    subOrderItemPrice += meal.price
+                    if(this.sides.length>0){
+                        this.sides.forEach(side => {
+                            MealSide.MealModel.findOne(side._id,(err,sideobj)=>{
+                                if(!err){
+                                    subOrderItemPrice = subOrderItemPrice +sideobj.price;
+                                }
+                            })
+                        });
+                    }
+                }
+            })
+            return subOrderItemPrice*this.quantity
         }
     }
 },{timestamps:true});
