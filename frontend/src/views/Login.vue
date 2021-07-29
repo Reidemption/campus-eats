@@ -1,5 +1,11 @@
 <template>
     <div class="my_login_page_wrapper">
+        <router-link to="/" class="back_button">
+            <div class="icon">
+                <span class="material-icons">arrow_back</span>
+            </div>
+            <div class="name">Back</div>
+        </router-link>
         <div class="container" 
             :class="{ right_panel_active : show_sign_up_form }">
             <div class="form_container sign_up_container">
@@ -8,7 +14,7 @@
 
                     <input type="text" placeholder="Username" v-model="sign_up_user_name"/>
                     <input type="password" placeholder="Password" v-model="sign_up_password"/>
-                    <input type="email" placeholder="Dnumber" v-model="sign_up_dnumber"/>
+                    <input type="email" placeholder="Dmail" v-model="sign_up_dmail"/>
                     <input type="text" placeholder="Phone Number" v-model="sign_up_phone_number"/>
 
                     <button @click="user_signed_up">Sign Up</button>
@@ -128,7 +134,7 @@ h2 {
 }
 
 p {
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 100;
 	line-height: 20px;
 	letter-spacing: 0.5px;
@@ -329,5 +335,46 @@ input {
 
 .sign_up_container > .form > h1 {
     margin-bottom: 10px;
+}
+
+.back_button {
+    position: fixed;
+    top: 2%;
+    left: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: fit-content;
+    padding: 10px 17px;
+    border-radius: 25px;
+    box-shadow: 0px 2px 7px var(--gray-dark);
+    margin: 30px 0 0 40px;
+    text-decoration: none;
+}
+
+.back_button:hover {
+    cursor: pointer;
+    background-color: var(--red);
+}
+
+.back_button:hover .icon > span,
+.back_button:hover .name {
+    color: white;
+}
+
+.back_button > .icon {
+    display: flex;
+}
+
+.back_button > .icon > span {
+    font-size: 16px;
+    color: var(--gray-dark);
+}
+
+.back_button > .name {
+    font-size: 15px;
+    margin-left: 5px;
+    color: var(--gray-dark);
 }
 </style>
