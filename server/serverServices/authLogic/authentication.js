@@ -8,7 +8,7 @@ generateRefreshToken= (user)=>{
 }
 
 verifyToken = (req, res, next)=>{
-  let authHeader = req.headers["authkey"]
+  let authHeader = req.headers["at"]
   let token =""
   if(authHeader){
     token = authHeader.split(' ')[1];
