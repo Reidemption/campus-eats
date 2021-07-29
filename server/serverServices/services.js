@@ -912,10 +912,10 @@ services.use((req, res, next) => {
 // ========= EXPORT MODULE ==========
 
 //! Handle production
-    //* Static folder
-   services.use(express.static("public"));
+  //* Static folder
+  services.use(express.static("public"));
 
-    // //* Handle SPA
-    services.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, "../../public/index.html")));
+  //* Handle SPA
+  services.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, "../../public/index.html")));
 
 module.exports = services;
