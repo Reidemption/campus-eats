@@ -914,7 +914,7 @@ if (process.env.NODE_ENV === "production") {
   services.use(express.static("../../public"));
 
   //* Handle SPA
-  services.get(/.*/, (req, res) => res.sendFile("public/index.html"));
+  services.get(/.*/, (req, res) => res.sendFile("../../public/index.html"));
 }
 
 module.exports = services;
