@@ -19,16 +19,17 @@ const OrderSchema = new mongoose.Schema({
         type:Boolean,
         default:true
     },
-    total_Price:{
+    total_price:{
         type:Number,
-        required:true
+        required:true,
+        default:0
     },
     is_paid_by_meal_plan:{
         type:Boolean,
         required:true,
         default:true
     },
-    tax:{
+    amount_of_tax:{
         type:Number,
         required:true,
         default:0
@@ -52,8 +53,15 @@ const OrderSchema = new mongoose.Schema({
     timestamps:true, 
     toJSON:{virtuals:true}
 });
-OrderSchema.virtual("calcutalted_final_price").get(function (){
+OrderSchema.virtual("calculated_total_price").get(function (){
+    let total = 0
+    suborders.forEach(suborder => {
+        total = suborder.total_price
+    });
     return (this.total_Price+this.total_Price*tax+fee)
+})
+OrderSchema.virtual("calcutalted_final_price").get(function (){
+    return (this.calcutalted_total_price+this.calcutalted_total_price*tax+fee)
 })
 const OrderModel = mongoose.model("Order", OrderSchema);
 

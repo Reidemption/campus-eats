@@ -74,7 +74,6 @@ async function createSubOrder(suborder_obj, callback) {
 
 async function createOrder(order_obj, callback) {
   //start Transaction:
-  
   Order.OrderModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
@@ -83,7 +82,7 @@ async function createOrder(order_obj, callback) {
     }
     callback(err, order);
   });
-
+  //end transaction
 }
 
 function updateOrder(sub_order_obj, callback) {
@@ -108,15 +107,11 @@ function deleteOrder(id, callback) {
   });
 }
 
-function priceCalculation(){
-  
-}
-
 module.exports = {
   getAllOrders,
   findSubOrderById,
   findOrderById,
-  createOrder,createSubOrder,
+  createOrder,createSubOrder,createSubOrderItem,
   updateOrder,
   deleteOrder,
 };

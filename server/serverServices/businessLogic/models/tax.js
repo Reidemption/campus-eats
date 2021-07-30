@@ -11,7 +11,7 @@ const TaxSchema = new mongoose.Schema({
     },
     restaurant_id:{        
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
+      ref: "Restaurants",
     }
 },{timestamps:true});
 const TaxModel = mongoose.model("Tax", TaxSchema);

@@ -57,5 +57,7 @@ const restaurantSchema = new mongoose.Schema({
 });
 
 const Restaurants = mongoose.model("Restaurants", restaurantSchema);
+const Meals = mongoose.model("Meals", menuSchema);
+const MealSides = mongoose.model("MealSides", custom_optionSchema);
 
-module.exports = { Restaurants };
+module.exports = { Restaurants, Meals, MealSides };
