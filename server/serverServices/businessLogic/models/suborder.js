@@ -34,7 +34,7 @@ const SubOrderSchema = mongoose.Schema({
         type:Boolean,
         default:false
     },
-    items:[   SubOrderItem.SubOrderItemSchema ],
+    items:[  SubOrderItem.SubOrderItemSchema ],
     total_price:{
         type: Number,
         default:0
@@ -42,7 +42,7 @@ const SubOrderSchema = mongoose.Schema({
 },{timestamps:true, 
     toJSON:{virtuals:true}
 });
-SubOrderSchema.virtual("suborder_price").get(function(){
+SubOrderSchema.virtual("calculated_price").get(function(){
     let suborderPrice = 0;
     this.items.forEach(subOrderItem => {
         suborderPrice = suborderPrice+ subOrderItem.price

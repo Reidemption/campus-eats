@@ -20,3 +20,10 @@ Content-Type: application/json
     "email":"R123",
     "password":"123"
 }
+###
+POST http://localhost:7777/taxes
+Content-Type: application/json
+{
+    "email":"R123",
+    "password":"123"
+}

@@ -662,7 +662,6 @@ services.post("/users", async (req, res) => {
 
     let userInfoObj = new BLOModels.UserInfoModel({});
     userInfoObj.dnumber = req.body.dnumber;
-    userInfoObj.dnumber = req.body.dnumber;
     userInfoObj.firstname = req.body.firstname;
     userInfoObj.lastname = req.body.lastname;
     userInfoObj.contacts = {
@@ -677,6 +676,7 @@ services.post("/users", async (req, res) => {
     userObj.hashed_password = hashpassword;
     userObj.location = req.body.location;
     userObj.user_info = userInfoObj;
+    userObj.isActivated = true;
     let isValid = userObj.validateSync();
     if (isValid !== undefined) {
       console.log(isValid);
@@ -723,7 +723,7 @@ services.put("/users", [authentication.verifyToken], function (req, res) {
     return;
   }
 
-  BLOModules.UserBLO.updateUser(new BLOModels.UserModel({}), (err, user) => {
+  BLOModules.UserBLO.updateUser(req.body, (err, user) => {
     if (err !== null) {
       res.status(400).json({
         message: "unable to create user",
@@ -752,9 +752,131 @@ services.delete("/users/:id", function (req, res) {
   });
 });
 
+//-------- Role -------------------
+// Get all roles
+services.get("/roles", (req, res) => {
+  console.log(`Getting all roles`);
+  BLOModules.RoleBLO.getAllRoles((err, roles) => {
+    if (err != null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all roles",
+      });
+    } else {
+      res.status(200).json(roles);
+    }
+  });
+});
+//-------- TAXES -------------------
+// Get all taxes
+services.get("/taxes", (req, res) => {
+  console.log(`Getting all Taxes`);
+  BLOModules.TaxBLO.getAllTaxes((err, taxes) => {
+    if (err != null) {
+      res.status(500).json({
+        Error: err,
+        message: "unable to list all taxes",
+      });
+    } else {
+      res.status(200).json(taxes);
+    }
+  });
+});
+// Get info for a taxes with specific restaurantID
+services.get("/taxes/:restaurant_id", (req, res) => {
+  console.log(`Getting specific taxes with restaurant_id:${req.params.restaurant_id}`);
+  BLOModules.TaxBLO.getTaxesByRestaurantId(req.params.restaurant_id, (err, taxes) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find tax with that id",
+      });
+    } else if (taxes === null) {
+      res.status(404).json({
+        message: `Cannot find tax with id: ${req.params.restaurant_id}`,
+      });
+    } else {
+      res.status(200).json(taxes);
+    }
+  });
+});
+// Get info for a taxes with specific taxID
+services.get("/taxes/:tax_id", (req, res) => {
+  console.log(`Getting specific taxes with tax_id:${req.params.tax_id}`);
+  BLOModules.TaxBLO.getTaxById(req.params.tax_id, (err, taxes) => {
+    if (err != null) {
+      res.status(500).json({
+        err: err,
+        message: "Unable to find tax with that id",
+      });
+    } else if (taxes === null) {
+      res.status(404).json({
+        message: `Cannot find tax with id: ${req.params.tax_id}`,
+      });
+    } else {
+      res.status(200).json(taxes);
+    }
+  });
+});
+
+// POST/create a tax //  register new user
+services.post("/taxes", (req, res) => {
+  BLOModules.TaxBLO.createTax(new BLOModels.TaxModel({
+    name:req.body.name,
+    percentage:req.body.percentage,
+    restaurant_id:req.body.restaurant_id,
+  }),(err,tax)=>{
+    if (err !== null) {
+      res.status(400).json({
+        message: "unable to create tax",
+        error: err,
+      });
+    } else {
+      console.log(tax);
+      res.status(201).json(tax);
+    }
+  })
+});
+
+// PUT/update a tax
+services.put("/taxes", (req, res)=>{
+  BLOModules.TaxBLO.updateTax(new BLOModels.TaxModel({
+    _id:req.body._id,
+    name:req.body.name,
+    percentage:req.body.percentage,
+    restaurant_id:req.body.restaurant_id,
+  }), (err, tax) => {
+    if (err !== null) {
+      res.status(400).json({
+        message: "unable to update tax",
+        error: err,
+      });
+    } else {
+      console.log(tax);
+      res.status(201).json(tax);
+    }
+  });
+});
+
+// DELETE/delete a tax
+services.delete("/taxes/:id", function (req, res) {
+  console.log(`Delete with id : ${req.params.id}`);
+  BLOModules.TaxBLO.deleteTax(req.params.id, (err, tax) => {
+    if (err !== null) {
+      res.status(400).json({
+        message: "unable to delete tax",
+        error: err,
+      });
+    } else {
+      console.log(tax);
+      res.status(200).json(tax);
+    }
+  });
+});
+
 //-------- ORDERS -------------------
 // Get every orders
-services.get("/orders", (req, res) => {
+services.get("/checkoutorder", (req, res) => {
   console.log(`Getting all Orders`);
   BLOModules.OrderBLO.getAllOrders((err, orders) => {
     if (err != null) {
@@ -768,7 +890,7 @@ services.get("/orders", (req, res) => {
   });
 });
 // Get info for a order with specific ID
-services.get("/orders/:id", (req, res) => {
+services.get("/checkoutorder/:id", (req, res) => {
   console.log(`Getting specific order with id:${req.params.id}`);
   BLOModules.OrderBLO.findOrderById(req.params.id, (err, order) => {
     if (err != null) {
@@ -786,10 +908,41 @@ services.get("/orders/:id", (req, res) => {
   });
 });
 // POST/create a order
-services.post("/orders", function (req, res) {
+services.post("/checkoutorder", function (req, res) {
   //read Order Object
-  let cart_suborders = req.body.final_cart;
+  let cart_orders = req.body.final_cart;
+  //transform cart into orders
+  let orderobj = new BLOModels.OrderModel({
+    customer_id: req.currentUser.id,
+    destination: cart_orders.destination,
+    is_paid_by_meal_plan: cart_orders.is_paid_by_meal_plan
+  })
   //create Order
+  let newOrder = BLOModules.OrderBLO.createOrder(orderobj, (err, order) => {
+    if(err){
+      //log error
+      //abort transition
+    }else{
+      if(order===null){
+        //log error
+        //abort transition
+      }else{
+        return order
+      }
+    }
+  })
+
+  //Break down cart into multiple suborders:
+  let restaurantOrders = []
+  let restaurantOrdersItems = []
+  // cart_orders.forEach(suborder => {
+  //   restaurantOrders.push(new  BLOModels.SubOrderModel({
+  //     super_order_id = newOrder._id,
+  //     customer_id: req.currentUser.id,
+  //     restaurant_id: suborder.meals[0].meal_infos.restaurant_id
+  //   }))
+  // });
+
   BLOModules.OrderBLO.createOrder(cart_suborders, (err, order) => {
     if (err !== null) {
       res.status(500).json({
@@ -907,7 +1060,7 @@ services.use((req, res) => {
     console.log(`------------------------------------------------`);
   }
   // res.status(req.headers.status).json(req.headers.message);
-  next();
+
 });
 // ========= EXPORT MODULE ==========
 

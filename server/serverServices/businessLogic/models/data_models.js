@@ -7,8 +7,10 @@ const Menu = require("./menu");
 const Meal = require("./meal");
 const MealSide = require("./meal_side");
 const Category = require("./category");
+const {Restaurants,Meals,MealSides} = require("./restaurant");
 const Restaurant = require("./restaurant");
 const SideType = require("./side_type");
+const Tax = require("./tax");
 
 const UserInfoModel=UserInfo.UserInfoModel;
 const UserModel= User.UserModel;
@@ -24,9 +26,12 @@ const MealSideModel = MealSide.MealSideModel;
 const CategoryModel = Category.CategoryModel;
 const RestaurantModel = Restaurant.RestaurantModel;
 const SideTypeModel = SideType.SideTypeModel;
+const TaxModel = Tax.TaxModel;
 
 module.exports={
     UserInfoModel,UserModel,
     OrderModel,SubOrderModel,SubOrderItemModel,
-    RestaurantModel,CategoryModel,MenuModel,MealModel,MealSideModel,SideTypeModel
+    RestaurantModel,CategoryModel,MenuModel,
+    MealModel,MealSideModel,
+    SideTypeModel, TaxModel
 }
