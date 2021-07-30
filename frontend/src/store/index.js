@@ -13,6 +13,10 @@ const state = {
     current_restaurant: [],
     my_error: "",
 
+    //! User status
+    user_logged_in: JSON.parse(localStorage.getItem("user_logged_in") || false),
+    user_status_message: JSON.parse(localStorage.getItem("user_status_message") || "[]"),
+
     //! Local Vuex Store
     current_restaurant_map: "",
     restaurants_maps_list: [
@@ -83,6 +87,41 @@ const mutations = {
         state.customer_cart_by_meals = JSON.parse(localStorage.getItem("customer_cart_by_meals"));
     },
 
+    //! Server
+    get_one_restaurant_from_the_server(state, restaurant) {
+        state.current_restaurant = restaurant;
+    },
+    handle_restaurant_not_found(state) {
+        state.current_restaurant = [];
+        state.my_error = "Restaurant Not Found";
+    },
+
+    //! User Status 
+    update_user_login_status(state, { status, message }) {
+        localStorage.setItem("user_logged_in", JSON.stringify(status));
+        state.user_logged_in = JSON.parse(localStorage.getItem("user_logged_in"));
+
+        if (status === true) {
+            localStorage.setItem("user_status_message", JSON.stringify(message));
+            state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
+        } else {
+            localStorage.setItem("user_status_message", JSON.stringify(message));
+            state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
+        }
+    },
+
+    //! Local Vuex Store
+    get_one_map_from_vuex_store(state, path) {
+        let restaurants_maps_list = state.restaurants_maps_list;
+    
+        restaurants_maps_list.forEach(restaurant_maps => {
+            
+            if (restaurant_maps.path === path) {
+                state.current_restaurant_map = restaurant_maps.location;
+            }
+        })
+    },
+
     //! Redesign Customer Cart
     create_customer_cart_by_orders(state) {
         let customer_cart_by_meals = state.customer_cart_by_meals;
@@ -110,30 +149,10 @@ const mutations = {
             })
         })
     },
-
-    //! Server
-    get_one_restaurant_from_the_server(state, restaurant) {
-        state.current_restaurant = restaurant;
-    },
-    handle_restaurant_not_found(state) {
-        state.current_restaurant = [];
-        state.my_error = "Restaurant Not Found";
-    },
-
-    //! Local Vuex Store
-    get_one_map_from_vuex_store(state, path) {
-        let restaurants_maps_list = state.restaurants_maps_list;
-    
-        restaurants_maps_list.forEach(restaurant_maps => {
-            
-            if (restaurant_maps.path === path) {
-                state.current_restaurant_map = restaurant_maps.location;
-            }
-        })
-    }
 }
 
 const actions = {
+    //! Server
     get_one_restaurant_from_the_server({commit, state}, path) {
         state.my_error = "";
         
@@ -154,19 +173,46 @@ const actions = {
                 }
             })
     },
-    add_final_cart_to_server({commit}, final_customer_cart) {
+    user_placed_order({commit}, final_customer_cart) {
         axios.post(`${state.server_url}/orders`, {
+            destination: "Smith Computer Center",
+            delivery_instructions: "Meet at door",
+            delivery_option: "Right now",
+            paid_by_meal_plan: "",
+            payment: {
+                type: "Visa",
+                number: "123456"
+            },
+            promo_code: "",
             final_cart: final_customer_cart
         })
     },
+
+    //! User Status
     user_signed_up({commit} , user_sign_up_infos) {
-        axios.post(`${state.server_url}/users`, user_sign_up_infos);
+        axios.post(`${state.server_url}/users`, user_sign_up_infos)
+            .then(response => {
+                if (response.status === 200) {
+                    let status = false;
+                    let message = "Signed up successfully"
+                    commit("update_user_login_status", { status, message});
+                }
+            });
     },
-    user_signed_in({commit} , user_sign_in_infos) {
+    user_signed_in({commit} , user_sign_in_infos) { 
         axios.post(`${state.server_url}/login`, user_sign_in_infos)
             .then(response => {
-                console.log(response.data.at)
+                if (response.status === 200) {
+                    let status = true;
+                    let message = "Logged in successfully"
+                    commit("update_user_login_status", { status, message});
+                }
             });
+    },
+    user_logged_out({commit}) {
+        let status = false;
+        let message = "Logged out successfully"
+        commit("update_user_login_status", { status, message});
     }
 }
 
