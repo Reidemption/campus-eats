@@ -18,6 +18,14 @@ export default {
     components: {
         MyNavBar,
         MyComingSoon
+    },
+    created() {
+      let user_logged_in = this.$store.state.user_logged_in;
+      if (!user_logged_in) {
+        this.$router.push({
+          path: "/"
+        })
+      }
     }
 }   
 </script>

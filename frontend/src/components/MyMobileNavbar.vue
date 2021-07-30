@@ -135,7 +135,7 @@ nav {
 
 #menu {
     position: fixed;
-    height: 100vh;
+    height: 200vh;
     width: 300px;
     margin: -100px 0 0 -50px;
     padding: 50px;

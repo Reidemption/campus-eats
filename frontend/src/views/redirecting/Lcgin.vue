@@ -18,8 +18,6 @@
                     <input type="text" placeholder="Phone Number" v-model="sign_up_phone_number"/>
 
                     <button @click="user_signed_up">Sign Up</button>
-                    
-                    <img class="wait_to_sign_up" v-if="wait_to_sign_up" src="../assets_others/loading.gif" alt="Loading Gif">
                 </div>
             </div>
 
@@ -31,9 +29,7 @@
                     <input type="password" placeholder="Password" v-model="sign_in_password"/>
                     <div class="forgot_password">Forgot your password?</div>
 
-                    <button @click="user_signed_in">Sign In</button>
-
-                    <img class="wait_to_sign_in" v-if="wait_to_sign_in" src="../assets_others/loading.gif" alt="Loading Gif">
+                    <button  @click="user_signed_in">Sign In</button>
                 </div>
             </div>
 
@@ -41,71 +37,42 @@
                 <div class="overlay">
                     <div class="overlay_panel overlay_left">
                         <h1>Welcome Back!</h1>
-                        <p>Sign in if you already have an account.</p>
+                        <p>Sign in if you already have an account</p>
                         <button class="ghost" @click="sign_in_option_selected">Sign In</button>
                     </div>
 
-                    <div class="overlay_panel overlay_right" v-if="!need_account_confirmation">
-                        <h1>Hello, friend!</h1>
-                        <p>Let's start your journey with 
-                            <span>Campus Eats</span> 
-                            by creating an account!</p>
+                    <div class="overlay_panel overlay_right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Let's start your journey with Campus Eats by creating an account!</p>
                         <button class="ghost" @click="sign_up_option_selected">Sign Up</button>
-                    </div>
-
-                    <div id="confirm_instruction" class="overlay_panel overlay_right" v-if="need_account_confirmation">
-                        <h1>One Last Step</h1>
-                        <div class="instruction_messages">
-                            <p>Your account is created.</p>
-                            <p>Please confirm your Dmail and password.</p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <MyPopupMessage v-if="show_popup_message"
-            @close_popup_message="show_popup_message = false"></MyPopupMessage>
     </div>
 </template>
 
 <script>
-import MyPopupMessage from "../components/MyPopupMessage.vue"
-
 export default {
-    components: {
-        MyPopupMessage
-    },
     data() {
         return {
-            user_logged_in: this.$store.state.user_logged_in,
-
-            // Input field for user sign up
             sign_up_user_name: "",
             sign_up_password: "",
             sign_up_dmail: "",
             sign_up_phone_number: "",
 
-            // Input fields for user sign in
             sign_in_dmail: "",
             sign_in_password: "",
 
-            // Sign up option for new user
             show_sign_up_form: false,
 
-            // Message shown in case of errors
-            show_popup_message: false,
-
-            // Loading gif - waiting to be redirected
-            wait_to_sign_up: false,
-            wait_to_sign_in: false,
-
-            // Account Confirmation
-            need_account_confirmation: false
+            user_logged_in: this.$store.state.user_logged_in,
         }
     },
     created() {
-        this.watch_user_status_message();
+        this.$router.push({
+            path: "/Login"
+        })
     },
     methods: {
         sign_up_option_selected() {
@@ -115,86 +82,41 @@ export default {
             this.show_sign_up_form = false;
         },
         user_signed_up() {
-            let input_field_list = [this.sign_up_user_name, this.sign_up_password, 
-                this.sign_up_dmail, this.sign_up_phone_number];
-            
-            let empty_input_field = false;
-            input_field_list.forEach(input_field => {
-                if (input_field === "") {
-                    empty_input_field = true;
-                }
-            })
-
-            if (!empty_input_field) {
-                let user_sign_up_infos = {
-                username: this.sign_up_user_name,
-                password: this.sign_up_password,
+            let user_sign_up_infos = {
+                firstname: this.sign_up_first_name,
+                lastname: this.sign_up_last_name,
                 email: this.sign_up_dmail,
-                phone: this.sign_up_phone_number
-                }
-
-                this.$store.dispatch("user_signed_up", user_sign_up_infos);
-
-                this.sign_up_first_name = "";
-                this.sign_up_last_name = "";
-                this.sign_up_dmail = "";
-                this.sign_up_phone_number = "";
-                this.sign_up_user_name = "";
-                this.sign_up_password = "";
-
-                this.wait_to_sign_up = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
-            } 
-            else {
-                this.show_popup_message = true;
+                dnumber: this.show_sign_up_dnumber,
+                phone: this.sign_up_phone_number,
+                username: this.sign_up_user_name,
+                password: this.sign_up_password
             }
+
+            this.$store.dispatch("user_signed_up", user_sign_up_infos);
+
+            this.sign_up_first_name = "";
+            this.sign_up_last_name = "";
+            this.sign_up_dmail = "";
+            this.sign_up_phone_number = "";
+            this.sign_up_user_name = "";
+            this.sign_up_password = "";
+
+            // if (this.user_logged_in) {
+            //     this.$router.push({
+            //         path: "/"
+            //     })
+            // }
         },
         user_signed_in() {
-            let input_field_list = [this.sign_in_dmail, this.sign_in_password];
-            
-            let empty_input_field = false;
-            input_field_list.forEach(input_field => {
-                if (input_field === "") {
-                    empty_input_field = true;
-                }
-            })
-
-            if (!empty_input_field) {
-                let user_sign_in_infos = {
-                    email: this.sign_in_dmail,
-                    password: this.sign_in_password
-                }
-
-                this.$store.dispatch("user_signed_in", user_sign_in_infos);
-
-                this.sign_in_dmail = "";
-                this.sign_in_password = "";
-
-                this.wait_to_sign_in = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
-            } 
-            else {
-                this.show_popup_message = true;
+            let user_sign_in_infos = {
+                email: this.sign_in_dmail,
+                password: this.sign_in_password
             }
-        },
-        watch_user_status_message() {
-            let user_status_message = this.$store.state.user_status_message;
-            if (user_status_message === "Signed up successfully") {
-                this.need_account_confirmation = true;
-            }
-            else if (user_status_message === "Logged in successfully") {
-                this.$router.push({
-                    path: "/"
-                })
-            }
+
+            this.$store.dispatch("user_signed_in", user_sign_in_infos);
+
+            this.sign_in_dmail = "";
+            this.sign_in_password = "";
         }
     }
 }
@@ -227,15 +149,9 @@ h2 {
 p {
 	font-size: 15px;
 	font-weight: 100;
-	line-height: 25px;
+	line-height: 20px;
 	letter-spacing: 0.5px;
 	margin: 20px 0 30px;
-    padding: 0 30px;
-}
-
-p > span {
-    font-size: 15px;
-    color: var(--yellow);
 }
 
 span {
@@ -305,7 +221,6 @@ input {
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
-    z-index: 1;
 }
 
 .container {
@@ -474,23 +389,5 @@ input {
     font-size: 15px;
     margin-left: 5px;
     color: var(--gray-dark);
-}
-
-.form > .wait_to_sign_up {
-    width: 100%;
-    height: 50%;
-    position: fixed;
-    bottom: -30px;
-}
-
-.form > .wait_to_sign_in {
-    width: 100%;
-    height: 50%;
-    position: absolute;
-    bottom: 30px;
-}
-
-.instruction_messages > p {
-    margin: 20px 0 0;
 }
 </style>

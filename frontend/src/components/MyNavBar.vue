@@ -29,7 +29,8 @@
                     </div>
                 </router-link>
 
-                <div class="logout_wrapper" v-else>
+                <div class="logout_wrapper" v-else
+                    @click="user_logged_out">
                     <div class="single_option logout_option">
                         <div class="icon">
                             <i class="las la-sign-out-alt"></i>
@@ -67,7 +68,8 @@
                     </div>
                 </router-link>
 
-                <div class="logout_wrapper" v-else>
+                <div class="logout_wrapper" v-else 
+                    @click="user_logged_out">
                     <div class="single_option logout_option">
                         <div class="icon">
                             <i class="las la-sign-out-alt"></i>
@@ -88,34 +90,61 @@ export default {
     },
     data() {
         return {
-            user_logged_in: false,
-            main_menu_options_list: [
-                {
+            user_logged_in: this.$store.state.user_logged_in
+        }
+    },
+    methods: {
+        user_logged_out() {
+            this.$store.dispatch("user_logged_out");    
+            
+            this.$router.push({
+                name: "Homc"
+            })
+        }
+    },
+    computed: {
+        main_menu_options_list() {
+            let main_menu_options_list;
+
+            if (!this.user_logged_in) {
+                main_menu_options_list = [
+                    {
                     icon: "las la-home",
                     name: "Home",
                     path: "/"
-                },
-                {
-                    icon: "las la-concierge-bell",
-                    name: "Orders",
-                    path: "/Orders"
-                },
-                {
-                    icon: "las la-clipboard-list",
-                    name: "Tasks",
-                    path: "/Tasks"
-                },
-                {
-                    icon: "las la-business-time",
-                    name: "Admin",
-                    path: "/Admin"
-                },
-                {
-                    icon: "las la-user",
-                    name: "Account",
-                    path: "/Account"
-                }
-            ]
+                    }
+                ]
+            } else {
+                main_menu_options_list = [
+                    {
+                    icon: "las la-home",
+                    name: "Home",
+                    path: "/"
+                    },
+                    {
+                        icon: "las la-concierge-bell",
+                        name: "Orders",
+                        path: "/Orders"
+                    },
+                    {
+                        icon: "las la-clipboard-list",
+                        name: "Tasks",
+                        path: "/Tasks"
+                    },
+                    {
+                        icon: "las la-business-time",
+                        name: "Admin",
+                        path: "/Admin"
+                    },
+                    {
+                        icon: "las la-user",
+                        name: "Account",
+                        path: "/Account"
+                    }
+                ]
+            }
+
+            return main_menu_options_list;
         }
     }
 }

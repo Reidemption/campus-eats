@@ -67,6 +67,14 @@ export default {
             current_nav_item: "All Tasks"
         }
     },
+    created() {
+        let user_logged_in = this.$store.state.user_logged_in;
+        if (!user_logged_in) {
+            this.$router.push({
+            path: "/"
+            })
+        }
+    },
     methods: {
         update_current_nav_item(item) {
             this.nav_items.forEach(nav_item => {
