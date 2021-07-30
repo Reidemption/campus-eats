@@ -1,0 +1,346 @@
+{
+    "destination": "Smith Computer Center",
+    "delivery_instructions": "Meet at door",
+    "delivery_option": "Right now",
+    "paid_by_meal_plan": "",
+    "payment": {
+        "type": "Visa",
+        "number": "123456"
+    },
+    "promo_code": "",
+    "final_cart": [
+        {
+            "restaurant_name": "Chick-fil-A",
+            "meals": [
+                {
+                    "user_id": "user_id",
+                    "meal_index": 0,
+                    "meal_infos": {
+                        "restaurant_id": "60fc8aa70e65e40d807b67d5",
+                        "restaurant_path": "ChickFilA",
+                        "restaurant_name": "Chick-fil-A",
+                        "meal_id": "60fc8ff2ad73e720bc204077",
+                        "name": "Chick-fil-A Chicken",
+                        "image_url": "TrailblazersCafe/ChickFilA/og_meal_chicken.png",
+                        "description": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
+                        "calories": "440",
+                        "quantity": 1,
+                        "meal_price": 3.89,
+                        "subtotal_price": 3.89,
+                        "note": "",
+                        "custom_options": [
+                            {
+                                "main_type": "Make it Deluxe",
+                                "choices": [
+                                    {
+                                        "_id": "60fec41dc2010a47b0ef817a",
+                                        "type": "Make it Deluxe",
+                                        "name": "Add American cheese, lettuce, and tomato",
+                                        "calories": "20",
+                                        "price": 0.6,
+                                        "selected": false,
+                                        "menu_id": "60fc8ff2ad73e720bc204077",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Sides",
+                                "choices": [
+                                    {
+                                        "_id": "60fec43fc2010a47b0ef817c",
+                                        "type": "Add Sides",
+                                        "name": "Fries",
+                                        "calories": "20",
+                                        "price": 1.9,
+                                        "selected": false,
+                                        "menu_id": "60fc8ff2ad73e720bc204077",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Drink",
+                                "choices": [
+                                    {
+                                        "_id": "60fec454c2010a47b0ef817e",
+                                        "type": "Add Drink",
+                                        "name": "Coke",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fc8ff2ad73e720bc204077",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    },
+                                    {
+                                        "_id": "60fec460c2010a47b0ef8180",
+                                        "type": "Add Drink",
+                                        "name": "Sprite",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fc8ff2ad73e720bc204077",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "user_id": "user_id",
+                    "meal_index": 1,
+                    "meal_infos": {
+                        "restaurant_id": "60fc8aa70e65e40d807b67d5",
+                        "restaurant_path": "ChickFilA",
+                        "restaurant_name": "Chick-fil-A",
+                        "meal_id": "60fec1d4c2010a47b0ef816d",
+                        "name": "Spicy Chicken",
+                        "image_url": "TrailblazersCafe/ChickFilA/og_meal_chicken_spicy.png",
+                        "description": "A boneless breast of chicken seasoned with a spicy blend of peppers, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips.",
+                        "calories": "540",
+                        "quantity": 1,
+                        "meal_price": 4.25,
+                        "subtotal_price": 4.25,
+                        "note": "",
+                        "custom_options": [
+                            {
+                                "main_type": "Add Drink",
+                                "choices": [
+                                    {
+                                        "_id": "60fec483c2010a47b0ef8183",
+                                        "type": "Add Drink",
+                                        "name": "Sprite",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec1d4c2010a47b0ef816d",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    },
+                                    {
+                                        "_id": "60fec491c2010a47b0ef8185",
+                                        "type": "Add Drink",
+                                        "name": "Coke",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec1d4c2010a47b0ef816d",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Sides",
+                                "choices": [
+                                    {
+                                        "_id": "60fec4acc2010a47b0ef8187",
+                                        "type": "Add Sides",
+                                        "name": "Fries",
+                                        "calories": "40",
+                                        "price": 1.9,
+                                        "selected": false,
+                                        "menu_id": "60fec1d4c2010a47b0ef816d",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Make it Deluxe",
+                                "choices": [
+                                    {
+                                        "_id": "60fec4edc2010a47b0ef8189",
+                                        "type": "Make it Deluxe",
+                                        "name": "Add Pepper Jack cheese, lettuce, and tomato",
+                                        "calories": "40",
+                                        "price": 1.2,
+                                        "selected": false,
+                                        "menu_id": "60fec1d4c2010a47b0ef816d",
+                                        "category_id": "60fc8d0510a5774550efb5c5",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "user_id": "user_id",
+                    "meal_index": 2,
+                    "meal_infos": {
+                        "restaurant_id": "60fc8aa70e65e40d807b67d5",
+                        "restaurant_path": "ChickFilA",
+                        "restaurant_name": "Chick-fil-A",
+                        "meal_id": "60fec2a5c2010a47b0ef8173",
+                        "name": "Grilled Chicken",
+                        "image_url": "TrailblazersCafe/ChickFilA/grilled_meal_chicken.png",
+                        "description": "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce and tomato. Served with Honey Roasted BBQ Sauce.",
+                        "calories": "320",
+                        "quantity": 1,
+                        "meal_price": 5.55,
+                        "subtotal_price": 5.55,
+                        "note": "",
+                        "custom_options": [
+                            {
+                                "main_type": "Make it Deluxe",
+                                "choices": [
+                                    {
+                                        "_id": "60fed362c2010a47b0ef8199",
+                                        "type": "Make it Deluxe",
+                                        "name": "Add Pepper Jack cheese, lettuce, and tomato",
+                                        "calories": "50",
+                                        "price": 1.2,
+                                        "selected": false,
+                                        "menu_id": "60fec2a5c2010a47b0ef8173",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Sides",
+                                "choices": [
+                                    {
+                                        "_id": "60fed37cc2010a47b0ef819b",
+                                        "type": "Add Sides",
+                                        "name": "Fries",
+                                        "calories": "20",
+                                        "price": 1.9,
+                                        "selected": false,
+                                        "menu_id": "60fec2a5c2010a47b0ef8173",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Drink",
+                                "choices": [
+                                    {
+                                        "_id": "60fed38dc2010a47b0ef819d",
+                                        "type": "Add Drink",
+                                        "name": "Coke",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec2a5c2010a47b0ef8173",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    },
+                                    {
+                                        "_id": "60fed396c2010a47b0ef819f",
+                                        "type": "Add Drink",
+                                        "name": "Sprite",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec2a5c2010a47b0ef8173",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "user_id": "user_id",
+                    "meal_index": 3,
+                    "meal_infos": {
+                        "restaurant_id": "60fc8aa70e65e40d807b67d5",
+                        "restaurant_path": "ChickFilA",
+                        "restaurant_name": "Chick-fil-A",
+                        "meal_id": "60fec2d6c2010a47b0ef8175",
+                        "name": "Grilled Chicken Club",
+                        "image_url": "TrailblazersCafe/ChickFilA/grilled_meal_chicken_club.png",
+                        "description": "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smokey taste, served on a toasted Multigrain Brioche bun with Green Leaf lettuce, tomato, bacon & Colby-Jack cheese. Served with Honey Roasted BBQ Sauce.",
+                        "calories": "460",
+                        "quantity": 1,
+                        "meal_price": 6.89,
+                        "subtotal_price": 6.89,
+                        "note": "",
+                        "custom_options": [
+                            {
+                                "main_type": "Make it Deluxe",
+                                "choices": [
+                                    {
+                                        "_id": "60fed42bc2010a47b0ef81a2",
+                                        "type": "Make it Deluxe",
+                                        "name": "Add Pepper Jack, lettuce, and tomato",
+                                        "calories": "50",
+                                        "price": 1.2,
+                                        "selected": false,
+                                        "menu_id": "60fec2d6c2010a47b0ef8175",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Sides",
+                                "choices": [
+                                    {
+                                        "_id": "60fed441c2010a47b0ef81a4",
+                                        "type": "Add Sides",
+                                        "name": "Fries",
+                                        "calories": "20",
+                                        "price": 1.9,
+                                        "selected": false,
+                                        "menu_id": "60fec2d6c2010a47b0ef8175",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            },
+                            {
+                                "main_type": "Add Drink",
+                                "choices": [
+                                    {
+                                        "_id": "60fed451c2010a47b0ef81a6",
+                                        "type": "Add Drink",
+                                        "name": "Coke",
+                                        "calories": "20",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec2d6c2010a47b0ef8175",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    },
+                                    {
+                                        "_id": "60fed458c2010a47b0ef81a8",
+                                        "type": "Add Drink",
+                                        "name": "Sprite",
+                                        "calories": "40",
+                                        "price": 2.5,
+                                        "selected": false,
+                                        "menu_id": "60fec2d6c2010a47b0ef8175",
+                                        "category_id": "60fc8df810a5774550efb5c7",
+                                        "restaurant_id": "60fc8aa70e65e40d807b67d5"
+                                    }
+                                ],
+                                "show_choices": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
