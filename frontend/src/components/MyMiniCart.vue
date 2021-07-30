@@ -49,14 +49,14 @@
                 </div>
             </div>
 
-            <router-link to="/Checkout" class="checkout_button">
+            <div class="checkout_button" @click="ready_to_checkout">
                 <div class="title">Checkout Now</div>
                 <div class="circle_spacing"></div>
                 <div class="total_cart_price">
                     <span class="dollar_sign">$</span>
                     <div class="total_price">{{ subtotal.toFixed(2) }}</div>
                 </div>
-            </router-link>
+            </div>
         </div>
         
         <div class="empty_cart" v-else>
@@ -197,6 +197,17 @@ export default {
         remove_all_items_in_cart() {
             this.$store.commit("remove_all_items_in_cart");
             this.update_items_in_cart_after_changes();
+        },
+        ready_to_checkout() {
+            if (JSON.parse(localStorage.getItem("user_logged_in")) === false) {
+                this.$router.push({
+                    path: "/Login"
+                })
+            } else {
+                this.$router.push({
+                    path: "/Checkout"
+                })
+            }
         }
     }
 }

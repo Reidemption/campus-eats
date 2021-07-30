@@ -196,7 +196,7 @@ const actions = {
                 number: "123456"
             },
             promo_code: "",
-            final_cart: final_customer_cart
+            orders: final_customer_cart
         })
     },
 
