@@ -49,14 +49,14 @@
                 </div>
             </div>
 
-            <router-link to="/Checkout" class="checkout_button">
+            <div class="checkout_button" @click="ready_to_checkout">
                 <div class="title">Checkout Now</div>
                 <div class="circle_spacing"></div>
                 <div class="total_cart_price">
                     <span class="dollar_sign">$</span>
                     <div class="total_price">{{ subtotal.toFixed(2) }}</div>
                 </div>
-            </router-link>
+            </div>
         </div>
         
         <div class="empty_cart" v-else>
@@ -166,7 +166,7 @@ export default {
         show_popup_meal_edit(meal) {
             this.view_popup_meal_edit = true;
 
-            this.popup_meal_edit_id = meal.meal_id;
+            this.popup_meal_edit_id = meal.meal_index;
             this.popup_meal_edit_name = meal.meal_infos.name;
             this.popup_meal_edit_background_image = meal.meal_infos.image_url;
             this.popup_meal_edit_description = meal.meal_infos.description;
@@ -197,6 +197,18 @@ export default {
         remove_all_items_in_cart() {
             this.$store.commit("remove_all_items_in_cart");
             this.update_items_in_cart_after_changes();
+        },
+        ready_to_checkout() {
+            if (JSON.parse(localStorage.getItem("user_logged_in")) === false ||
+            JSON.parse(localStorage.getItem("user_logged_in")) === null) {
+                this.$router.push({
+                    path: "/Login"
+                })
+            } else {
+                this.$router.push({
+                    path: "/Checkout"
+                })
+            }
         }
     }
 }
