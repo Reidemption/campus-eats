@@ -38,18 +38,23 @@ const OrderSchema = new mongoose.Schema({
         required:true,
         default:0
     },
-    final_Price:{
+    finalPrice:{
         type:Number,
-        default:function(){
-            return (this.total_Price+this.total_Price*tax+fee)
-        }
+        required:true,
+        default:0
     },
     isVoided:{
         type:Boolean,
         required:true,
         default:false
     }
-},{timestamps:true});
+},{
+    timestamps:true, 
+    toJSON:{virtuals:true}
+});
+OrderSchema.virtual("calcutalted_final_price").get(function (){
+    return (this.total_Price+this.total_Price*tax+fee)
+})
 const OrderModel = mongoose.model("Order", OrderSchema);
 
 module.exports = {OrderModel,OrderSchema}

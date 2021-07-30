@@ -74,8 +74,7 @@ async function createSubOrder(suborder_obj, callback) {
 
 async function createOrder(order_obj, callback) {
   //start Transaction:
-  let session = await Order.startSession();
-  session.startTransaction();
+  
   Order.OrderModel.create(order_obj, (err, order) => {
     if (err) {
       console.log(`Couldn't create a order with body ${order_obj}`);
@@ -85,8 +84,6 @@ async function createOrder(order_obj, callback) {
     callback(err, order);
   });
 
-  await session.abortTransaction();
-  session.endSession();
 }
 
 function updateOrder(sub_order_obj, callback) {

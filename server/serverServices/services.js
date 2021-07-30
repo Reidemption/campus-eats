@@ -897,7 +897,7 @@ services.post("/token", (req, res) => {
   );
 });
 // ========= ERROR HANDLER ==========
-services.use((req, res, next) => {
+services.use((req, res) => {
   if (req.headers.error != undefined) {
     console.log(`-------------------- ERROR ---------------------`);
     console.log(`- ${Date.now()}`);
@@ -905,6 +905,7 @@ services.use((req, res, next) => {
     console.log(`------------------------------------------------`);
   }
   // res.status(req.headers.status).json(req.headers.message);
+  next();
 });
 // ========= EXPORT MODULE ==========
 

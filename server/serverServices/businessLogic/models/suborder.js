@@ -37,16 +37,18 @@ const SubOrderSchema = mongoose.Schema({
     items:[   SubOrderItem.SubOrderItemSchema ],
     total_price:{
         type: Number,
-        default:function(){
-            let suborderPrice = 0;
-            this.items.forEach(subOrderItem => {
-                suborderPrice = suborderPrice+ subOrderItem.price
-            });
-            return suborderPrice
-        }
+        default:0
     }
-},{timestamps:true});
-
-const SubOrderModel = mongoose.model("SubOrder", SubOrderSchema);
+},{timestamps:true, 
+    toJSON:{virtuals:true}
+});
+SubOrderSchema.virtual("suborder_price").get(function(){
+    let suborderPrice = 0;
+    this.items.forEach(subOrderItem => {
+        suborderPrice = suborderPrice+ subOrderItem.price
+    });
+    return suborderPrice
+})
+const SubOrderModel = mongoose.model("calcualated_price", SubOrderSchema);
 module.exports = {SubOrderModel,SubOrderSchema}
 

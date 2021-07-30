@@ -1,16 +1,13 @@
 GET  http://localhost:7777/users
-
+at: hehe eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDJlMTk0Y2YyMGZlMDY5NWI0YmU3NiIsInVzZXJuYW1lIjoicmVpZDEyMyIsInBhc3N3b3JkIjoiJDJhJDEwJFZveDJjNmdaNE5EazVDUjdWN1EzWk9IaW01dGhzRzhHLml3Q1ZaSTIwRXR6dTVDbEZpT0o2IiwiaWF0IjoxNjI3NTc4OTcwLCJleHAiOjE2Mjc1ODA3NzB9.6LsFqL_YFSThgCb1HwEGphgYebvqmiPvo5TiFwHyToQ
 
 ###
 POST http://localhost:7777/users
 Content-Type: application/json
 
 {
-    "firstname": "Duy",
-    "lastname": "Huynh",
-    "username":"123",
-    "email":"D123",
-    "dnumber":"D123",
+    "username":"reid123",
+    "email":"R123",
     "password":"123",
     "phone":"123"
 }
@@ -20,6 +17,6 @@ POST http://localhost:7777/login
 Content-Type: application/json
 
 {
-    "email":"D123",
+    "email":"R123",
     "password":"123"
 }
