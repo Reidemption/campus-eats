@@ -166,7 +166,7 @@ export default {
         show_popup_meal_edit(meal) {
             this.view_popup_meal_edit = true;
 
-            this.popup_meal_edit_id = meal.meal_id;
+            this.popup_meal_edit_id = meal.meal_index;
             this.popup_meal_edit_name = meal.meal_infos.name;
             this.popup_meal_edit_background_image = meal.meal_infos.image_url;
             this.popup_meal_edit_description = meal.meal_infos.description;
@@ -199,7 +199,8 @@ export default {
             this.update_items_in_cart_after_changes();
         },
         ready_to_checkout() {
-            if (JSON.parse(localStorage.getItem("user_logged_in")) === false) {
+            if (JSON.parse(localStorage.getItem("user_logged_in")) === false ||
+            JSON.parse(localStorage.getItem("user_logged_in")) === null) {
                 this.$router.push({
                     path: "/Login"
                 })

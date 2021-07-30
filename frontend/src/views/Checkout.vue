@@ -90,9 +90,10 @@ export default {
     },
     created() {
         this.get_main_restaurant_names_and_paths_from_cart();
-
+        
         if(this.main_restaurant_names.length < 1 ||
-            JSON.parse(localStorage.getItem("user_logged_in")) === false) {
+            JSON.parse(localStorage.getItem("user_logged_in")) === false ||
+            JSON.parse(localStorage.getItem("user_logged_in")) === null) {
             this.$router.push({
                 path: "/"
             });

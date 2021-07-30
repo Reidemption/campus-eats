@@ -6,7 +6,7 @@
             </div>
 
             <div class="greeting_and_news">
-            <div class="greeting">Hello Harry Potter,</div>
+            <div class="greeting">Hello Trailblazer,</div>
             <div class="news">
                 <div class="main_message">Free Delivery This Week!</div>
                 <div class="additional_message">Enter code <span class="promo_code">#CAMPUS_EATS</span> at the checkout page.</div>

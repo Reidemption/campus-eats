@@ -58,7 +58,7 @@ const mutations = {
         let customer_cart_by_meals = state.customer_cart_by_meals;
 
         let new_customer_cart_by_meals = customer_cart_by_meals.filter(meal => {
-            return meal.meal_id !== meal_id;
+            return meal.meal_index !== meal_id;
         })
 
         localStorage.setItem("customer_cart_by_meals", JSON.stringify(new_customer_cart_by_meals));
@@ -69,7 +69,7 @@ const mutations = {
         let customer_cart_by_meals = state.customer_cart_by_meals;
 
         customer_cart_by_meals.forEach(meal => {
-            if(meal.meal_id === meal_id) {
+            if(meal.meal_index === meal_id) {
                 meal.meal_infos.quantity = new_meal_quantity;
                 meal.meal_infos.note = new_meal_note;
                 meal.meal_infos.subtotal_price = new_meal_subtotal_price;
@@ -174,29 +174,17 @@ const actions = {
             })
     },
     user_placed_order({commit}, final_customer_cart) {
-        // axios.post(`${state.server_url}/orders`, {
-        //     destination: "Smith Computer Center",
-        //     delivery_instructions: "Meet at door",
-        //     delivery_option: "Right now",
-        //     paid_by_meal_plan: "",
-        //     payment: {
-        //         type: "Visa",
-        //         number: "123456"
-        //     },
-        //     promo_code: "",
-        //     final_cart: final_customer_cart
-        // })
-        console.log({
+        axios.post(`${state.server_url}/orders`, {
             destination: "Smith Computer Center",
             delivery_instructions: "Meet at door",
             delivery_option: "Right now",
             paid_by_meal_plan: "",
             payment: {
-                type: "Visa",
-                number: "123456"
+            type: "Visa",
+            number: "123456"
             },
             promo_code: "",
-            orders: final_customer_cart
+            final_cart: final_customer_cart
         })
     },
 
