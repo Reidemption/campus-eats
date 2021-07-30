@@ -174,7 +174,19 @@ const actions = {
             })
     },
     user_placed_order({commit}, final_customer_cart) {
-        axios.post(`${state.server_url}/orders`, {
+        // axios.post(`${state.server_url}/orders`, {
+        //     destination: "Smith Computer Center",
+        //     delivery_instructions: "Meet at door",
+        //     delivery_option: "Right now",
+        //     paid_by_meal_plan: "",
+        //     payment: {
+        //         type: "Visa",
+        //         number: "123456"
+        //     },
+        //     promo_code: "",
+        //     final_cart: final_customer_cart
+        // })
+        console.log({
             destination: "Smith Computer Center",
             delivery_instructions: "Meet at door",
             delivery_option: "Right now",
