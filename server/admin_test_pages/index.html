@@ -107,9 +107,7 @@
             </span>
             <li v-for="category in restaurant.categories">
               <p>{{category.name}}</p>
-              <p>{{category._id}}</p>
-              <p>{{category.restaurant_id}}</p>
-              <button v-on:click="deleteCategory(restaurant._id, _id)">
+              <button v-on:click="deleteCategory(restaurant._id, category._id)">
                 Remove Category
               </button>
               <span>
