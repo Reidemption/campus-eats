@@ -1052,7 +1052,7 @@ services.post("/token", (req, res) => {
   );
 });
 // ========= ERROR HANDLER ==========
-services.use((req, res) => {
+services.use((req, res, next) => {
   if (req.headers.error != undefined) {
     console.log(`-------------------- ERROR ---------------------`);
     console.log(`- ${Date.now()}`);
@@ -1060,15 +1060,16 @@ services.use((req, res) => {
     console.log(`------------------------------------------------`);
   }
   // res.status(req.headers.status).json(req.headers.message);
+  next();
 
 });
 // ========= EXPORT MODULE ==========
 
 //! Handle production
   //* Static folder
-  services.use(express.static("public"));
+services.use(express.static("public"));
 
   //* Handle SPA
-  services.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, "../../public/index.html")));
+services.get(/.*/, (req, res) => res.sendFile(path.resolve(__dirname, "../../public/index.html")));
 
 module.exports = services;
