@@ -45,7 +45,8 @@
                         <button class="ghost" @click="sign_in_option_selected">Sign In</button>
                     </div>
 
-                    <div class="overlay_panel overlay_right" v-if="!need_account_confirmation">
+                    <div class="overlay_panel overlay_right" 
+                        v-if="!need_account_confirmation && !user_logged_in_failed">
                         <h1>Hello, friend!</h1>
                         <p>Let's start your journey with 
                             <span>Campus Eats</span> 
@@ -53,11 +54,23 @@
                         <button class="ghost" @click="sign_up_option_selected">Sign Up</button>
                     </div>
 
-                    <div id="confirm_instruction" class="overlay_panel overlay_right" v-if="need_account_confirmation">
+                    <div id="confirm_instruction" class="overlay_panel overlay_right" 
+                        v-if="need_account_confirmation">
                         <h1>One Last Step</h1>
                         <div class="instruction_messages">
                             <p>Your account is created.</p>
                             <p>Please confirm your Dmail and password.</p>
+                        </div>
+                    </div>
+
+                    <div id="logged_in_failed_message" class="overlay_panel overlay_right" 
+                        v-if="user_logged_in_failed">
+                        <h1>Oops ...</h1>
+                        <div class="instruction_messages">
+                            <p>Your Dmail or Password is incorrect.</p>
+                            <p>Please try again or create a new account.</p>
+
+                            <button class="ghost" @click="sign_up_option_selected">Sign Up</button>
                         </div>
                     </div>
                 </div>
@@ -101,11 +114,20 @@ export default {
             wait_to_sign_in: false,
 
             // Account Confirmation
-            need_account_confirmation: false
+            need_account_confirmation: false,
+
+            // User need to check dmail/password
+            user_logged_in_failed: false
         }
     },
     created() {
         this.watch_user_status_message();
+
+        window.addEventListener("unload", (event) => {
+            let status = false;
+            let message = ""
+            this.$store.commit("update_user_login_status", { status, message });
+        })
     },
     methods: {
         sign_up_option_selected() {
@@ -114,7 +136,7 @@ export default {
         sign_in_option_selected() {
             this.show_sign_up_form = false;
         },
-        user_signed_up() {
+        async user_signed_up() {
             let input_field_list = [this.sign_up_user_name, this.sign_up_password, 
                 this.sign_up_dmail, this.sign_up_phone_number];
             
@@ -132,9 +154,7 @@ export default {
                 email: this.sign_up_dmail,
                 phone: this.sign_up_phone_number
                 }
-
-                this.$store.dispatch("user_signed_up", user_sign_up_infos);
-
+                
                 this.sign_up_first_name = "";
                 this.sign_up_last_name = "";
                 this.sign_up_dmail = "";
@@ -143,17 +163,28 @@ export default {
                 this.sign_up_password = "";
 
                 this.wait_to_sign_up = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
+
+                await this.$store.dispatch("user_signed_up", user_sign_up_infos).then(response => {
+                    if (response.status === 200) {
+
+                        let status = false;
+                        let message = "Signed up successfully"
+                        this.$store.commit("update_user_login_status", { status, message });
+
+                        this.$router.push({
+                            path: "/Lcgin"
+                        })
+                    }
+                    else {
+                        //! Handle Fail Sign Up
+                    }
+                });
             } 
             else {
                 this.show_popup_message = true;
             }
         },
-        user_signed_in() {
+        async user_signed_in() {
             let input_field_list = [this.sign_in_dmail, this.sign_in_password];
             
             let empty_input_field = false;
@@ -169,17 +200,26 @@ export default {
                     password: this.sign_in_password
                 }
 
-                this.$store.dispatch("user_signed_in", user_sign_in_infos);
-
                 this.sign_in_dmail = "";
                 this.sign_in_password = "";
-
+                
                 this.wait_to_sign_in = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
+
+                await this.$store.dispatch("user_signed_in", user_sign_in_infos).then(response => {
+                    if (response.status === 200) {
+                        let status = true;
+                        let message = "Logged in successfully"
+                        this.$store.commit("update_user_login_status", { status, message });
+                    }
+                }).catch(error => {
+                    let status = false;
+                    let message = "Logged in failed"
+                    this.$store.commit("update_user_login_status", { status, message });
+                });
+
+                this.$router.push({
+                    path: "/Lcgin"
+                })
             } 
             else {
                 this.show_popup_message = true;
@@ -194,6 +234,9 @@ export default {
                 this.$router.push({
                     path: "/"
                 })
+            }
+            else if (user_status_message === "Logged in failed") {
+                this.user_logged_in_failed = true;
             }
         }
     }
@@ -492,5 +535,10 @@ input {
 
 .instruction_messages > p {
     margin: 20px 0 0;
+    padding: 0;
+}
+
+.instruction_messages > button {
+    margin-top: 20px;
 }
 </style>
