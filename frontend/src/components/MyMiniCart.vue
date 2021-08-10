@@ -199,11 +199,13 @@ export default {
             this.update_items_in_cart_after_changes();
         },
         ready_to_checkout() {
-            if (JSON.parse(localStorage.getItem("user_logged_in")) === false ||
-            JSON.parse(localStorage.getItem("user_logged_in")) === null) {
+            let encrypted_status = this.$store.state.user_logged_in;
+
+            if(encrypted_status === false || encrypted_status === "" || encrypted_status === null ||
+                window.atob(encrypted_status) === "false") {
                 this.$router.push({
                     path: "/Login"
-                })
+                });
             } else {
                 this.$router.push({
                     path: "/Checkout"

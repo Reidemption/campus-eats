@@ -125,7 +125,7 @@ export default {
 
         window.addEventListener("unload", (event) => {
             let status = false;
-            let message = ""
+            let message = "";
             this.$store.commit("update_user_login_status", { status, message });
         })
     },
@@ -168,7 +168,7 @@ export default {
                     if (response.status === 200) {
 
                         let status = false;
-                        let message = "Signed up successfully"
+                        let message = "Signed up successfully";
                         this.$store.commit("update_user_login_status", { status, message });
 
                         this.$router.push({
@@ -208,12 +208,12 @@ export default {
                 await this.$store.dispatch("user_signed_in", user_sign_in_infos).then(response => {
                     if (response.status === 200) {
                         let status = true;
-                        let message = "Logged in successfully"
+                        let message = "Logged in successfully";
                         this.$store.commit("update_user_login_status", { status, message });
                     }
                 }).catch(error => {
                     let status = false;
-                    let message = "Logged in failed"
+                    let message = "Logged in failed";
                     this.$store.commit("update_user_login_status", { status, message });
                 });
 
@@ -226,16 +226,16 @@ export default {
             }
         },
         watch_user_status_message() {
-            let user_status_message = this.$store.state.user_status_message;
-            if (user_status_message === "Signed up successfully") {
+            let decrypted_message = window.atob(this.$store.state.user_status_message);
+            if (decrypted_message === "Signed up successfully") {
                 this.need_account_confirmation = true;
             }
-            else if (user_status_message === "Logged in successfully") {
+            else if (decrypted_message === "Logged in successfully") {
                 this.$router.push({
                     path: "/"
                 })
             }
-            else if (user_status_message === "Logged in failed") {
+            else if (decrypted_message === "Logged in failed") {
                 this.user_logged_in_failed = true;
             }
         }
@@ -540,5 +540,34 @@ input {
 
 .instruction_messages > button {
     margin-top: 20px;
+}
+
+#logged_in_failed_message {
+    animation: alert 0.5s ease;
+}
+
+@keyframes alert {
+    0% {
+        transform: translateX(-30px);
+    }
+    50% {
+        transform: translateX(30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#confirm_instruction {
+    animation: zoom 0.6s ease;
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>

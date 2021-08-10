@@ -98,16 +98,15 @@ const mutations = {
 
     //! User Status 
     update_user_login_status(state, { status, message }) {
-        localStorage.setItem("user_logged_in", JSON.stringify(status));
-        state.user_logged_in = JSON.parse(localStorage.getItem("user_logged_in"));
+        //* Encrypt the message to be saved in LocalStorage
 
-        if (status === true) {
-            localStorage.setItem("user_status_message", JSON.stringify(message));
-            state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
-        } else {
-            localStorage.setItem("user_status_message", JSON.stringify(message));
-            state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
-        }
+        let encrypted_status = window.btoa(status);
+        localStorage.setItem("user_logged_in", JSON.stringify(encrypted_status));
+        state.user_logged_in = JSON.parse(localStorage.getItem("user_logged_in"));
+    
+        let encrypted_message = window.btoa(message);
+        localStorage.setItem("user_status_message", JSON.stringify(encrypted_message));
+        state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
     },
 
     //! Local Vuex Store
@@ -203,8 +202,8 @@ const actions = {
     },
     user_logged_out({commit}) {
         let status = false;
-        let message = "Logged out successfully"
-        commit("update_user_login_status", { status, message});
+        let message = "Logged out successfully";
+        commit("update_user_login_status", { status, message });
     }
 }
 

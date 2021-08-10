@@ -90,7 +90,7 @@ export default {
     },
     data() {
         return {
-            user_logged_in: this.$store.state.user_logged_in
+            user_logged_in: ""
         }
     },
     methods: {
@@ -104,44 +104,63 @@ export default {
     },
     computed: {
         main_menu_options_list() {
+            let encrypted_status = this.$store.state.user_logged_in;
+            let decrypted_status;
             let main_menu_options_list;
 
-            if (!this.user_logged_in) {
+            if (encrypted_status === false || encrypted_status === "" || encrypted_status === null) {
+                this.user_logged_in = false;
+
                 main_menu_options_list = [
                     {
-                    icon: "las la-home",
-                    name: "Home",
-                    path: "/"
+                        icon: "las la-home",
+                        name: "Home",
+                        path: "/"
                     }
                 ]
             } else {
-                main_menu_options_list = [
-                    {
-                    icon: "las la-home",
-                    name: "Home",
-                    path: "/"
-                    },
-                    {
-                        icon: "las la-concierge-bell",
-                        name: "Orders",
-                        path: "/Orders"
-                    },
-                    {
-                        icon: "las la-clipboard-list",
-                        name: "Tasks",
-                        path: "/Tasks"
-                    },
-                    {
-                        icon: "las la-business-time",
-                        name: "Admin",
-                        path: "/Admin"
-                    },
-                    {
-                        icon: "las la-user",
-                        name: "Account",
-                        path: "/Account"
-                    }
-                ]
+                decrypted_status = window.atob(encrypted_status);
+                
+                if (decrypted_status === "true") {
+                    this.user_logged_in = true;
+                    
+                    main_menu_options_list = [
+                        {
+                            icon: "las la-home",
+                            name: "Home",
+                            path: "/"
+                        },
+                        {
+                            icon: "las la-concierge-bell",
+                            name: "Orders",
+                            path: "/Orders"
+                        },
+                        {
+                            icon: "las la-clipboard-list",
+                            name: "Tasks",
+                            path: "/Tasks"
+                        },
+                        {
+                            icon: "las la-business-time",
+                            name: "Admin",
+                            path: "/Admin"
+                        },
+                        {
+                            icon: "las la-user",
+                            name: "Account",
+                            path: "/Account"
+                        }
+                    ]
+                }
+                else {
+                    main_menu_options_list = [
+                        {
+                            icon: "las la-home",
+                            name: "Home",
+                            path: "/"
+                        }
+                    ]
+                }
             }
 
             return main_menu_options_list;
