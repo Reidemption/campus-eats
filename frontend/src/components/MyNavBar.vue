@@ -5,6 +5,7 @@
                 <div class="main_menu_options">
                     <router-link class="single_option" :to="option.path"
                         v-for="option in main_menu_options_list" :key="option.name"
+                        @click="reset_cart_status_message"
                         :class="{ current_menu_option: current_page === option.name || current_page_path === option.path }">
                         
                         <div class="icon" :class="{ current_menu_icon: current_page === option.name || current_page_path === option.path }">
@@ -20,6 +21,7 @@
                 </div>
 
                 <router-link to="/Login"
+                    @click="reset_cart_status_message"
                     class="login_wrapper" v-if="!user_logged_in">
                     <div class="single_option login_option">
                         <div class="icon">
@@ -45,7 +47,8 @@
             <div class="my_nav_bar_wrapper">
                 <div class="main_menu_options">
                     <router-link class="single_option" :to="option.path"
-                        v-for="option in main_menu_options_list" :key="option.name">
+                        v-for="option in main_menu_options_list" :key="option.name"
+                        @click="reset_cart_status_message">
                         
                         <div class="icon" :class="{ current_menu_icon_small: current_page === option.name }">
                             <i :class="option.icon"></i>
@@ -59,6 +62,7 @@
                 </div>
 
                 <router-link to="/Login"
+                    @click="reset_cart_status_message"
                     class="login_wrapper" v-if="!user_logged_in">
                     <div class="single_option login_option">
                         <div class="icon">
@@ -100,6 +104,9 @@ export default {
             this.$router.push({
                 name: "Homc"
             })
+        },
+        reset_cart_status_message() {
+            this.$store.commit("reset_cart_status_message");
         }
     },
     computed: {

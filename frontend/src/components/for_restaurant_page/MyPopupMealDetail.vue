@@ -284,7 +284,10 @@ export default {
                 note: this.popup_meal_note,
                 custom_options: this.new_popup_meal_custom_options
             };
-            this.$store.commit('add_one_meal_to_cart', meal_to_add);
+            this.$store.commit('add_one_meal_to_cart', meal_to_add);    
+            
+            let message = "Added one meal to cart";
+            this.$store.commit('updated_cart_status_message', message);
             
             this.$router.push({
                 name: "Restaurani",

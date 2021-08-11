@@ -4,7 +4,7 @@
         <div class="app_name_and_hamburger_menu">
             <MyMobileNavBar></MyMobileNavBar>
 
-            <router-link to="/">
+            <router-link to="/" @click="reset_cart_status_message">
                 <div class="app_name">Campus Eats</div>
             </router-link>
         </div>
@@ -48,6 +48,11 @@ export default {
     created () {
         window.addEventListener('scroll', this.handle_scroll);
 
+        this.check_cart_status_message();
+
+        window.addEventListener("unload", (event) => {
+            this.$store.commit('reset_cart_status_message');
+        })
     },
     methods: {
         view_mini_cart() {
@@ -58,6 +63,19 @@ export default {
         },
         handle_scroll(event) {
             this.show_mini_cart = false;
+        },
+        check_cart_status_message() {
+            let cart_status_message = window.atob(this.$store.state.cart_status_message);
+            
+            if (cart_status_message === "Added one meal to cart" ||
+                cart_status_message === "Updated one meal in cart" || 
+                cart_status_message === "Removed one meal from cart" ||
+                cart_status_message === "Removed all items in cart") {
+                    this.show_mini_cart = true;
+            }
+        },
+        reset_cart_status_message() {
+            this.$store.commit('reset_cart_status_message');
         }
     },
     computed: {

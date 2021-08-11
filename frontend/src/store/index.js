@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 
 const state = {
-    //! LocalStorage
+    //! LocalStorage Cart
     customer_cart_by_meals: JSON.parse(localStorage.getItem("customer_cart_by_meals") || "[]"),
     meal_id: 0,
     customer_cart_by_orders: [],
@@ -16,6 +16,9 @@ const state = {
     //! User status
     user_logged_in: JSON.parse(localStorage.getItem("user_logged_in") || false),
     user_status_message: JSON.parse(localStorage.getItem("user_status_message") || "[]"),
+
+    //! Cart Status
+    cart_status_message: JSON.parse(localStorage.getItem("cart_status_message") || false),
 
     //! Local Vuex Store
     current_restaurant_map: "",
@@ -44,7 +47,7 @@ const state = {
 }
 
 const mutations = {
-    //! LocalStorage
+    //! LocalStorage Cart
     add_one_meal_to_cart(state, meal_to_add) {
         let customer_cart_by_meals = state.customer_cart_by_meals;
         customer_cart_by_meals.push({
@@ -107,6 +110,18 @@ const mutations = {
         let encrypted_message = window.btoa(message);
         localStorage.setItem("user_status_message", JSON.stringify(encrypted_message));
         state.user_status_message = JSON.parse(localStorage.getItem("user_status_message"));
+    },
+
+    //! Cart Status
+    updated_cart_status_message(state, message) {
+        let encrypted_message = window.btoa(message);
+        localStorage.setItem("cart_status_message", JSON.stringify(encrypted_message));
+        state.cart_status_message = JSON.parse(localStorage.getItem("cart_status_message"));
+    },
+    reset_cart_status_message(state) {
+        let message = "";
+        localStorage.setItem("cart_status_message", JSON.stringify(message));
+        state.cart_status_message = JSON.parse(localStorage.getItem("cart_status_message"));
     },
 
     //! Local Vuex Store

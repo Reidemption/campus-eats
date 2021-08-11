@@ -251,6 +251,9 @@ export default {
             let meal_id = this.popup_meal_edit_id;
             this.$emit("remove_one_meal_from_cart", meal_id);
             this.$store.commit("remove_one_meal_from_cart", meal_id);
+
+            let message = "Removed one meal from cart";
+            this.$store.commit('updated_cart_status_message', message);
         },
         update_one_meal_in_cart() {
             let meal_id = this.popup_meal_edit_id;
@@ -261,6 +264,9 @@ export default {
             
             this.$emit("update_one_meal_in_cart");
             this.$store.commit("update_one_meal_in_cart", { meal_id, new_meal_quantity, new_meal_note, new_meal_subtotal_price, new_meal_custom_options });
+        
+            let message = "Updated one meal in cart";
+            this.$store.commit('updated_cart_status_message', message);
         }
     }
 }

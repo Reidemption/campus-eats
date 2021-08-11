@@ -197,6 +197,9 @@ export default {
         remove_all_items_in_cart() {
             this.$store.commit("remove_all_items_in_cart");
             this.update_items_in_cart_after_changes();
+
+            let message = "Removed all items in cart";
+            this.$store.commit('updated_cart_status_message', message);
         },
         ready_to_checkout() {
             let encrypted_status = this.$store.state.user_logged_in;

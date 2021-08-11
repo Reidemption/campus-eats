@@ -78,6 +78,7 @@
         </div>
 
         <MyPopupMessage v-if="show_popup_message"
+            :message_body="message_body"
             @close_popup_message="show_popup_message = false"></MyPopupMessage>
     </div>
 </template>
@@ -108,6 +109,7 @@ export default {
 
             // Message shown in case of errors
             show_popup_message: false,
+            message_body: "",
 
             // Loading gif - waiting to be redirected
             wait_to_sign_up: false,
@@ -124,7 +126,7 @@ export default {
         this.watch_user_status_message();
 
         window.addEventListener("unload", (event) => {
-            let status = false;
+            let status = window.atob(this.$store.state.user_logged_in);
             let message = "";
             this.$store.commit("update_user_login_status", { status, message });
         })
@@ -148,39 +150,48 @@ export default {
             })
 
             if (!empty_input_field) {
-                let user_sign_up_infos = {
-                username: this.sign_up_user_name,
-                password: this.sign_up_password,
-                email: this.sign_up_dmail,
-                phone: this.sign_up_phone_number
+                let email = this.sign_up_dmail;
+                let phone = this.sign_up_phone_number;
+                let validation_result = this.validate_user_login_inputs(email, phone);
+
+                if (validation_result === "Validation passed") {
+                    let user_sign_up_infos = {
+                        username: this.sign_up_user_name,
+                        password: this.sign_up_password,
+                        email: this.sign_up_dmail,
+                        phone: this.sign_up_phone_number
+                    }
+                    
+                    this.sign_up_first_name = "";
+                    this.sign_up_last_name = "";
+                    this.sign_up_dmail = "";
+                    this.sign_up_phone_number = "";
+                    this.sign_up_user_name = "";
+                    this.sign_up_password = "";
+
+                    this.wait_to_sign_up = true;
+
+                    await this.$store.dispatch("user_signed_up", user_sign_up_infos).then(response => {
+                        if (response.status === 200) {
+                            let status = false;
+                            let message = "Signed up successfully";
+                            this.$store.commit("update_user_login_status", { status, message });
+
+                            this.$router.push({
+                                path: "/Lcgin"
+                            })
+                        } else {
+                            location.reload();
+                        }
+                    });
                 }
-                
-                this.sign_up_first_name = "";
-                this.sign_up_last_name = "";
-                this.sign_up_dmail = "";
-                this.sign_up_phone_number = "";
-                this.sign_up_user_name = "";
-                this.sign_up_password = "";
-
-                this.wait_to_sign_up = true;
-
-                await this.$store.dispatch("user_signed_up", user_sign_up_infos).then(response => {
-                    if (response.status === 200) {
-
-                        let status = false;
-                        let message = "Signed up successfully";
-                        this.$store.commit("update_user_login_status", { status, message });
-
-                        this.$router.push({
-                            path: "/Lcgin"
-                        })
-                    }
-                    else {
-                        //! Handle Fail Sign Up
-                    }
-                });
+                else {
+                    this.message_body = validation_result;
+                    this.show_popup_message = true;
+                }
             } 
             else {
+                this.message_body = "Please fill out all fields";
                 this.show_popup_message = true;
             }
         },
@@ -222,6 +233,7 @@ export default {
                 })
             } 
             else {
+                this.message_body = "Please fill out all fields";
                 this.show_popup_message = true;
             }
         },
@@ -238,6 +250,26 @@ export default {
             else if (decrypted_message === "Logged in failed") {
                 this.user_logged_in_failed = true;
             }
+        },
+        validate_user_login_inputs(email, phone) {
+            let validation_result;
+
+            if (!email.includes("@dmail.dixie.edu") || email.length < 25) {
+                validation_result = "Invalid email address";
+            }
+            else if (phone.length < 10) {
+                validation_result = "Invalid phone number";
+            }
+            else {
+                let validate_phone_number = /^\d+$/.test(phone);
+                if (validate_phone_number) {
+                    validation_result = "Validation passed";
+                } else {
+                    validation_result = "Invalid phone number";
+                }
+            }
+
+            return validation_result;
         }
     }
 }
