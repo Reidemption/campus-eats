@@ -43,6 +43,283 @@ const state = {
             location: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d490.4041430332182!2d-113.56622633833774!3d37.103754868540015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80ca5b299c5b5a1d%3A0xfd975c8601b3cc6b!2sKenneth%20N.%20Gardner%20Student%20Center!5e0!3m2!1sen!2sus!4v1627422708704!5m2!1sen!2sus",
             deliver_to: []
         }
+    ],
+    all_campus_location_lists: [
+        {   
+            name: "Campus View Suites",
+            type: "Delivery Location",
+            info_window_name: "CVS",
+            position: {
+                lat: 37.10605,
+                lng: -113.56391
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Campus View Suites II",
+            type: "Delivery Location",
+            info_window_name: "CVS II",
+            position: {
+                lat: 37.10521,
+                lng: -113.56315
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Nisson Tower",
+            type: "Delivery Location",
+            info_window_name: "NISSON",
+            position: {
+                lat: 37.10589,
+                lng: -113.56308
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Science Building",
+            type: "Delivery Location",
+            info_window_name: "SCIENCE",
+            position: {
+                lat: 37.10576,
+                lng: -113.56492
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Snow Math and Science Center",
+            type: "Delivery Location",
+            info_window_name: "SNOW",
+            position: {
+                lat: 37.10530,
+                lng: -113.56570
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Browning Resource Center",
+            type: "Delivery Location",
+            info_window_name: "BROWNING",
+            position: {
+                lat: 37.10484,
+                lng: -113.56494
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "IT Surplus Electronics Store",
+            type: "Delivery Location",
+            info_window_name: "IT",
+            position: {
+                lat: 37.10437,
+                lng: -113.56382
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Technology Building",
+            type: "Delivery Location",
+            info_window_name: "TECH",
+            position: {
+                lat: 37.10387,
+                lng: -113.56380
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "McDonald Center",
+            type: "Delivery Location",
+            info_window_name: "MCDONALD",
+            position: {
+                lat: 37.10429,
+                lng: -113.56456
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Dolores Doré Eccles Fine Arts Center",
+            type: "Delivery Location",
+            info_window_name: "ECCLES",
+            position: {
+                lat: 37.10528,
+                lng: -113.56744
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Graff Fine Arts Center",
+            type: "Delivery Location",
+            info_window_name: "GRAFF",
+            position: {
+                lat: 37.10473,
+                lng: -113.56735
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Science, Engineering, and Technology Building",
+            type: "Delivery Location",
+            info_window_name: "SET",
+            position: {
+                lat: 37.10514,
+                lng: -113.56650
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "South Administration Building",
+            type: "Delivery Location",
+            info_window_name: "ADMIN",
+            position: {
+                lat: 37.10423,
+                lng: -113.56778
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Automotive Mechanics Building",
+            type: "Delivery Location",
+            info_window_name: "AUTO",
+            position: {
+                lat: 37.10372,
+                lng: -113.56334
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Hangar Building",
+            type: "Delivery Location",
+            info_window_name: "HANGAR",
+            position: {
+                lat: 37.10351,
+                lng: -113.56287
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Jennings Communication Building",
+            type: "Delivery Location",
+            info_window_name: "JENNING",
+            position: {
+                lat: 37.10353,
+                lng: -113.56436
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Udvar Hazy School of Business",
+            type: "Delivery Location",
+            info_window_name: "HAZY",
+            position: {
+                lat: 37.10271,
+                lng: -113.56442
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Human Performance Center",
+            type: "Delivery Location",
+            info_window_name: "HPC",
+            position: {
+                lat: 37.10343,
+                lng: -113.56823
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Student Activity Center",
+            type: "Delivery Location",
+            info_window_name: "SAC",
+            position: {
+                lat: 37.10352,
+                lng: -113.56673
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Kenneth N. Gardner Student Center",
+            type: "Delivery Location",
+            info_window_name: "GARDNER",
+            position: {
+                lat: 37.10388,
+                lng: -113.56592
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Jeffrey R. Holland Centennial Common",
+            type: "Delivery Location",
+            info_window_name: "HCC",
+            position: {
+                lat: 37.10273,
+                lng: -113.56595
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Cox Performing Arts Center",
+            type: "Delivery Location",
+            info_window_name: "COX",
+            position: {
+                lat: 37.10184,
+                lng: -113.56778
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "M. Anthony Burns Arena",
+            type: "Delivery Location",
+            info_window_name: "BURNS",
+            position: {
+                lat: 37.10140,
+                lng: -113.56708
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Smith's Computer Center",
+            type: "Delivery Location",
+            info_window_name: "SMITH",
+            position: {
+                lat: 37.10111,
+                lng: -113.56782
+            },
+            show_info_window: false,
+            icon: ''
+        },
+        {   
+            name: "Trailblazer Sports Medicine",
+            type: "Delivery Location",
+            info_window_name: "TSM",
+            position: {
+                lat: 37.10087,
+                lng: -113.56726
+            },
+            show_info_window: false,
+            icon: ''
+        }
     ]
 }
 
