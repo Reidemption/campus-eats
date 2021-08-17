@@ -9,10 +9,18 @@
             </router-link>
         </div>
 
-        <div class="location_input_and_cart_button">
-            <div class="location_input">
+        <div class="delivery_location_and_cart_button">
+            <div class="delivery_location_wrapper" v-if="delivery_location_selected"
+                @click="edit_delivery_location">
                 <i class="las la-map-marker"></i>
-                <input class="location_text_input" type="text" placeholder="Enter your location">
+                <p class="delivery_location">Human Performance Center</p>
+                <i class="las la-pen"></i>
+            </div>
+
+            <div class="delivery_location_wrapper" v-else
+                @click="add_delivery_location">
+                <p class="delivery_location">Select your location</p>
+                <i class="las la-plus-circle"></i>
             </div>
 
             <div class="cart_button">
@@ -42,7 +50,8 @@ export default {
     },
     data() {
         return {
-            show_mini_cart: false
+            show_mini_cart: false,
+            delivery_location_selected: false,
         }
     },
     created () {
@@ -114,28 +123,28 @@ export default {
     cursor: pointer;
 }
 
-.location_input_and_cart_button {
+.delivery_location_and_cart_button {
     display: flex;
 }
 
-.location_input{
+.delivery_location_wrapper{
    display: flex;
     align-items: center;
     border: 1px solid white;
     border-radius: 50px;
     background-color: white;
-    padding: 10px 40px;
+    padding: 0 40px;
 }
 
-.location_input > i {
+.delivery_location_wrapper> i {
     font-size: 20px;
-    color: var(--navy);
+    color: var(--gray-dark);
 }
 
-.location_text_input {
+.delivery_location {
     border: 1px solid white;
     outline-color: white;
-    color: var(--navy);
+    color: var(--gray-dark);
     font-size: 18px;
     padding: 5px 10px;
 }
@@ -177,5 +186,15 @@ export default {
     height: 100vh;
     z-index: 1;
     background-color: rgba(0,0,0,0.4)
+}
+
+.delivery_location_wrapper:hover {
+    cursor: pointer;
+    border: 1px solid var(--gray-dark);
+}
+
+.delivery_location_wrapper:hover i,
+.delivery_location_wrapper:hover .delivery_location {
+    color: var(--navy);
 }
 </style>
