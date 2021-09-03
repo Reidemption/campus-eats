@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+//! Main Pages (shown in MyNavBar)
 import Home from '../views/Home.vue'
 import Orders from '../views/Orders.vue'
 import Tasks from '../views/Tasks.vue'
@@ -6,9 +8,12 @@ import Admin from '../views/Admin.vue'
 import Account from '../views/Account.vue'
 import Login from '../views/Login.vue'
 
+//! Other Pages
 import Restaurant from '../views/Restaurant.vue'
 import Checkout from '../views/Checkout.vue'
+import DeliveryLocations from '../views/DeliveryLocations.vue'
 
+//! Redirecting Pages
 import Homc from "../views/redirecting/Homc.vue"
 import Restaurani from "../views/redirecting/Restaurani.vue"
 import Chcckout from "../views/redirecting/Chcckout.vue"
@@ -47,6 +52,10 @@ const routes = [
   {
     path: '/Checkout',
     component: Checkout
+  },
+  {
+    path: '/DeliveryLocations',
+    component: DeliveryLocations
   },
   {
     path: '/.',

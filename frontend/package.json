@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.8.7",
     "@vue/babel-preset-app": "^4.5.13",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
