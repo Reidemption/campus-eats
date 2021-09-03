@@ -91,9 +91,11 @@ export default {
     created() {
         this.get_main_restaurant_names_and_paths_from_cart();
         
+        let encrypted_status = this.$store.state.user_logged_in;
+
         if(this.main_restaurant_names.length < 1 ||
-            JSON.parse(localStorage.getItem("user_logged_in")) === false ||
-            JSON.parse(localStorage.getItem("user_logged_in")) === null) {
+            encrypted_status === false || encrypted_status === "" || encrypted_status === null ||
+            window.atob(encrypted_status) === "false") {
             this.$router.push({
                 path: "/"
             });

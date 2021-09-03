@@ -6,7 +6,7 @@
         <div class="overlay_section">
             <div class="background_content">
 
-                <router-link to="/">
+                <router-link to="/" @click="reset_cart_status_message">
                     <div class="back_button">
                         <div class="icon">
                             <span class="material-icons">arrow_back</span>
@@ -36,6 +36,11 @@ export default {
     props: {
         name: String,
         background_image: String
+    },
+    methods: {
+        reset_cart_status_message() {
+            this.$store.commit('reset_cart_status_message');
+        }
     }
 }
 </script>

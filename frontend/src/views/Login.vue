@@ -45,7 +45,8 @@
                         <button class="ghost" @click="sign_in_option_selected">Sign In</button>
                     </div>
 
-                    <div class="overlay_panel overlay_right" v-if="!need_account_confirmation">
+                    <div class="overlay_panel overlay_right" 
+                        v-if="!need_account_confirmation && !user_logged_in_failed">
                         <h1>Hello, friend!</h1>
                         <p>Let's start your journey with 
                             <span>Campus Eats</span> 
@@ -53,11 +54,23 @@
                         <button class="ghost" @click="sign_up_option_selected">Sign Up</button>
                     </div>
 
-                    <div id="confirm_instruction" class="overlay_panel overlay_right" v-if="need_account_confirmation">
+                    <div id="confirm_instruction" class="overlay_panel overlay_right" 
+                        v-if="need_account_confirmation">
                         <h1>One Last Step</h1>
                         <div class="instruction_messages">
                             <p>Your account is created.</p>
                             <p>Please confirm your Dmail and password.</p>
+                        </div>
+                    </div>
+
+                    <div id="logged_in_failed_message" class="overlay_panel overlay_right" 
+                        v-if="user_logged_in_failed">
+                        <h1>Oops ...</h1>
+                        <div class="instruction_messages">
+                            <p>Your Dmail or Password is incorrect.</p>
+                            <p>Please try again or create a new account.</p>
+
+                            <button class="ghost" @click="sign_up_option_selected">Sign Up</button>
                         </div>
                     </div>
                 </div>
@@ -65,6 +78,7 @@
         </div>
 
         <MyPopupMessage v-if="show_popup_message"
+            :message_body="message_body"
             @close_popup_message="show_popup_message = false"></MyPopupMessage>
     </div>
 </template>
@@ -95,17 +109,27 @@ export default {
 
             // Message shown in case of errors
             show_popup_message: false,
+            message_body: "",
 
             // Loading gif - waiting to be redirected
             wait_to_sign_up: false,
             wait_to_sign_in: false,
 
             // Account Confirmation
-            need_account_confirmation: false
+            need_account_confirmation: false,
+
+            // User need to check dmail/password
+            user_logged_in_failed: false
         }
     },
     created() {
         this.watch_user_status_message();
+
+        window.addEventListener("unload", (event) => {
+            let status = window.atob(this.$store.state.user_logged_in);
+            let message = "";
+            this.$store.commit("update_user_login_status", { status, message });
+        })
     },
     methods: {
         sign_up_option_selected() {
@@ -114,7 +138,7 @@ export default {
         sign_in_option_selected() {
             this.show_sign_up_form = false;
         },
-        user_signed_up() {
+        async user_signed_up() {
             let input_field_list = [this.sign_up_user_name, this.sign_up_password, 
                 this.sign_up_dmail, this.sign_up_phone_number];
             
@@ -126,34 +150,52 @@ export default {
             })
 
             if (!empty_input_field) {
-                let user_sign_up_infos = {
-                username: this.sign_up_user_name,
-                password: this.sign_up_password,
-                email: this.sign_up_dmail,
-                phone: this.sign_up_phone_number
+                let email = this.sign_up_dmail;
+                let phone = this.sign_up_phone_number;
+                let validation_result = this.validate_user_login_inputs(email, phone);
+
+                if (validation_result === "Validation passed") {
+                    let user_sign_up_infos = {
+                        username: this.sign_up_user_name,
+                        password: this.sign_up_password,
+                        email: this.sign_up_dmail,
+                        phone: this.sign_up_phone_number
+                    }
+                    
+                    this.sign_up_first_name = "";
+                    this.sign_up_last_name = "";
+                    this.sign_up_dmail = "";
+                    this.sign_up_phone_number = "";
+                    this.sign_up_user_name = "";
+                    this.sign_up_password = "";
+
+                    this.wait_to_sign_up = true;
+
+                    await this.$store.dispatch("user_signed_up", user_sign_up_infos).then(response => {
+                        if (response.status === 200) {
+                            let status = false;
+                            let message = "Signed up successfully";
+                            this.$store.commit("update_user_login_status", { status, message });
+
+                            this.$router.push({
+                                path: "/Lcgin"
+                            })
+                        } else {
+                            location.reload();
+                        }
+                    });
                 }
-
-                this.$store.dispatch("user_signed_up", user_sign_up_infos);
-
-                this.sign_up_first_name = "";
-                this.sign_up_last_name = "";
-                this.sign_up_dmail = "";
-                this.sign_up_phone_number = "";
-                this.sign_up_user_name = "";
-                this.sign_up_password = "";
-
-                this.wait_to_sign_up = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
+                else {
+                    this.message_body = validation_result;
+                    this.show_popup_message = true;
+                }
             } 
             else {
+                this.message_body = "Please fill out all fields";
                 this.show_popup_message = true;
             }
         },
-        user_signed_in() {
+        async user_signed_in() {
             let input_field_list = [this.sign_in_dmail, this.sign_in_password];
             
             let empty_input_field = false;
@@ -169,32 +211,65 @@ export default {
                     password: this.sign_in_password
                 }
 
-                this.$store.dispatch("user_signed_in", user_sign_in_infos);
-
                 this.sign_in_dmail = "";
                 this.sign_in_password = "";
-
+                
                 this.wait_to_sign_in = true;
-                setTimeout(() => {
-                    this.$router.push({
-                        path: "/Lcgin"
-                    })
-                }, 1000);
+
+                await this.$store.dispatch("user_signed_in", user_sign_in_infos).then(response => {
+                    if (response.status === 200) {
+                        let status = true;
+                        let message = "Logged in successfully";
+                        this.$store.commit("update_user_login_status", { status, message });
+                    }
+                }).catch(error => {
+                    let status = false;
+                    let message = "Logged in failed";
+                    this.$store.commit("update_user_login_status", { status, message });
+                });
+
+                this.$router.push({
+                    path: "/Lcgin"
+                })
             } 
             else {
+                this.message_body = "Please fill out all fields";
                 this.show_popup_message = true;
             }
         },
         watch_user_status_message() {
-            let user_status_message = this.$store.state.user_status_message;
-            if (user_status_message === "Signed up successfully") {
+            let decrypted_message = window.atob(this.$store.state.user_status_message);
+            if (decrypted_message === "Signed up successfully") {
                 this.need_account_confirmation = true;
             }
-            else if (user_status_message === "Logged in successfully") {
+            else if (decrypted_message === "Logged in successfully") {
                 this.$router.push({
                     path: "/"
                 })
             }
+            else if (decrypted_message === "Logged in failed") {
+                this.user_logged_in_failed = true;
+            }
+        },
+        validate_user_login_inputs(email, phone) {
+            let validation_result;
+
+            if (!email.includes("@dmail.dixie.edu") || email.length < 25) {
+                validation_result = "Invalid email address";
+            }
+            else if (phone.length < 10) {
+                validation_result = "Invalid phone number";
+            }
+            else {
+                let validate_phone_number = /^\d+$/.test(phone);
+                if (validate_phone_number) {
+                    validation_result = "Validation passed";
+                } else {
+                    validation_result = "Invalid phone number";
+                }
+            }
+
+            return validation_result;
         }
     }
 }
@@ -492,5 +567,39 @@ input {
 
 .instruction_messages > p {
     margin: 20px 0 0;
+    padding: 0;
+}
+
+.instruction_messages > button {
+    margin-top: 20px;
+}
+
+#logged_in_failed_message {
+    animation: alert 0.5s ease;
+}
+
+@keyframes alert {
+    0% {
+        transform: translateX(-30px);
+    }
+    50% {
+        transform: translateX(30px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+#confirm_instruction {
+    animation: zoom 0.6s ease;
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>

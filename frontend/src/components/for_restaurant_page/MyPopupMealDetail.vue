@@ -10,89 +10,91 @@
             </div>
 
             <div class="popup_main_content">
-                <div class="popup_meal_name">{{ popup_meal_name }}</div>
-                
-                <div class="popup_meal_description">{{ popup_meal_description }}</div>
+                <div class="popup_meal_all_infos_wrapper">
+                    <div class="popup_meal_name">{{ popup_meal_name }}</div>
                     
-                <div class="popup_meal_calories">
-                    <div class="title">Calories:</div>
-                    <div class="calories_amount">
-                        {{ popup_meal_calories }}
-                    </div>
-                </div>
-
-                <div class="popup_meal_custom_options_title">
-                    Custom your order:
-                </div>
-
-                <div class="popup_meal_custom_options_wrapper">
-                    <div class="single_customization_wrapper" v-for="custom_option in new_popup_meal_custom_options" 
-                        :key="custom_option.main_type">
+                    <div class="popup_meal_description">{{ popup_meal_description }}</div>
                         
-                        <div class="title_and_arrow_buttons">
-                            <div class="title">{{ custom_option.main_type }}
-                                <span v-if="custom_option.choices.length > 1">(Select up to 1 choice)</span>
-                            </div>
+                    <div class="popup_meal_calories">
+                        <div class="title">Calories:</div>
+                        <div class="calories_amount">
+                            {{ popup_meal_calories }}
+                        </div>
+                    </div>
 
-                            <div class="arrow_buttons" v-if="custom_option.show_choices">
-                                <div class="single_arrow_button" @click="custom_option.show_choices = false">
+                    <div class="popup_meal_custom_options_title">
+                        Custom your order:
+                    </div>
+
+                    <div class="popup_meal_custom_options_wrapper">
+                        <div class="single_customization_wrapper" v-for="custom_option in new_popup_meal_custom_options" 
+                            :key="custom_option.main_type">
+                            
+                            <div class="title_and_arrow_buttons">
+                                <div class="title">{{ custom_option.main_type }}
+                                    <span v-if="custom_option.choices.length > 1">(Select up to 1 choice)</span>
+                                </div>
+
+                                <div class="arrow_buttons" v-if="custom_option.show_choices">
+                                    <div class="single_arrow_button" @click="custom_option.show_choices = false">
+                                        <span class="material-icons">expand_more</span>
+                                    </div>
+                                </div>
+
+                                <div class="arrow_buttons" v-else>
+                                    <div class="single_arrow_button" @click="custom_option.show_choices = true">
+                                        <span class="material-icons">expand_less</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div v-if="custom_option.show_choices">
+                                <div class="single_custom_choice" v-for="choice in custom_option.choices" :key="choice.name">
+                                    <div class="checkbox" v-if="!choice.selected"
+                                        @click="choice_selected(choice)">
+                                        <div class="check_box_center"></div>
+                                    </div>
+
+                                    <div class="checkbox" v-else 
+                                        @click="choice_unselected(choice)"
+                                        :class="{ choice_selected: choice.selected }">
+                                        <div class="check_box_center"></div>
+                                    </div>
+                                        
+                                    <div class="choice_infos_and_price">
+                                        <div class="choice_infos">
+                                            <div class="choice_name">{{ choice.name }}</div>
+                                        </div>
+
+                                        <div class="choice_price">
+                                            + {{ choice.price.toFixed(2) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="popup_meal_included_message">
+                        <div class="title_and_arrow_buttons">
+                            <div class="title">Include a Message</div>
+
+                            <div class="arrow_buttons" v-if="show_include_message_box">
+                                <div class="single_arrow_button" @click="show_include_message_box = false">
                                     <span class="material-icons">expand_more</span>
                                 </div>
                             </div>
 
                             <div class="arrow_buttons" v-else>
-                                <div class="single_arrow_button" @click="custom_option.show_choices = true">
+                                <div class="single_arrow_button" @click="show_include_message_box = true">
                                     <span class="material-icons">expand_less</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div v-if="custom_option.show_choices">
-                            <div class="single_custom_choice" v-for="choice in custom_option.choices" :key="choice.name">
-                                <div class="checkbox" v-if="!choice.selected"
-                                    @click="choice_selected(choice)">
-                                    <div class="check_box_center"></div>
-                                </div>
 
-                                <div class="checkbox" v-else 
-                                    @click="choice_unselected(choice)"
-                                    :class="{ choice_selected: choice.selected }">
-                                    <div class="check_box_center"></div>
-                                </div>
-                                    
-                                <div class="choice_infos_and_price">
-                                    <div class="choice_infos">
-                                        <div class="choice_name">{{ choice.name }}</div>
-                                    </div>
-
-                                    <div class="choice_price">
-                                        + {{ choice.price.toFixed(2) }}
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="include_message_box" v-if="show_include_message_box">
+                            <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="popup_meal_note"></textarea>
                         </div>
-                    </div>
-                </div>
-
-                <div class="popup_meal_included_message">
-                    <div class="title_and_arrow_buttons">
-                        <div class="title">Include a Message</div>
-
-                        <div class="arrow_buttons" v-if="show_include_message_box">
-                            <div class="single_arrow_button" @click="show_include_message_box = false">
-                                <span class="material-icons">expand_more</span>
-                            </div>
-                        </div>
-
-                        <div class="arrow_buttons" v-else>
-                            <div class="single_arrow_button" @click="show_include_message_box = true">
-                                <span class="material-icons">expand_less</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="include_message_box" v-if="show_include_message_box">
-                        <textarea rows="2" placeholder="Add specific message (allergy, etc)" v-model="popup_meal_note"></textarea>
                     </div>
                 </div>
 
@@ -282,7 +284,10 @@ export default {
                 note: this.popup_meal_note,
                 custom_options: this.new_popup_meal_custom_options
             };
-            this.$store.commit('add_one_meal_to_cart', meal_to_add);
+            this.$store.commit('add_one_meal_to_cart', meal_to_add);    
+            
+            let message = "Added one meal to cart";
+            this.$store.commit('updated_cart_status_message', message);
             
             this.$router.push({
                 name: "Restaurani",
@@ -314,9 +319,8 @@ export default {
     display: grid;
     grid-template-columns: 1fr 2fr;
     width: 60%;
+    height: 80%;
     max-height: 80%;
-    overflow: hidden;
-    overflow-y: scroll;
 }
 
 .backrground_image_and_close_button {
@@ -354,6 +358,12 @@ export default {
 .popup_main_content {
     padding: 30px;
     border-left: 1px solid var(--gray-fade);
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .popup_meal_name {
