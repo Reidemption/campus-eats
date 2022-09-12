@@ -106,6 +106,8 @@ export default {
             }
         },
         restaurant_selected(restaurant_name) {
+            this.$store.commit("reset_cart_status_message");
+            
             this.$router.push({
                 name: "Restaurani",
                 query: {

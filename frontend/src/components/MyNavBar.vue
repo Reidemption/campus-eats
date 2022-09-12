@@ -5,6 +5,7 @@
                 <div class="main_menu_options">
                     <router-link class="single_option" :to="option.path"
                         v-for="option in main_menu_options_list" :key="option.name"
+                        @click="reset_cart_status_message"
                         :class="{ current_menu_option: current_page === option.name || current_page_path === option.path }">
                         
                         <div class="icon" :class="{ current_menu_icon: current_page === option.name || current_page_path === option.path }">
@@ -20,6 +21,7 @@
                 </div>
 
                 <router-link to="/Login"
+                    @click="reset_cart_status_message"
                     class="login_wrapper" v-if="!user_logged_in">
                     <div class="single_option login_option">
                         <div class="icon">
@@ -45,7 +47,8 @@
             <div class="my_nav_bar_wrapper">
                 <div class="main_menu_options">
                     <router-link class="single_option" :to="option.path"
-                        v-for="option in main_menu_options_list" :key="option.name">
+                        v-for="option in main_menu_options_list" :key="option.name"
+                        @click="reset_cart_status_message">
                         
                         <div class="icon" :class="{ current_menu_icon_small: current_page === option.name }">
                             <i :class="option.icon"></i>
@@ -59,6 +62,7 @@
                 </div>
 
                 <router-link to="/Login"
+                    @click="reset_cart_status_message"
                     class="login_wrapper" v-if="!user_logged_in">
                     <div class="single_option login_option">
                         <div class="icon">
@@ -90,7 +94,7 @@ export default {
     },
     data() {
         return {
-            user_logged_in: this.$store.state.user_logged_in
+            user_logged_in: ""
         }
     },
     methods: {
@@ -100,48 +104,70 @@ export default {
             this.$router.push({
                 name: "Homc"
             })
+        },
+        reset_cart_status_message() {
+            this.$store.commit("reset_cart_status_message");
         }
     },
     computed: {
         main_menu_options_list() {
+            let encrypted_status = this.$store.state.user_logged_in;
+            let decrypted_status;
             let main_menu_options_list;
 
-            if (!this.user_logged_in) {
+            if (encrypted_status === false || encrypted_status === "" || encrypted_status === null) {
+                this.user_logged_in = false;
+
                 main_menu_options_list = [
                     {
-                    icon: "las la-home",
-                    name: "Home",
-                    path: "/"
+                        icon: "las la-home",
+                        name: "Home",
+                        path: "/"
                     }
                 ]
             } else {
-                main_menu_options_list = [
-                    {
-                    icon: "las la-home",
-                    name: "Home",
-                    path: "/"
-                    },
-                    {
-                        icon: "las la-concierge-bell",
-                        name: "Orders",
-                        path: "/Orders"
-                    },
-                    {
-                        icon: "las la-clipboard-list",
-                        name: "Tasks",
-                        path: "/Tasks"
-                    },
-                    {
-                        icon: "las la-business-time",
-                        name: "Admin",
-                        path: "/Admin"
-                    },
-                    {
-                        icon: "las la-user",
-                        name: "Account",
-                        path: "/Account"
-                    }
-                ]
+                decrypted_status = window.atob(encrypted_status);
+                
+                if (decrypted_status === "true") {
+                    this.user_logged_in = true;
+                    
+                    main_menu_options_list = [
+                        {
+                            icon: "las la-home",
+                            name: "Home",
+                            path: "/"
+                        },
+                        {
+                            icon: "las la-concierge-bell",
+                            name: "Orders",
+                            path: "/Orders"
+                        },
+                        {
+                            icon: "las la-clipboard-list",
+                            name: "Tasks",
+                            path: "/Tasks"
+                        },
+                        {
+                            icon: "las la-business-time",
+                            name: "Admin",
+                            path: "/Admin"
+                        },
+                        {
+                            icon: "las la-user",
+                            name: "Account",
+                            path: "/Account"
+                        }
+                    ]
+                }
+                else {
+                    main_menu_options_list = [
+                        {
+                            icon: "las la-home",
+                            name: "Home",
+                            path: "/"
+                        }
+                    ]
+                }
             }
 
             return main_menu_options_list;

@@ -3,7 +3,7 @@
         :class="{ message_leaves_screen: message_leaves_screen }">
         <div class="message_container">
             <div class="message_body_and_close_button">
-                <div class="message_body">Please fill out all fields</div>
+                <div class="message_body">{{ message_body }}</div>
 
                 <div class="close_button" @click="close_popup_message">
                     <i class="las la-times"></i>
@@ -17,6 +17,9 @@
 
 <script>
 export default {
+    props: {
+        message_body: String
+    },
     data() {
         return {
             message_leaves_screen: false
@@ -25,11 +28,11 @@ export default {
     created() {
         setTimeout(() => {
             this.message_leaves_screen = true;
-        }, 4000);
+        }, 3000);
         
         setTimeout(() => {
             this.$emit("close_popup_message");
-        }, 5000);
+        }, 4000);
     },
     methods: {
         close_popup_message() {
