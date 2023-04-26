@@ -74,7 +74,8 @@ export default {
             this.show_mini_cart = false;
         },
         check_cart_status_message() {
-            let cart_status_message = window.atob(this.$store.state.cart_status_message);
+            const cart_status = this.$store.state.cart_status_message;
+            let cart_status_message = cart_status;
             
             if (cart_status_message === "Added one meal to cart" ||
                 cart_status_message === "Updated one meal in cart" || 

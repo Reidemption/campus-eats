@@ -71,8 +71,8 @@ import MyTotalFees from "../../components/for_checkout_page/MyTotalFees.vue"
 
 import MyEditDestination from "../../components/for_checkout_page/popup_edit_modals/MyEditDestination.vue"
 import MyEditInstructions from "../../components/for_checkout_page/popup_edit_modals/MyEditInstructions.vue"
-import MyEditPayment from "../../components/for_checkout_page/popup_edit_modals/MyEditPayment.vue"
-import MyEditPromoCode from "../../components/for_checkout_page/popup_edit_modals/MyEditPromoCode.vue"
+// import MyEditPayment from "../../components/for_checkout_page/popup_edit_modals/MyEditPayment.vue"
+// import MyEditPromoCode from "../../components/for_checkout_page/popup_edit_modals/MyEditPromoCode.vue"
 
 export default {
     components: {
@@ -85,8 +85,8 @@ export default {
 
         MyEditDestination,
         MyEditInstructions,
-        MyEditPayment,
-        MyEditPromoCode,
+        // MyEditPayment,
+        // MyEditPromoCode,
     },
     data() {
         return {
